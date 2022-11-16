@@ -47,22 +47,23 @@ public class FBFController {
 		return fbfs;
 	}
 
-	@GetMapping("/{atomosMin}/{atomosMax}/{atomosQuantidade}/{quantidadeFbfs}/{exatoPelomenos}/{operadoresLista}/{listasExercicios}")
+	//http://127.0.0.1:8080/api-logic/$min/$max/$qntdFormulas/$qntdListas/$operadores/$envolvidos
+	@GetMapping("/{atomosMin}/{atomosMax}/{quantidadeFbfs}/{exatoPelomenos}/{operadoresLista}/{listasExercicios}")
 	private ArrayList<FBFDTO> findFbfs(@PathVariable String atomosMin, @PathVariable String atomosMax,
-			@PathVariable String atomosQuantidade, @PathVariable String quantidadeFbfs,
-			@PathVariable String exatoPelomenos, @PathVariable String operadoresLista, 
-			@PathVariable String listasExercicios) throws IOException, Err {
+			@PathVariable String quantidadeFbfs,@PathVariable String exatoPelomenos,
+			@PathVariable String operadoresLista, @PathVariable String listasExercicios) 
+			throws IOException, Err {
 		
 		String quantAtomos = "";
 
-		// if (atomosMin < atomosMax)
-		//....
 		
+		int atoMin = Integer.parseInt(atomosMin); // Transformação de String para int
+		int atoMax = Integer.parseInt(atomosMax); // Transformação de String para int
 
-		if (atomosQuantidade.equals("0")) {
+		if (atoMin < atoMax) { // Condição do atomo Maximo for maior que atomo minimo
 			quantAtomos = "#Atom >= " + atomosMin + " && #Atom <= " + atomosMax;
 		} else {
-			quantAtomos = "#Atom = " + atomosQuantidade;
+			quantAtomos = "#Atom = " + atomosMax;
 		}
 
 		String config = "";
