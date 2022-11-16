@@ -13,7 +13,7 @@ public class Teste {
         
     }
     public static void main(String[] args) throws IOException {
-        Path caminho = Paths.get("C:/Users/Douglas/Desktop/Alloy/AlloyTexto.txt");
+        Path caminho = Paths.get("C:/Users/Douglas/Desktop/api-logic-main/AlloyTexto.txt");
         byte[] texto = Files.readAllBytes(caminho);
         String textoAlloy = new String(texto);
 
