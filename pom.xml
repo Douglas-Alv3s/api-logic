@@ -58,7 +58,8 @@
 			<artifactId>alloy</artifactId>
 			<version>4.2</version>
 			<scope>system</scope>
-			<systemPath>C:\Users\Douglas\Desktop\api-logic-main\lib/alloy.jar</systemPath>
+			<systemPath>/home/dou/Área de Trabalho/Elthon Projeto/api-logic/lib/alloy.jar</systemPath>
+			<!-- <systemPath>C:\Users\Douglas\Desktop\api-logic-main\lib/alloy.jar</systemPath> -->
 		</dependency>
 
 		<!-- <dependency>
