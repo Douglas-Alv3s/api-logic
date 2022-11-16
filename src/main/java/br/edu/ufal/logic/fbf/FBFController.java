@@ -48,6 +48,7 @@ public class FBFController {
 	}
 
 	//http://127.0.0.1:8080/api-logic/$min/$max/$qntdFormulas/$qntdListas/$operadores/$envolvidos
+	//http://127.0.0.1:8080/api-logic/fbfs/{atomosMin}/{atomosMax}/{quantidadeFbfs}/{exatoPelomenos}/{operadoresLista}/{listasExercicios}
 	@GetMapping("/{atomosMin}/{atomosMax}/{quantidadeFbfs}/{exatoPelomenos}/{operadoresLista}/{listasExercicios}")
 	private ArrayList<FBFDTO> findFbfs(@PathVariable String atomosMin, @PathVariable String atomosMax,
 			@PathVariable String quantidadeFbfs,@PathVariable String exatoPelomenos,
