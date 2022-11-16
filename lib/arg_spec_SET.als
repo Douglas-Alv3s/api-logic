@@ -1,0 +1,104 @@
+abstract sig Formula{}
+abstract sig Unary extends Formula{child: Formula}	
+abstract sig Binary extends Formula{ left, right: Formula }
+sig Atom extends Formula{} 
+sig Not extends Unary { } 
+sig And, Or, Imply, BiImply extends Binary { }
+
+fact NoCycle{ no n, n': Formula | n in n'.^(child + Binary<:left + Binary<:right) and n' in n.^(child + Binary<:left + Binary<:right) }
+
+//formas das regras
+abstract sig Rule { }
+sig NE extends Rule {p1: Not, r: Formula}
+sig NI extends Rule {p1: Formula, r: Not}
+sig CI extends Rule {p1: Formula, p2: Formula, r: And}
+sig CE extends Rule {p1: And, r: Formula}
+sig DI extends Rule {p1: Formula, r: Or}
+sig DE extends Rule {p1: Imply, p2: Imply, p3: Or, r: Formula}
+sig BI extends Rule {p1: Imply, p2: Imply, r: BiImply}
+sig BE extends Rule {p1: BiImply, r: Imply}
+sig MP extends Rule {p1: Formula, p2: Imply, r: Formula}
+sig MT extends Rule {p1: Formula, p2: Imply, r: Formula}
+sig SD extends Rule {p1: Formula, p2: Or, r: Formula}
+
+//regras
+fact rules{
+	all ne:NE | ne.p1.child.child = ne.r					//negation exclusion
+	all ni:NI | ni.p1 = ni.r.child.child						//negation inclusion
+	all ci:CI | (ci.r.left = ci.p1 and ci.r.right = ci.p2) or (ci.r.left = ci.p2 and ci.r.right = ci.p1)//conjunction inclusion
+	all ce:CE | ce.r = ce.p1.left or ce.r = ce.p1.right//conjunction exclusion
+	all di:DI | di.p1 in di.r.(right+left)//disjunction inclusion
+	all de:DE | //disjunction exclusion
+		((de.p1.left=de.p3.left and de.p2.left=de.p3.right) 
+		or (de.p1.left=de.p3.right and de.p2.left=de.p3.left)) 
+		and de.p1.right=de.p2.right and de.r=de.p2.right
+	all bi:BI |//biimply inclusion
+		bi.p1.right=bi.p2.left and bi.p2.right=bi.p1.left 
+		and ((bi.r.right=bi.p2.right and bi.r.left=bi.p2.left) or (bi.r.right=bi.p2.left and bi.r.left=bi.p2.right))
+	all be:BE | (be.r.left=be.p1.left and be.r.right=be.p1.right) or (be.r.left=be.p1.right and be.r.right=be.p1.left)//biimply exclusion
+	all mp:MP | mp.p1 = mp.p2.left and mp.r = mp.p2.right//MP
+	all mt:MT | (mt.p1.child = mt.p2.right and mt.r.child = mt.p2.left) or (mt.p1 = mt.p2.right.child and mt.r = mt.p2.left.child)//MT
+	all sd:SD | (sd.p1.child = sd.p2.left and sd.r = sd.p2.right) or (sd.p1.child = sd.p2.right and sd.r = sd.p2.left)//SD
+}
+
+//unicidades
+pred isEqualTo[a:Formula,a':Formula]{ ((a.right = a'.right and a.left = a'.left) or (a.right = a'.left and a.left = a'.right)) implies a = a' }
+pred avoidA_A[a:Formula]{ a.right != a.left }
+pred avoidA_noA[a:Formula]{ (a.right.child != a.left) and (a.right != a.left.child) }
+fact { //to avoid
+	all a,a':Not | a.child = a'.child implies a = a'
+	all a,a':And | a.isEqualTo[a']
+	all a,a':Or | a.isEqualTo[a']
+	all a,a':BiImply | a.isEqualTo[a']
+	all a,a':Imply | (a.right = a'.right and a.left = a'.left) implies a = a'
+	all x:And | x.avoidA_A//avoid A^A
+	all x:Or | x.avoidA_A//avoid AvA
+	all x:Imply | x.avoidA_A//avoid A->A
+	all x:BiImply | x.avoidA_A//avoid A<->A
+	all x:And | x.avoidA_noA//avoid  A^~A
+	all x:Or | x.avoidA_noA//avoid  Av~A
+	all x:Imply | x.avoidA_noA//avoid  ~A->A / A->~A
+	all x:BiImply | x.avoidA_noA//avoid  ~A<->A / A<->~A
+}
+
+fact { //unique applications
+	all a,a':NE | (a.r=a'.r) implies a=a' 
+	all a,a':NI | (a.r=a'.r) implies a=a' 
+	all a,a':CE | (a.p1=a'.p1 and a.r=a'.r) implies a=a' 
+	all a,a':CI | (a.r=a'.r) implies a=a' 
+	all a,a':DI | (a.p1=a'.p1 and a.r=a'.r) implies a=a' 
+	all a,a':DE | 
+		((a.p1.isEqualTo[a'.p1] and a.p2.isEqualTo[a'.p2]) or (a.p1.isEqualTo[a'.p2] and a.p2.isEqualTo[a'.p1]))
+		and a.p3.isEqualTo[a'.p3] implies a=a'
+	all a,a':BE | (a.p1=a'.p1 and a.r=a'.r) implies a=a' 
+	all a,a':SD | (a.p1=a'.p1 and a.p2=a'.p2) implies a=a' 
+	all a,a':MP | (a.p1=a'.p1 and a.p2=a'.p2) implies a=a' 
+	all a,a':MT | (a.p1=a'.p1 and a.p2=a'.p2) implies a=a' 
+}
+
+let P1 = NE<:p1+NI<:p1+CI<:p1+CE<:p1+DI<:p1+DE<:p1+BI<:p1+BE<:p1+MP<:p1+MT<:p1+SD<:p1
+let P2 = CI<:p2+DE<:p2+BI<:p2+MP<:p2+MT<:p2+SD<:p2
+let R = NE<:r+NI<:r+CI<:r+CE<:r+DI<:r+DE<:r+BI<:r+BE<:r+MP<:r+MT<:r+SD<:r
+fact OneOrigin{ 
+	one rule: Rule | all f: Formula | 
+		f in rule.(P1+P2+p3+R).*(child +Binary<:left + Binary<:right) or f=rule.P1 or f=rule.P2 or f=rule.p3 or f = rule.R
+}
+
+one sig Argument{ premisse: set Formula, conclusion: one Formula }{ #premisse=3 not (conclusion in premisse) }
+
+pred Config(){ 
+	#Atom=2
+	#MT=0 <=> #MP!=0
+	one ru,ru':Rule | ru.R in ru'.(P1+P2+p3)
+	one arg:Argument | all ru:Rule | ru.(P1+P2+p3) in arg.premisse
+	one arg:Argument | all ru:Rule | no fo:Formula | fo in ru.(P1+P2+p3) and fo in ru.R and fo in arg.conclusion
+	one arg:Argument | some ru:Rule | arg.conclusion=ru.R
+}
+
+run Config for 5
+
+
+
+
+
+
