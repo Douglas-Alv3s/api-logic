@@ -4,6 +4,9 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
@@ -36,64 +39,24 @@ public class ArgumentController {
 	private ArgumentService service;
 //	private boolean executando = false;
 
-	private static String modelArgument = "abstract sig Formula{}\n"
-			+ "abstract sig Unary extends Formula{child: Formula}	\n"
-			+ "abstract sig Binary extends Formula{ left, right: Formula }\n" + "sig Atom extends Formula{} \n"
-			+ "sig Not extends Unary { } \n" + "sig And, Or, Imply, BiImply extends Binary { }\n" + "\n"
-			+ "fact NoCycle{ no n, n': Formula | n in n'.^(child + Binary<:left + Binary<:right) and n' in n.^(child + Binary<:left + Binary<:right) }\n"
-			+ "\n" + "//formas das regras\n" + "abstract sig Rule { }\n" + "sig NE extends Rule {p1: Not, r: Formula}\n"
-			+ "sig NI extends Rule {p1: Formula, r: Not}\n" + "sig CI extends Rule {p1: Formula, p2: Formula, r: And}\n"
-			+ "sig CE extends Rule {p1: And, r: Formula}\n" + "sig DI extends Rule {p1: Formula, r: Or}\n"
-			+ "sig DE extends Rule {p1: Imply, p2: Imply, p3: Or, r: Formula}\n"
-			+ "sig BI extends Rule {p1: Imply, p2: Imply, r: BiImply}\n"
-			+ "sig BE extends Rule {p1: BiImply, r: Imply}\n"
-			+ "sig MP extends Rule {p1: Formula, p2: Imply, r: Formula}\n"
-			+ "sig MT extends Rule {p1: Formula, p2: Imply, r: Formula}\n"
-			+ "sig SD extends Rule {p1: Formula, p2: Or, r: Formula}\n" + "\n" + "//regras\n" + "fact rules{\n"
-			+ "	all ne:NE | ne.p1.child.child = ne.r//negation exclusion\n"
-			+ "	all ni:NI | ni.p1 = ni.r.child.child//negation inclusion\n"
-			+ "	all ci:CI | (ci.r.left = ci.p1 and ci.r.right = ci.p2) or (ci.r.left = ci.p2 and ci.r.right = ci.p1)//conjunction inclusion\n"
-			+ "	all ce:CE | ce.r = ce.p1.left or ce.r = ce.p1.right//conjunction exclusion\n"
-			+ "	all di:DI | di.p1 in di.r.(right+left)//disjunction inclusion\n"
-			+ "	all de:DE | //disjunction exclusion\n"
-			+ "		((de.p1.left=de.p3.left and de.p2.left=de.p3.right) or (de.p1.left=de.p3.right and de.p2.left=de.p3.left)) \n"
-			+ "		and de.p1.right=de.p2.right and de.r=de.p2.right\n" + "	all bi:BI |//biimply inclusion\n"
-			+ "		bi.p1.right=bi.p2.left and bi.p2.right=bi.p1.left \n"
-			+ "		and ((bi.r.right=bi.p2.right and bi.r.left=bi.p2.left) or (bi.r.right=bi.p2.left and bi.r.left=bi.p2.right))\n"
-			+ "	all be:BE | (be.r.left=be.p1.left and be.r.right=be.p1.right) or (be.r.left=be.p1.right and be.r.right=be.p1.left)//biimply exclusion\n"
-			+ "	all mp:MP | mp.p1 = mp.p2.left and mp.r = mp.p2.right//MP\n"
-			+ "	all mt:MT | (mt.p1.child = mt.p2.right and mt.r.child = mt.p2.left) or (mt.p1 = mt.p2.right.child and mt.r = mt.p2.left.child)//MT\n"
-			+ "	all sd:SD | (sd.p1.child = sd.p2.left and sd.r = sd.p2.right) or (sd.p1.child = sd.p2.right and sd.r = sd.p2.left)//SD\n"
-			+ "}\n" + "\n" + "//unicidades\n"
-			+ "pred isEqualTo[a:Formula,a':Formula]{ ((a.right = a'.right and a.left = a'.left) or (a.right = a'.left and a.left = a'.right)) implies a = a' }\n"
-			+ "pred avoidA_A[a:Formula]{ a.right != a.left }\n"
-			+ "pred avoidA_noA[a:Formula]{ (a.right.child != a.left) and (a.right != a.left.child) }\n"
-			+ "fact { //to avoid\n" + "	all a,a':Not | a.child = a'.child implies a = a'\n"
-			+ "	all a,a':And | a.isEqualTo[a']\n" + "	all a,a':Or | a.isEqualTo[a']\n"
-			+ "	all a,a':BiImply | a.isEqualTo[a']\n"
-			+ "	all a,a':Imply | (a.right = a'.right and a.left = a'.left) implies a = a'\n"
-			+ "	all x:And | x.avoidA_A//avoid A^A\n" + "	all x:Or | x.avoidA_A//avoid AvA\n"
-			+ "	all x:Imply | x.avoidA_A//avoid A->A\n" + "	all x:BiImply | x.avoidA_A//avoid A<->A\n"
-			+ "	all x:And | x.avoidA_noA//avoid  A^~A\n" + "	all x:Or | x.avoidA_noA//avoid  Av~A\n"
-			+ "	all x:Imply | x.avoidA_noA//avoid  ~A->A / A->~A\n"
-			+ "	all x:BiImply | x.avoidA_noA//avoid  ~A<->A / A<->~A\n" + "}\n" + "\n"
-			+ "fact { //unique applications\n" + "	all a,a':NE | (a.r=a'.r) implies a=a' \n"
-			+ "	all a,a':NI | (a.r=a'.r) implies a=a' \n" + "	all a,a':CE | (a.p1=a'.p1 and a.r=a'.r) implies a=a' \n"
-			+ "	all a,a':CI | (a.r=a'.r) implies a=a' \n" + "	all a,a':DI | (a.p1=a'.p1 and a.r=a'.r) implies a=a' \n"
-			+ "	all a,a':DE | \n"
-			+ "		((a.p1.isEqualTo[a'.p1] and a.p2.isEqualTo[a'.p2]) or (a.p1.isEqualTo[a'.p2] and a.p2.isEqualTo[a'.p1]))\n"
-			+ "		and a.p3.isEqualTo[a'.p3] implies a=a'\n"
-			+ "	all a,a':BE | (a.p1=a'.p1 and a.r=a'.r) implies a=a' \n"
-			+ "	all a,a':SD | (a.p1=a'.p1 and a.p2=a'.p2) implies a=a' \n"
-			+ "	all a,a':MP | (a.p1=a'.p1 and a.p2=a'.p2) implies a=a' \n"
-			+ "	all a,a':MT | (a.p1=a'.p1 and a.p2=a'.p2) implies a=a' \n" + "}\n" + "\n"
-			+ "let P1 = NE<:p1+NI<:p1+CI<:p1+CE<:p1+DI<:p1+DE<:p1+BI<:p1+BE<:p1+MP<:p1+MT<:p1+SD<:p1\n"
-			+ "let P2 = CI<:p2+DE<:p2+BI<:p2+MP<:p2+MT<:p2+SD<:p2\n"
-			+ "let R = NE<:r+NI<:r+CI<:r+CE<:r+DI<:r+DE<:r+BI<:r+BE<:r+MP<:r+MT<:r+SD<:r\n" + "fact OneOrigin{ \n"
-			+ "	one rule: Rule | all f: Formula | \n"
-			+ "		f in rule.(P1+P2+p3+R).*(child +Binary<:left + Binary<:right) or f=rule.P1 or f=rule.P2 or f=rule.p3 or f = rule.R\n"
-			+ "}\n" + "\n"
-			+ "one sig Argument{ premisse: set Formula, conclusion: one Formula }{ #premisse=3 not (conclusion in premisse) }\n";
+	private String lerTxt() {
+		Path caminho = Paths.get("/home/dou/Área de Trabalho/Elthon Projeto/api-logic/AlloyTexto.txt");
+        byte[] texto;
+		try {
+			texto = Files.readAllBytes(caminho);
+			String textoAlloy = new String(texto);
+			return textoAlloy;
+		} catch (IOException e) {
+			
+			
+		}
+		return "0";
+        
+	}
+
+
+	private String modelArgument = lerTxt();
+	
 
 	@GetMapping
 	public ArrayList<ArgumentDTO> findAll() throws IOException {
@@ -103,16 +66,6 @@ public class ArgumentController {
 
 	}
 
-	/*@GetMapping
-	public String ola(){
-		return "to aqui";
-	}*/
-
-	/*@GetMapping("/{regras}/{atomos}/{quantidade}")
-	public String findArguments(@PathVariable String regras, @PathVariable String atomos,
-			@PathVariable String quantidade) throws IOException {
-				return regras+" / "+ atomos +" / "+ quantidade;
-			}*/
 
 
 	// @GetMapping("/{regras}/{Limitador}/{quantidade}/{listas}")
