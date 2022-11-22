@@ -40,7 +40,7 @@ public class ArgumentController {
 //	private boolean executando = false;
 
 	private String lerTxt() {
-		Path caminho = Paths.get("/home/dou/Área de Trabalho/Elthon Projeto/api-logic/AlloyTexto.txt");
+		Path caminho = Paths.get("AlloyTexto.txt");
         byte[] texto;
 		try {
 			texto = Files.readAllBytes(caminho);
