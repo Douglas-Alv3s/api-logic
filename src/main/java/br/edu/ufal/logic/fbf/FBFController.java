@@ -4,6 +4,9 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
@@ -31,13 +34,22 @@ public class FBFController {
 	@Autowired
 	private FBFService service;
 
-	private static String modelFormulaTeste = "abstract sig Formula{}\n" + "\n"
-			+ "abstract sig Unary extends Formula{ child: Formula }\n"
-			+ "abstract sig Binary extends Formula{ left, right: Formula }\n" + "\n" + "sig Atom extends Formula {}\n"
-			+ "sig Not extends Unary{}\n" + "sig And, Or, Imply, BiImply extends Binary {  }\n" + "\n"
-			+ "one sig FBF{ mainOperator: one Formula }\n" + "\n"
-			+ "fact NoCycle{ no n, n': Formula | n in n'.^(child + left + right) and n' in n.^(child + left + right) }\n"
-			+ "fact EveryNodeAtAFBF{ all n: Formula | one t: FBF | n in t.mainOperator.*(child + left + right) }\n";
+	
+	private String lerTxt() {
+		Path caminho = Paths.get("FbfsTexto.txt");
+        byte[] texto;
+		try {
+			texto = Files.readAllBytes(caminho);
+			String textoAlloy = new String(texto);
+			return textoAlloy;
+		} catch (IOException e) {
+			
+			
+		}
+		return "0"; 
+	}
+
+	private String modelFormulaTeste = lerTxt();
 
 	@GetMapping
 	private ArrayList<FBFDTO> findAll() throws IOException {
@@ -75,7 +87,7 @@ public class FBFController {
 		String biImply = "";
 		String not = "";
 
-		String[] operadores = operadoresLista.split(","); // Isso pode ser o texto alloy
+		String[] operadores = operadoresLista.split(",");
 
 		ArrayList<String> oprs = new ArrayList<>();
 		for (String s : operadores) {

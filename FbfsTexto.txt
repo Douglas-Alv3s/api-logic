@@ -1,0 +1,13 @@
+abstract sig Formula{}
+
+abstract sig Unary extends Formula{ child: Formula }
+abstract sig Binary extends Formula{ left, right: Formula }
+
+sig Atom extends Formula {}
+sig Not extends Unary{}
+sig And, Or, Imply, BiImply extends Binary {  }
+
+one sig FBF{ mainOperator: one Formula }
+
+fact NoCycle{ no n, n': Formula | n in n'.^(child + left + right) and n' in n.^(child + left + right) }
+fact EveryNodeAtAFBF{ all n: Formula | one t: FBF | n in t.mainOperator.*(child + left + right) }
