@@ -52,7 +52,7 @@ public class FBFController {
 	private String modelFormulaTeste = lerTxt();
 
 	@GetMapping
-	private ArrayList<FBFDTO> findAll() throws IOException {
+	private ArrayList<FBFDTO> findAll() throws IOException {	//Cria uma ArrayList vazia 
 
 		ArrayList<FBFDTO> fbfs = new ArrayList<>();
 
@@ -87,14 +87,16 @@ public class FBFController {
 		String biImply = "";
 		String not = "";
 
-		String[] operadores = operadoresLista.split(", ");
-
-		ArrayList<String> oprs = new ArrayList<>();
+		String[] operadores = operadoresLista.split(", "); //Construção da lista com os operadores
+		
+		ArrayList<String> oprs = new ArrayList<>(); // Criação de outra array que recebera os itens contido na lista de operadores
 		for (String s : operadores) {
 			oprs.add(s);
+			
 		}
+
 		System.out.println("Exatamen pelo menot " + exatoPelomenos);
-		if(exatoPelomenos.equals("2")) {
+		if(exatoPelomenos.equals("2")) {	// Cria a formula contendo as regras e podendo ter outras regras
 			if (oprs.contains("And")) {
 				and = "#And > 0";
 			}
@@ -110,7 +112,7 @@ public class FBFController {
 			if (oprs.contains("Not")) {
 				not = "#Not > 0";
 			}
-		}else if(exatoPelomenos.equals("1")) {
+		}else if(exatoPelomenos.equals("1")) {  // Cria a formula de maneira exata com as regras passadas
 			and = "#And = 0";
 			or = "#Or = 0";
 			imply = "#Imply = 0";

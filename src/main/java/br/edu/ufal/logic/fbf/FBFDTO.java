@@ -2,9 +2,9 @@ package br.edu.ufal.logic.fbf;
 
 public class FBFDTO {
 	
-	private int id;
+	private int id; // Identificação da formula
 	
-	private String fbf;
+	private String fbf; 
 
 	// private String regras;
 	
@@ -13,7 +13,7 @@ public class FBFDTO {
 	public FBFDTO(int id, String fbf) {
 		this.id = id;
 		this.fbf = fbf;
-		// this.regras
+		
 	}
 	
 	public String getFbf() {
@@ -32,12 +32,5 @@ public class FBFDTO {
 		this.id = id;
 	}
 
-	// public String getRegras() {
-	// 	return regras;
-	// }
-
-	// public void setRegras(String regras) {
-	// 	this.regras = regras;
-	// }
 	
 }

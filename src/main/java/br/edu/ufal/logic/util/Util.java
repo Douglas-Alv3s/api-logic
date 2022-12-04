@@ -28,11 +28,13 @@ public class Util {
 				premisses = string;
 			} else if (string.startsWith("this/Argument<:conclusion")) {
 				conclusion = string;
-			}
+			} 
 
 		} // falta o Atom
+		
 		mainOperatorReturn = mainOperatorReturn.replace("this/FBF<:mainOperator={", "");
 		mainOperatorReturn = mainOperatorReturn.replace("}", "");
+		
 		if (mainOperatorReturn.length() > 0) {
 			String mainOperatorSplit[] = mainOperatorReturn.split("->");
 			mainOperator = mainOperatorSplit[1];
@@ -54,10 +56,13 @@ public class Util {
 		operators.put("BiImply", "<->");
 
 		// not
+		
 		unary = unary.replace("this/Unary<:child={", "");
 		unary = unary.replace("}", "");
+		
 		if (unary.length() > 0) {
 			String notFinal[] = unary.split(", ");
+
 			for (int i = 0; i < notFinal.length; ++i) {
 				String[] relacoes = notFinal[i].split("->");
 				notRelacao.add(new Relacao(relacoes[0], relacoes[1]));
@@ -105,6 +110,8 @@ public class Util {
 			conclusionRelacion.setRight(conclusionRelacao[1]);
 
 		}
+
+
 
 		InstanciaRetorno ir = new InstanciaRetorno(mainOperator, operators, leftRelacao, rightRelacao, notRelacao,
 				argumentRelacao, conclusionRelacion);
@@ -184,4 +191,23 @@ public class Util {
 		return fbf;
 	}
 
+	public String resgatarRegras(String instancia){
+		String argRegras = "";
+
+		String[] retorno = instancia.split("\n");
+
+		for (String string : retorno) {
+			if (string.startsWith("this/Rule=")){
+				argRegras = string;
+			}
+
+			argRegras = argRegras.replace("this/Rule={", "");
+			argRegras = argRegras. replace("%0", "");
+			argRegras = argRegras.replace("}", "");
+
+
+		} // falta o
+		return argRegras;
+	}
+	// "this/Rule={NE$0, MP$0}"
 }

@@ -190,7 +190,11 @@ public class ArgumentController {
 					Argument arg = new Argument();
 						
 					InstanciaRetorno ir = util.montarInstancia(sol.toString());
-
+					
+					// Local que as regras estão sendo resgatas
+					String regrinha = util.resgatarRegras(sol.toString());
+					System.out.println(regrinha);
+					
 					ArrayList<String> mainOperatorPremisses = new ArrayList<String>();
 
 					ArrayList<Relacao> argumentRelacao = ir.getArgumentRelacao();
@@ -210,7 +214,7 @@ public class ArgumentController {
 					arg.setConclusion(util.fillWithAtoms(conclusion, alfabeto));
 					
 					if(!argumentTeste.contains(arg.toString())){
-						argumentos.add(service.argumentToArgumentDTO(cont, arg, regras));
+						argumentos.add(service.argumentToArgumentDTO(cont, arg, regrinha));
 						System.out.println(argumentos.size());
 						argumentTeste.add(arg.toString());
 						System.out.println(argumentos.size());
