@@ -87,7 +87,7 @@ public class FBFController {
 		String biImply = "";
 		String not = "";
 
-		String[] operadores = operadoresLista.split(",");
+		String[] operadores = operadoresLista.split(", ");
 
 		ArrayList<String> oprs = new ArrayList<>();
 		for (String s : operadores) {
