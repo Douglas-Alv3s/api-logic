@@ -193,7 +193,7 @@ public class ArgumentController {
 					
 					// Local que as regras estão sendo resgatas
 					String regrinha = util.resgatarRegras(sol.toString());
-					System.out.println(regrinha);
+					
 					
 					ArrayList<String> mainOperatorPremisses = new ArrayList<String>();
 

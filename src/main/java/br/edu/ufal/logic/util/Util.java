@@ -202,12 +202,29 @@ public class Util {
 			}
 
 			argRegras = argRegras.replace("this/Rule={", "");
-			argRegras = argRegras. replace("%0", "");
 			argRegras = argRegras.replace("}", "");
+			argRegras = argRegras.replace("$0", "");
+			// argRegras = argRegras.replaceAll(argRegras, "");
 
+		} 
 
-		} // falta o
-		return argRegras;
+		String regrasLista[] = argRegras.split(", ") ;
+		
+		ArrayList<String> regsLista = new ArrayList<String>();
+		for (String reg : regrasLista){
+			if(!reg.contains("$")){
+				regsLista.add(reg);
+				System.out.println("Ta entrando essa aqui "+reg);
+
+			}
+		}
+		
+		String saidaJson = String.join(", ", regsLista);
+ 
+		
+		System.out.println("\nAs regras que entraram: " +argRegras);
+		System.out.println("As do json: "+ saidaJson);
+		return saidaJson;
 	}
 	// "this/Rule={NE$0, MP$0}"
 }
