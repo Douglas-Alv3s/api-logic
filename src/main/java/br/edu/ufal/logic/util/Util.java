@@ -199,6 +199,8 @@ public class Util {
 		for (String string : retorno) {
 			if (string.startsWith("this/Rule=")){
 				argRegras = string;
+			System.out.println("----> A do this/Rule: "+argRegras);
+
 			}
 
 			argRegras = argRegras.replace("this/Rule={", "");
@@ -214,15 +216,13 @@ public class Util {
 		for (String reg : regrasLista){
 			if(!reg.contains("$")){
 				regsLista.add(reg);
-				System.out.println("Ta entrando essa aqui "+reg);
+				
 
 			}
 		}
 		
 		String saidaJson = String.join(", ", regsLista);
  
-		
-		System.out.println("\nAs regras que entraram: " +argRegras);
 		System.out.println("As do json: "+ saidaJson);
 		return saidaJson;
 	}
