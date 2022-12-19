@@ -3,8 +3,10 @@ package br.edu.ufal.logic.util;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import br.edu.ufal.logic.fbf.FBF;
+
 
 public class Util {
 
@@ -191,40 +193,79 @@ public class Util {
 		return fbf;
 	}
 
-	public String resgatarRegras(String instancia){
-		String argRegras = "";
+	// public String resgatarRegras(String instancia){
+	// 	String argRegras = "";
 
+	// 	String[] retorno = instancia.split("\n");
+
+	// 	for (String string : retorno) {
+	// 		if (string.startsWith("this/Rule=")){
+	// 			argRegras = string;
+	// 		System.out.println("----> A do this/Rule: "+argRegras);
+
+	// 		}
+
+	// 		argRegras = argRegras.replace("this/Rule={", "");
+	// 		argRegras = argRegras.replace("}", "");
+	// 		argRegras = argRegras.replace("$", "");
+	// 		// argRegras = argRegras.replaceAll(argRegras, "");
+
+	// 	} 
+
+	// 	String regrasLista[] = argRegras.split(", ") ;
+		
+	// 	ArrayList<String> regsLista = new ArrayList<String>();
+	// 	for (String reg : regrasLista){
+	// 		if(!reg.contains("$")){
+	// 			regsLista.add(reg);
+	// 		}
+	// 	}
+		
+	// 	String saidaJson = String.join(", ", regsLista);
+ 
+	// 	System.out.println("As do json: "+ saidaJson);
+	// 	return saidaJson;
+	// }
+	// "this/Rule={NE$0, MP$0}"
+
+	public String resgatarRegras(String instancia){
+		// USANDO REGEX PARA TRABALHAR COM AS REGRAS
+		System.out.println("\n\t----------REGEX-------------");
+
+		// TRATANDO A INFORMAÇÃO PEGADA DO ALLOY
+		String argRegras = "";
 		String[] retorno = instancia.split("\n");
 
 		for (String string : retorno) {
 			if (string.startsWith("this/Rule=")){
 				argRegras = string;
-			System.out.println("----> A do this/Rule: "+argRegras);
-
+				System.out.println("----> A do this/Rule: "+argRegras);
 			}
-
-			argRegras = argRegras.replace("this/Rule={", "");
-			argRegras = argRegras.replace("}", "");
-			argRegras = argRegras.replace("$0", "");
-			// argRegras = argRegras.replaceAll(argRegras, "");
+			argRegras = argRegras.replace("$", "");
 
 		} 
 
-		String regrasLista[] = argRegras.split(", ") ;
-		
-		ArrayList<String> regsLista = new ArrayList<String>();
-		for (String reg : regrasLista){
-			if(!reg.contains("$")){
-				regsLista.add(reg);
-				
+		// INICIO DO TRATAMENTO DA STRING VINDO DO ALLOY E SEPARANDO REGRAS
 
-			}
-		}
+		String regex = "0";  							// PADRÃO A ENCONTRAR
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(argRegras);
+		
+		String regra = "";								// OBTERA A REGRA PARA ADICIONAR POSTERIORMENTE
+		ArrayList<String> regsLista = new ArrayList<String>();
+
+		while (matcher.find()){
+			
+            System.out.print(matcher.start() + " ");	// OBTEM O INDICE DO PADRÃO
+            System.out.println(argRegras.substring((matcher.start()-2), matcher.start()));
+            regra = argRegras.substring((matcher.start()-2), matcher.start());
+            regsLista.add(regra);
+        }
 		
 		String saidaJson = String.join(", ", regsLista);
  
 		System.out.println("As do json: "+ saidaJson);
+		System.out.println("\t----------Fim Regex---------\n");
 		return saidaJson;
 	}
-	// "this/Rule={NE$0, MP$0}"
 }
