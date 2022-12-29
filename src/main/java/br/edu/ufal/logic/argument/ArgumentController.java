@@ -70,8 +70,9 @@ public class ArgumentController {
 
 	// @GetMapping("/{regras}/{Limitador}/{quantidade}/{listas}")
 	// Limitador tera apenas 3 opções [1 ou 2 ou 3]
-	@GetMapping("/{regras}/{atomos}/{quantidade}/{listas}")
-	public ArrayList<ArgumentDTO> findArguments(@PathVariable String regras, @PathVariable String atomos,
+		// @GetMapping("/{regras}/{atomos}/{quantidade}/{listas}")  @PathVariable String atomos,
+	@GetMapping("/{quantidade}/{listas}/{regras}")
+	public ArrayList<ArgumentDTO> findArguments(@PathVariable String regras,
 			@PathVariable String quantidade, @PathVariable String listas) throws IOException, Err {
 		
 		System.out.println(regras);
@@ -150,7 +151,7 @@ public class ArgumentController {
 			
 			valueRun += 1;
 			String config = "pred ConfigArgument(){ \n" 
-					+ " #Atom="+atomos+"\n" + "	#MT=0 <=> #MP!=0\n" 
+					+ " #Atom="+"3"+"\n" + "	#MT=0 <=> #MP!=0\n" 
 					+ ne+"\n"
 					+ ni+"\n"
 					+ ci+"\n"

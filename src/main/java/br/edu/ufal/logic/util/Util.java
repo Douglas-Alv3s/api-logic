@@ -51,12 +51,24 @@ public class Util {
 
 		Map<String, String> operators = new HashMap<String, String>();
 
-		operators.put("Not", "~");
-		operators.put("And", "^");
-		operators.put("Or", "v");
-		operators.put("Imply", "->");
-		operators.put("BiImply", "<->");
+		// operators.put("Not", "~");
+		// operators.put("And", "^");
+		// operators.put("Or", "v");
+		// operators.put("Imply", "->");
+		// operators.put("BiImply", "<->");
 
+		// Transformação dos operadores para os seus simbolos
+		// operators.put("Not", "¬");
+		// operators.put("And", "ᐱ");
+		// operators.put("Or", "ᐻ");
+		// operators.put("Imply", "➡");
+		// operators.put("BiImply", "⬌");
+
+		operators.put("Not", "¬");
+		operators.put("And", "∧");
+		operators.put("Or", "∨");
+		operators.put("Imply", "→");
+		operators.put("BiImply", "↔");
 		// not
 		
 		unary = unary.replace("this/Unary<:child={", "");
