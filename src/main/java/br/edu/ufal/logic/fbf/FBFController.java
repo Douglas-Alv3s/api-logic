@@ -60,10 +60,10 @@ public class FBFController {
 	}
 
 	//http://127.0.0.1:8080/api-logic/$min/$max/$qntdFormulas/$qntdListas/$operadores/$envolvidos
-	//http://127.0.0.1:8080/api-logic/fbfs/{atomosMin}/{atomosMax}/{quantidadeFbfs}/{exatoPelomenos}/{operadoresLista}/{listasExercicios}
-	@GetMapping("/{atomosMin}/{atomosMax}/{quantidadeFbfs}/{exatoPelomenos}/{operadoresLista}/{listasExercicios}")
+	//http://127.0.0.1:8080/api-logic/fbfs/{atomosMin}/{atomosMax}/{quantidadeFbfs}/{todosOuAoMenosUm}/{operadoresLista}/{listasExercicios}
+	@GetMapping("/{atomosMin}/{atomosMax}/{quantidadeFbfs}/{listasExercicios}/{operadoresLista}/{todosOuAoMenosUm}")
 	private ArrayList<FBFDTO> findFbfs(@PathVariable String atomosMin, @PathVariable String atomosMax,
-			@PathVariable String quantidadeFbfs,@PathVariable String exatoPelomenos,
+			@PathVariable String quantidadeFbfs,@PathVariable String todosOuAoMenosUm,
 			@PathVariable String operadoresLista, @PathVariable String listasExercicios) 
 			throws IOException, Err {
 		
@@ -81,11 +81,6 @@ public class FBFController {
 
 		String config = "";
 
-		String and = "";
-		String or = "";
-		String imply = "";
-		String biImply = "";
-		String not = "";
 
 		String[] operadores = operadoresLista.split(", "); //Construção da lista com os operadores
 		
@@ -95,47 +90,48 @@ public class FBFController {
 			
 		}
 
-		System.out.println("Exatamen pelo menot " + exatoPelomenos);
-		if(exatoPelomenos.equals("2")) {	// Cria a formula contendo as regras e podendo ter outras regras
+		System.out.println("Todos ou pelo menos " + todosOuAoMenosUm);
+
+		String operacoes = "\n#And=0 \n#Or=0 \n#BiImply=0 \n#Imply=0 \n#Not=0";
+		String aoMenosUmaOperacao = ""; //#And+#Or+BiImply+#Imply+#Not
+		if(todosOuAoMenosUm.equals("1")) {	// Cria a formula contendo as regras e podendo ter outras regras
 			if (oprs.contains("And")) {
-				and = "#And > 0";
+				operacoes = operacoes.replace("#And=0", "#And>0");
 			}
 			if (oprs.contains("Or")) {
-				or = "#Or > 0";
+				operacoes = operacoes.replace("#Or=0", "#Or>0");
 			}
 			if (oprs.contains("BiImply")) {
-				biImply = "#BiImply > 0";
+				operacoes = operacoes.replace("#BiImply=0", "#BiImply>0");
 			}
 			if (oprs.contains("Imply")) {
-				imply = "#Imply > 0";
+				operacoes = operacoes.replace("#Imply=0", "#Imply>0");
 			}
 			if (oprs.contains("Not")) {
-				not = "#Not > 0";
+				operacoes = operacoes.replace("#Not=0", "#Not>0");
 			}
-		}else if(exatoPelomenos.equals("1")) {  // Cria a formula de maneira exata com as regras passadas
-			and = "#And = 0";
-			or = "#Or = 0";
-			imply = "#Imply = 0";
-			biImply = "#BiImply = 0";
-			not = "#Not = 0";
-			
+		}else if(todosOuAoMenosUm.equals("2")) {  // Cria a formula de maneira exata com as regras passadas
+			aoMenosUmaOperacao = operadoresLista;
 			if (oprs.contains("And")) {
-				and = "#And > 0";
+				operacoes = operacoes.replace("#And=0", "");
 			}
 			if (oprs.contains("Or")) {
-				or = "#Or > 0";
+				operacoes = operacoes.replace("#Or=0", "");
 			}
 			if (oprs.contains("BiImply")) {
-				biImply = "#BiImply > 0";
+				operacoes = operacoes.replace("#BiImply=0", "");
 			}
 			if (oprs.contains("Imply")) {
-				imply = "#Imply > 0";
+				operacoes = operacoes.replace("#Imply=0", "");
 			}
 			if (oprs.contains("Not")) {
-				not = "#Not > 0";
+				operacoes = operacoes.replace("#Not=0", "");
 			}
+			aoMenosUmaOperacao = "#" + aoMenosUmaOperacao;
+			aoMenosUmaOperacao = aoMenosUmaOperacao.replaceAll(", ", "+#");
+			aoMenosUmaOperacao = aoMenosUmaOperacao + ">1";
 		}
-		
+		operacoes = operacoes + "\n" + aoMenosUmaOperacao;
 
 		int cont = 0;
 		int valueRun = 4;
@@ -148,7 +144,7 @@ public class FBFController {
 		while (cont < (Integer.parseInt(quantidadeFbfs) * Integer.parseInt(listasExercicios))) {
 			valueRun += 1;
 
-			config = "pred ConfigFormula(){ \n" + and + "\n" + not + "\n" + imply + "\n" + biImply + "\n" + or + "\n"
+			config = "pred ConfigFormula(){ \n" +operacoes + "\n"
 					+ "	" + quantAtomos + "\n" + "	\n" + "}\n" + "run ConfigFormula for " + valueRun;
 
 			System.out.println(config);

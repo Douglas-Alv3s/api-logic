@@ -151,7 +151,7 @@ public class ArgumentController {
 			
 			valueRun += 1;
 			String config = "pred ConfigArgument(){ \n" 
-					+ " #Atom="+"3"+"\n" + "	#MT=0 <=> #MP!=0\n" 
+					+ " #Atom>0"+"\n" + "	#MT=0 <=> #MP!=0\n" 
 					+ ne+"\n"
 					+ ni+"\n"
 					+ ci+"\n"
