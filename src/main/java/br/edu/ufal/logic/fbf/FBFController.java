@@ -94,7 +94,7 @@ public class FBFController {
 
 		String operacoes = "\n#And=0 \n#Or=0 \n#BiImply=0 \n#Imply=0 \n#Not=0";
 		String aoMenosUmaOperacao = ""; //#And+#Or+BiImply+#Imply+#Not
-		if(todosOuAoMenosUm.equals("1")) {	// Cria a formula contendo as regras e podendo ter outras regras
+		if(todosOuAoMenosUm.equals("1")) {	// Cria a formula contendo as operações selecionadas
 			if (oprs.contains("And")) {
 				operacoes = operacoes.replace("#And=0", "#And>0");
 			}
@@ -110,7 +110,7 @@ public class FBFController {
 			if (oprs.contains("Not")) {
 				operacoes = operacoes.replace("#Not=0", "#Not>0");
 			}
-		}else if(todosOuAoMenosUm.equals("2")) {  // Cria a formula de maneira exata com as regras passadas
+		}else if(todosOuAoMenosUm.equals("2")) {  // Cria a formula contendo a menos uma das operações selecionadas
 			aoMenosUmaOperacao = operadoresLista;
 			if (oprs.contains("And")) {
 				operacoes = operacoes.replace("#And=0", "");
@@ -129,7 +129,7 @@ public class FBFController {
 			}
 			aoMenosUmaOperacao = "#" + aoMenosUmaOperacao;
 			aoMenosUmaOperacao = aoMenosUmaOperacao.replaceAll(", ", "+#");
-			aoMenosUmaOperacao = aoMenosUmaOperacao + ">1";
+			aoMenosUmaOperacao = aoMenosUmaOperacao + ">0";
 		}
 		operacoes = operacoes + "\n" + aoMenosUmaOperacao;
 
