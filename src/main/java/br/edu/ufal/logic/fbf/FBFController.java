@@ -34,7 +34,7 @@ public class FBFController {
 	@Autowired
 	private FBFService service;
 
-	
+	// Pega a especificação de um arquivo txt
 	private String lerTxt() {
 		Path caminho = Paths.get("FbfsTexto.txt");
         byte[] texto;
@@ -42,10 +42,7 @@ public class FBFController {
 			texto = Files.readAllBytes(caminho);
 			String textoAlloy = new String(texto);
 			return textoAlloy;
-		} catch (IOException e) {
-			
-			
-		}
+		} catch (IOException e) {}
 		return "0"; 
 	}
 
@@ -60,8 +57,8 @@ public class FBFController {
 	}
 
 	//http://127.0.0.1:8080/api-logic/$min/$max/$qntdFormulas/$qntdListas/$operadores/$envolvidos
-	//http://127.0.0.1:8080/api-logic/fbfs/{atomosMin}/{atomosMax}/{quantidadeFbfs}/{todosOuAoMenosUm}/{operadoresLista}/{listasExercicios}
-	@GetMapping("/{atomosMin}/{atomosMax}/{quantidadeFbfs}/{listasExercicios}/{operadoresLista}/{todosOuAoMenosUm}")
+	//http://127.0.0.1:8080/api-logic/fbfs/{atomosMin}/{atomosMax}/{quantidadeFbfs}/{listasExercicios}/{operadoresLista}/{todosOuAoMenosUm}
+	@GetMapping("/{atomosMin}/{atomosMax}/{quantidadeFbfs}/{listasExercicios}/{operadoresLista}/{todosOuAoMenosUm}") //Endereço de FBFS na Web
 	private ArrayList<FBFDTO> findFbfs(@PathVariable String atomosMin, @PathVariable String atomosMax,
 			@PathVariable String quantidadeFbfs,@PathVariable String todosOuAoMenosUm,
 			@PathVariable String operadoresLista, @PathVariable String listasExercicios) 
@@ -127,6 +124,7 @@ public class FBFController {
 			if (oprs.contains("Not")) {
 				operacoes = operacoes.replace("#Not=0", "");
 			}
+			// Trata a String de operações selecionadas
 			aoMenosUmaOperacao = "#" + aoMenosUmaOperacao;
 			aoMenosUmaOperacao = aoMenosUmaOperacao.replaceAll(", ", "+#");
 			aoMenosUmaOperacao = aoMenosUmaOperacao + ">0";
@@ -144,7 +142,7 @@ public class FBFController {
 		while (cont < (Integer.parseInt(quantidadeFbfs) * Integer.parseInt(listasExercicios))) {
 			valueRun += 1;
 
-			config = "pred ConfigFormula(){ \n" +operacoes + "\n"
+			config = "pred ConfigFormula(){ \n" + operacoes + "\n"
 					+ "	" + quantAtomos + "\n" + "	\n" + "}\n" + "run ConfigFormula for " + valueRun;
 
 			System.out.println(config);

@@ -1,5 +1,7 @@
 package br.edu.ufal.logic.fbf;
 
+// Construção da formula FBF
+
 public class FBF {
 
 	private Object left;

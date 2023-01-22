@@ -39,7 +39,9 @@ public class ArgumentController {
 	private ArgumentService service;
 //	private boolean executando = false;
 
-	private String lerTxt() {
+
+	// Pega um arquivo txt do Alloy
+	private String lerTxt() {	
 		Path caminho = Paths.get("AlloyTexto.txt");
         byte[] texto;
 		try {
@@ -47,11 +49,8 @@ public class ArgumentController {
 			String textoAlloy = new String(texto);
 			return textoAlloy;
 		} catch (IOException e) {
-			
-			
-		}
+			}
 		return "0";
-        
 	}
 
 
@@ -62,16 +61,15 @@ public class ArgumentController {
 	public ArrayList<ArgumentDTO> findAll() throws IOException {
 		ArrayList<ArgumentDTO> argumentos = new ArrayList<>();
 		
-		return argumentos;
-
+	return argumentos;
 	}
 
 
 
 	// @GetMapping("/{regras}/{Limitador}/{quantidade}/{listas}")
 	// Limitador tera apenas 3 opções [1 ou 2 ou 3]
-		// @GetMapping("/{regras}/{atomos}/{quantidade}/{listas}")  @PathVariable String atomos,
-	@GetMapping("/{quantidade}/{listas}/{regras}")
+
+	@GetMapping("/{quantidade}/{listas}/{regras}")  // Endereço para acessar na url e parametros a receber
 	public ArrayList<ArgumentDTO> findArguments(@PathVariable String regras,
 			@PathVariable String quantidade, @PathVariable String listas) throws IOException, Err {
 		
@@ -79,7 +77,8 @@ public class ArgumentController {
 		// System.out.println(atomos);
 		System.out.println(quantidade);
 		System.out.println(listas);
-		 
+		
+		// Recebe as regras que serão usadas logo abaixo através da verificação
 		String ne = "";
 		String ni = "";
 		String ci = "";
@@ -93,49 +92,86 @@ public class ArgumentController {
 		String sd = "";
 
 		String[] regrasSplit = regras.split(",");
-	//	System.out.println(regrasSplit[0]);
 		ArrayList<String> regs = new ArrayList<>();
 		for(String s: regrasSplit) {
 			regs.add(s);
 		}
 
+		// A verificação das regras que serão passadas para o argumento, são definidas aqui em baixo.
+
+		// if(regs.contains("NE")) {
+		// 	ne = "#NE > 0";
+		// }
+		// if(regs.contains("NI")) {
+		// 	ni = "#NI > 0";
+		// }
+		// if(regs.contains("CI")) {
+		// 	ci = "#CI > 0";
+		// }
+		// if(regs.contains("CE")) {
+		// 	ce = "#CE > 0";
+		// }
+		// if(regs.contains("DI")) {
+		// 	di = "#DI > 0";
+		// }
+		// if(regs.contains("DE")) {
+		// 	de = "#DE > 0";
+		// }
+		// if(regs.contains("BE")) {
+		// 	be = "#BE > 0";
+		// }
+		// if(regs.contains("BI")) {
+		// 	bi = "#BI > 0";
+		// }
+		// if(regs.contains("MP")) {
+		// 	mp = "#MP > 0";
+		// }
+		// if(regs.contains("MT")) {
+		// 	mt = "#MT > 0";
+		// }
+		// if(regs.contains("SD")) {
+		// 	sd = "#SD > 0";
+		// }
+
+		// tentativa de uma nova forma de implementação das regras para o argumento
+		// Define o valor de todas as regras em operações
+		String operacoes = "\n#NE=0 \n#NI=0 \n#CI=0 \n#CE=0 \n#DI=0 \n#DE=0 \n#BE=0 \n#BI=0 \n#MP=0 \n#MT=0 \n#SD=0\n"; 
+		
 		
 		if(regs.contains("NE")) {
-			ne = "#NE > 0";
+			operacoes = operacoes.replace("#NE=0","#NE > 0");
 		}
 		if(regs.contains("NI")) {
-			ni = "#NI > 0";
+			operacoes = operacoes.replace("#NI=0","#NI > 0");
 		}
 		if(regs.contains("CI")) {
-			ci = "#CI > 0";
+			operacoes = operacoes.replace("#CI=0","#CI > 0");
 		}
 		if(regs.contains("CE")) {
-			ce = "#CE > 0";
+			operacoes = operacoes.replace("#CE=0","#CE > 0");
 		}
 		if(regs.contains("DI")) {
-			di = "#DI > 0";
+			operacoes = operacoes.replace("#DI=0","#DI > 0");
 		}
 		if(regs.contains("DE")) {
-			de = "#DE > 0";
+			operacoes = operacoes.replace("#DE=0","#DE > 0");
 		}
 		if(regs.contains("BE")) {
-			be = "#BE > 0";
+			operacoes = operacoes.replace("#BE=0", "#BE > 0");
 		}
 		if(regs.contains("BI")) {
-			bi = "#BI > 0";
+			operacoes = operacoes.replace("#BI=0","#BI > 0");
 		}
 		if(regs.contains("MP")) {
-			mp = "#MP > 0";
+			operacoes = operacoes.replace("#MP=0","#MP > 0");
 		}
 		if(regs.contains("MT")) {
-			mt = "#MT > 0";
+			operacoes = operacoes.replace("#MT=0","#MT > 0");
 		}
 		if(regs.contains("SD")) {
-			sd = "#SD > 0";
+			operacoes = operacoes.replace("#SD=0", "#SD > 0");
 		}
 
-		
-		
 		Util util = new Util();
 		ArrayList<ArgumentDTO> argumentos = new ArrayList<>();
 		ArrayList<String> argumentTeste = new ArrayList<>();
@@ -150,20 +186,12 @@ public class ArgumentController {
 		while(cont < (Integer.parseInt(quantidade) * Integer.parseInt(listas))) {
 			
 			valueRun += 1;
+
+			// Aqui é repassado as especificações que o alloy ira receber
 			String config = "pred ConfigArgument(){ \n" 
 					+ " #Atom>0"+"\n" + "	#MT=0 <=> #MP!=0\n" 
-					+ ne+"\n"
-					+ ni+"\n"
-					+ ci+"\n"
-					+ ce+"\n"
-					+ di+"\n"
-					+ de+"\n"
-					+ be+"\n"
-					+ bi+"\n"
-					+ mp+"\n"
-					+ mt+"\n"
-					+ sd+"\n"
-					+ "	one ru,ru':Rule | ru.R in ru'.(P1+P2+p3)\n"
+					+ operacoes
+				    + "	one ru,ru':Rule | ru.R in ru'.(P1+P2+p3)\n"
 					+ "	one arg:Argument | all ru:Rule | ru.(P1+P2+p3) in arg.premisse\n"
 					+ "	one arg:Argument | all ru:Rule | no fo:Formula | fo in ru.(P1+P2+p3) and fo in ru.R and fo in arg.conclusion\n"
 					+ "	one arg:Argument | some ru:Rule | arg.conclusion=ru.R\n" + "}\n" + "\n" + "run ConfigArgument for "+valueRun+"\n"
@@ -185,7 +213,7 @@ public class ArgumentController {
 				opt.solver = A4Options.SatSolver.SAT4J;
 				Command cmd = world.getAllCommands().get(0);
 				ConstList<Sig> cTEMP = world.getAllReachableSigs();
-				A4Solution sol = TranslateAlloyToKodkod.execute_commandFromBook(rep, cTEMP, cmd, opt); //PROBLEMA AQUI
+				A4Solution sol = TranslateAlloyToKodkod.execute_commandFromBook(rep, cTEMP, cmd, opt);
 
 				while (sol.satisfiable()) {
 					Argument arg = new Argument();
