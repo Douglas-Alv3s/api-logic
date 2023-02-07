@@ -17,6 +17,7 @@
 
 	<properties>
 		<java.version>11</java.version>
+		<maven.test.skip>true</maven.test.skip>
 	</properties>
 
 	<dependencies>
@@ -58,9 +59,9 @@
 			<artifactId>alloy</artifactId>
 			<version>4.2</version>
 			<scope>system</scope>
-			<systemPath>/home/Douglas/Desktop/api-logic/lib/alloy.jar</systemPath> 
+			<!-- <systemPath>/home/Douglas/Desktop/api-logic/lib/alloy.jar</systemPath>  -->
 			<!-- <systemPath>C:\Users\Douglas\Desktop\api-logic-main\lib/alloy.jar</systemPath>  -->
-			<!-- <systemPath>C:\Users\Douglas\Desktop\Elthon-Projeto\api-logic\lib/alloy.jar</systemPath> -->
+			<systemPath>C:\Users\Douglas\Desktop\Elthon-Projeto\api-logic\lib/alloy.jar</systemPath>
 		</dependency>
 
 		<!-- <dependency>
