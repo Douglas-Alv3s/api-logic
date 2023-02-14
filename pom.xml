@@ -62,7 +62,7 @@
 			<!-- <systemPath>/home/Douglas/Desktop/api-logic/lib/alloy.jar</systemPath>  -->
 			<!-- <systemPath>C:\Users\Douglas\Desktop\api-logic-main\lib/alloy.jar</systemPath>  -->
 			<!-- <systemPath>C:\Users\Douglas\Desktop\Elthon-Projeto\api-logic\lib/alloy.jar</systemPath> -->
-			<systemPath>\api-logic\lib/alloy.jar</systemPath>
+			<systemPath>${project.basedir}/lib/alloy.jar</systemPath>
 		</dependency>
 
 		<!-- <dependency>
