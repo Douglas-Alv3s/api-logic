@@ -99,78 +99,78 @@ public class ArgumentController {
 
 		// A verificação das regras que serão passadas para o argumento, são definidas aqui em baixo.
 
-			if(regs.contains("NE")) {
-				ne = "#NE > 0";
-			}
-			if(regs.contains("NI")) {
-				ni = "#NI > 0";
-			}
-			if(regs.contains("CI")) {
-				ci = "#CI > 0";
-			}
-			if(regs.contains("CE")) {
-				ce = "#CE > 0";
-			}
-			if(regs.contains("DI")) {
-				di = "#DI > 0";
-			}
-			if(regs.contains("DE")) {
-				de = "#DE > 0";
-			}
-			if(regs.contains("BE")) {
-				be = "#BE > 0";
-			}
-			if(regs.contains("BI")) {
-				bi = "#BI > 0";
-			}
-			if(regs.contains("MP")) {
-				mp = "#MP > 0";
-			}
-			if(regs.contains("MT")) {
-				mt = "#MT > 0";
-			}
-			if(regs.contains("SD")) {
-				sd = "#SD > 0";
-			}
+			// if(regs.contains("NE")) {
+			// 	ne = "#NE > 0";
+			// }
+			// if(regs.contains("NI")) {
+			// 	ni = "#NI > 0";
+			// }
+			// if(regs.contains("CI")) {
+			// 	ci = "#CI > 0";
+			// }
+			// if(regs.contains("CE")) {
+			// 	ce = "#CE > 0";
+			// }
+			// if(regs.contains("DI")) {
+			// 	di = "#DI > 0";
+			// }
+			// if(regs.contains("DE")) {
+			// 	de = "#DE > 0";
+			// }
+			// if(regs.contains("BE")) {
+			// 	be = "#BE > 0";
+			// }
+			// if(regs.contains("BI")) {
+			// 	bi = "#BI > 0";
+			// }
+			// if(regs.contains("MP")) {
+			// 	mp = "#MP > 0";
+			// }
+			// if(regs.contains("MT")) {
+			// 	mt = "#MT > 0";
+			// }
+			// if(regs.contains("SD")) {
+			// 	sd = "#SD > 0";
+			// }
 
 		// tentativa de uma nova forma de implementação das regras para o argumento
 		// Define o valor de todas as regras em operações
-		// String operacoes = "\n#NE=0 \n#NI=0 \n#CI=0 \n#CE=0 \n#DI=0 \n#DE=0 \n#BE=0 \n#BI=0 \n#MP=0 \n#MT=0 \n#SD=0\n"; 
+		String operacoes = "\n#NE=0 \n#NI=0 \n#CI=0 \n#CE=0 \n#DI=0 \n#DE=0 \n#BE=0 \n#BI=0 \n#MP=0 \n#MT=0 \n#SD=0\n"; 
 		
 		
-		// if(regs.contains("NE")) {
-		// 	operacoes = operacoes.replace("#NE=0","#NE > 0");
-		// }
-		// if(regs.contains("NI")) {
-		// 	operacoes = operacoes.replace("#NI=0","#NI > 0");
-		// }
-		// if(regs.contains("CI")) {
-		// 	operacoes = operacoes.replace("#CI=0","#CI > 0");
-		// }
-		// if(regs.contains("CE")) {
-		// 	operacoes = operacoes.replace("#CE=0","#CE > 0");
-		// }
-		// if(regs.contains("DI")) {
-		// 	operacoes = operacoes.replace("#DI=0","#DI > 0");
-		// }
-		// if(regs.contains("DE")) {
-		// 	operacoes = operacoes.replace("#DE=0","#DE > 0");
-		// }
-		// if(regs.contains("BE")) {
-		// 	operacoes = operacoes.replace("#BE=0", "#BE > 0");
-		// }
-		// if(regs.contains("BI")) {
-		// 	operacoes = operacoes.replace("#BI=0","#BI > 0");
-		// }
-		// if(regs.contains("MP")) {
-		// 	operacoes = operacoes.replace("#MP=0","#MP > 0");
-		// }
-		// if(regs.contains("MT")) {
-		// 	operacoes = operacoes.replace("#MT=0","#MT > 0");
-		// }
-		// if(regs.contains("SD")) {
-		// 	operacoes = operacoes.replace("#SD=0", "#SD > 0");
-		// }
+		if(regs.contains("NE")) {
+			operacoes = operacoes.replace("#NE=0","#NE > 0");
+		}
+		if(regs.contains("NI")) {
+			operacoes = operacoes.replace("#NI=0","#NI > 0");
+		}
+		if(regs.contains("CI")) {
+			operacoes = operacoes.replace("#CI=0","#CI > 0");
+		}
+		if(regs.contains("CE")) {
+			operacoes = operacoes.replace("#CE=0","#CE > 0");
+		}
+		if(regs.contains("DI")) {
+			operacoes = operacoes.replace("#DI=0","#DI > 0");
+		}
+		if(regs.contains("DE")) {
+			operacoes = operacoes.replace("#DE=0","#DE > 0");
+		}
+		if(regs.contains("BE")) {
+			operacoes = operacoes.replace("#BE=0", "#BE > 0");
+		}
+		if(regs.contains("BI")) {
+			operacoes = operacoes.replace("#BI=0","#BI > 0");
+		}
+		if(regs.contains("MP")) {
+			operacoes = operacoes.replace("#MP=0","#MP > 0");
+		}
+		if(regs.contains("MT")) {
+			operacoes = operacoes.replace("#MT=0","#MT > 0");
+		}
+		if(regs.contains("SD")) {
+			operacoes = operacoes.replace("#SD=0", "#SD > 0");
+		}
 
 		Util util = new Util();
 		ArrayList<ArgumentDTO> argumentos = new ArrayList<>();
@@ -190,17 +190,18 @@ public class ArgumentController {
 			// Aqui é repassado as especificações que o alloy ira receber
 			String config = "pred ConfigArgument(){ \n" 
 					+ " #Atom>0"+"\n" + "	#MT=0 <=> #MP!=0\n" 
-					+ ne+"\n"
-					+ ni+"\n"
-					+ ci+"\n"
-					+ ce+"\n"
-					+ di+"\n"
-					+ de+"\n"
-					+ be+"\n"
-					+ bi+"\n"
-					+ mp+"\n"
-					+ mt+"\n"
-					+ sd+"\n"
+					+operacoes
+					// + ne+"\n"
+					// + ni+"\n"
+					// + ci+"\n"
+					// + ce+"\n"
+					// + di+"\n"
+					// + de+"\n"
+					// + be+"\n"
+					// + bi+"\n"
+					// + mp+"\n"
+					// + mt+"\n"
+					// + sd+"\n"
 				    + "	one ru,ru':Rule | ru.R in ru'.(P1+P2+p3)\n"
 					+ "	one arg:Argument | all ru:Rule | ru.(P1+P2+p3) in arg.premisse\n"
 					+ "	one arg:Argument | all ru:Rule | no fo:Formula | fo in ru.(P1+P2+p3) and fo in ru.R and fo in arg.conclusion\n"

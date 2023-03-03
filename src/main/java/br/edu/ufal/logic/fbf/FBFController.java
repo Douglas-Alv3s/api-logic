@@ -56,7 +56,7 @@ public class FBFController {
 		return fbfs;
 	}
 
-	//http://127.0.0.1:8080/api-logic/$min/$max/$qntdFormulas/$qntdListas/$operadores/$envolvidos
+
 	//http://127.0.0.1:8080/api-logic/fbfs/{atomosMin}/{atomosMax}/{quantidadeFbfs}/{listasExercicios}/{operadoresLista}/{todosOuAoMenosUm}
 	@GetMapping("/{atomosMin}/{atomosMax}/{quantidadeFbfs}/{listasExercicios}/{operadoresLista}/{todosOuAoMenosUm}") //Endereço de FBFS na Web
 	private ArrayList<FBFDTO> findFbfs(@PathVariable String atomosMin, @PathVariable String atomosMax,
@@ -79,7 +79,7 @@ public class FBFController {
 		String config = "";
 
 
-		String[] operadores = operadoresLista.split(", "); //Construção da lista com os operadores
+		String[] operadores = operadoresLista.split(","); //Construção da lista com os operadores
 		
 		ArrayList<String> oprs = new ArrayList<>(); // Criação de outra array que recebera os itens contido na lista de operadores
 		for (String s : operadores) {
@@ -110,27 +110,28 @@ public class FBFController {
 		}else if(todosOuAoMenosUm.equals("2")) {  // Cria a formula contendo a menos uma das operações selecionadas
 			aoMenosUmaOperacao = operadoresLista;
 			if (oprs.contains("And")) {
-				operacoes = operacoes.replace("#And=0", "");
+				operacoes = operacoes.replace("#And=0", "#And>=0");
 			}
 			if (oprs.contains("Or")) {
-				operacoes = operacoes.replace("#Or=0", "");
+				operacoes = operacoes.replace("#Or=0", "#Or>=0");
 			}
 			if (oprs.contains("BiImply")) {
-				operacoes = operacoes.replace("#BiImply=0", "");
+				operacoes = operacoes.replace("#BiImply=0", "#BiImply>=0");
 			}
 			if (oprs.contains("Imply")) {
-				operacoes = operacoes.replace("#Imply=0", "");
+				operacoes = operacoes.replace("#Imply=0", "#Imply>=0");
 			}
 			if (oprs.contains("Not")) {
-				operacoes = operacoes.replace("#Not=0", "");
+				operacoes = operacoes.replace("#Not=0", "#Not>=0");
 			}
 			// Trata a String de operações selecionadas
-			aoMenosUmaOperacao = "#" + aoMenosUmaOperacao;
-			aoMenosUmaOperacao = aoMenosUmaOperacao.replaceAll(", ", "+#");
-			aoMenosUmaOperacao = aoMenosUmaOperacao + ">0";
+			// aoMenosUmaOperacao = "#" + aoMenosUmaOperacao;
+			// aoMenosUmaOperacao = aoMenosUmaOperacao.replaceAll(",", "+#");
+			// aoMenosUmaOperacao = aoMenosUmaOperacao + ">0";
 		}
-		operacoes = operacoes + "\n" + aoMenosUmaOperacao;
-
+		// operacoes = operacoes + "\n" + aoMenosUmaOperacao;
+		// operacoes = operacoes + "\n" + aoMenosUmaOperacao;
+		
 		int cont = 0;
 		int valueRun = 4;
 
