@@ -67,29 +67,18 @@ public class ArgumentController {
 
 
 	// @GetMapping("/{regras}/{Limitador}/{quantidade}/{listas}")
-	// Limitador tera apenas 3 opções [1 ou 2 ou 3]
+	// Limitador tera apenas 3 opções [1 ou 2 ou 3 ou 4 ou 5]
 
-	@GetMapping("/{quantidade}/{listas}/{regras}")  // Endereço para acessar na url e parametros a receber
+	@GetMapping("/{quantidade}/{listas}/{regras}/{limitador}")  // Endereço para acessar na url e parametros a receber
 	public ArrayList<ArgumentDTO> findArguments(@PathVariable String regras,
-			@PathVariable String quantidade, @PathVariable String listas) throws IOException, Err {
+			@PathVariable String quantidade, @PathVariable String listas, @PathVariable String limitador) throws IOException, Err {
 		
 		System.out.println(regras);
 		// System.out.println(atomos);
 		System.out.println(quantidade);
 		System.out.println(listas);
 		
-		// Recebe as regras que serão usadas logo abaixo através da verificação
-		String ne = "";
-		String ni = "";
-		String ci = "";
-		String ce = "";
-		String di = "";
-		String de = "";
-		String be = "";
-		String bi = "";
-		String mp = "";
-		String mt = "";
-		String sd = "";
+
 
 		String[] regrasSplit = regras.split(",");
 		ArrayList<String> regs = new ArrayList<>();
@@ -97,79 +86,123 @@ public class ArgumentController {
 			regs.add(s);
 		}
 
+
+		// Define o valor das operações
+		String operacoes = "";
+
+		// >>>>>>>>>>>>>>>>> Limitador da quantidade de REGRAS <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+		if(limitador.equals("1") || limitador.equals("2") || limitador.equals("3")){
+			operacoes = "\n#NE=0 \n#NI=0 \n#CI=0 \n#CE=0 \n#DI=0 \n#DE=0 \n#BE=0 \n#BI=0 \n#MP=0 \n#MT=0 \n#SD=0\n"; 
+			// Operaçoes nessas opção todas as regras ja são definidas.
+		
+			if(regs.contains("NE")) {
+				operacoes = operacoes.replace("#NE=0","#NE > 0");
+			}
+			if(regs.contains("NI")) {
+				operacoes = operacoes.replace("#NI=0","#NI > 0");
+			}
+			if(regs.contains("CI")) {
+				operacoes = operacoes.replace("#CI=0","#CI > 0");
+			}
+			if(regs.contains("CE")) {
+				operacoes = operacoes.replace("#CE=0","#CE > 0");
+			}
+			if(regs.contains("DI")) {
+				operacoes = operacoes.replace("#DI=0","#DI > 0");
+			}
+			if(regs.contains("DE")) {
+				operacoes = operacoes.replace("#DE=0","#DE > 0");
+			}
+			if(regs.contains("BE")) {
+				operacoes = operacoes.replace("#BE=0", "#BE > 0");
+			}
+			if(regs.contains("BI")) {
+				operacoes = operacoes.replace("#BI=0","#BI > 0");
+			}
+			if(regs.contains("MP")) {
+				operacoes = operacoes.replace("#MP=0","#MP > 0");
+			}
+			if(regs.contains("MT")) {
+				operacoes = operacoes.replace("#MT=0","#MT > 0");
+			}
+			if(regs.contains("SD")) {
+				operacoes = operacoes.replace("#SD=0", "#SD > 0");
+			}
+		}
+		
 		// A verificação das regras que serão passadas para o argumento, são definidas aqui em baixo.
-
-			// if(regs.contains("NE")) {
-			// 	ne = "#NE > 0";
-			// }
-			// if(regs.contains("NI")) {
-			// 	ni = "#NI > 0";
-			// }
-			// if(regs.contains("CI")) {
-			// 	ci = "#CI > 0";
-			// }
-			// if(regs.contains("CE")) {
-			// 	ce = "#CE > 0";
-			// }
-			// if(regs.contains("DI")) {
-			// 	di = "#DI > 0";
-			// }
-			// if(regs.contains("DE")) {
-			// 	de = "#DE > 0";
-			// }
-			// if(regs.contains("BE")) {
-			// 	be = "#BE > 0";
-			// }
-			// if(regs.contains("BI")) {
-			// 	bi = "#BI > 0";
-			// }
-			// if(regs.contains("MP")) {
-			// 	mp = "#MP > 0";
-			// }
-			// if(regs.contains("MT")) {
-			// 	mt = "#MT > 0";
-			// }
-			// if(regs.contains("SD")) {
-			// 	sd = "#SD > 0";
-			// }
-
-		// tentativa de uma nova forma de implementação das regras para o argumento
-		// Define o valor de todas as regras em operações
-		String operacoes = "\n#NE=0 \n#NI=0 \n#CI=0 \n#CE=0 \n#DI=0 \n#DE=0 \n#BE=0 \n#BI=0 \n#MP=0 \n#MT=0 \n#SD=0\n"; 
+		if(limitador.equals("4")){
+			operacoes = "";
+			if(regs.contains("NE")) {
+				operacoes += "#NE > 0\n";
+			}
+			if(regs.contains("NI")) {
+				operacoes += "#NI > 0\n";
+			}
+			if(regs.contains("CI")) {
+				operacoes += "#CI > 0\n";
+			}
+			if(regs.contains("CE")) {
+				operacoes += "#CE > 0\n";
+			}
+			if(regs.contains("DI")) {
+				operacoes += "#DI > 0\n";
+			}
+			if(regs.contains("DE")) {
+				operacoes += "#DE > 0\n";
+			}
+			if(regs.contains("BE")) {
+				operacoes += "#BE > 0\n";
+			}
+			if(regs.contains("BI")) {
+				operacoes += "#BI > 0\n";
+			}
+			if(regs.contains("MP")) {
+				operacoes += "#MP > 0\n";
+			}
+			if(regs.contains("MT")) {
+				operacoes += "#MT > 0\n";
+			}
+			if(regs.contains("SD")) {
+				operacoes += "#SD > 0\n";
+			}
+		}
 		
-		
-		if(regs.contains("NE")) {
-			operacoes = operacoes.replace("#NE=0","#NE > 0");
-		}
-		if(regs.contains("NI")) {
-			operacoes = operacoes.replace("#NI=0","#NI > 0");
-		}
-		if(regs.contains("CI")) {
-			operacoes = operacoes.replace("#CI=0","#CI > 0");
-		}
-		if(regs.contains("CE")) {
-			operacoes = operacoes.replace("#CE=0","#CE > 0");
-		}
-		if(regs.contains("DI")) {
-			operacoes = operacoes.replace("#DI=0","#DI > 0");
-		}
-		if(regs.contains("DE")) {
-			operacoes = operacoes.replace("#DE=0","#DE > 0");
-		}
-		if(regs.contains("BE")) {
-			operacoes = operacoes.replace("#BE=0", "#BE > 0");
-		}
-		if(regs.contains("BI")) {
-			operacoes = operacoes.replace("#BI=0","#BI > 0");
-		}
-		if(regs.contains("MP")) {
-			operacoes = operacoes.replace("#MP=0","#MP > 0");
-		}
-		if(regs.contains("MT")) {
-			operacoes = operacoes.replace("#MT=0","#MT > 0");
-		}
-		if(regs.contains("SD")) {
-			operacoes = operacoes.replace("#SD=0", "#SD > 0");
+		if(limitador.equals("5")){
+			operacoes = "";
+			if(regs.contains("NE")) {
+				operacoes += "#NE >= 0\n";
+			}
+			if(regs.contains("NI")) {
+				operacoes += "#NI >= 0\n";
+			}
+			if(regs.contains("CI")) {
+				operacoes += "#CI >= 0\n";
+			}
+			if(regs.contains("CE")) {
+				operacoes += "#CE >= 0\n";
+			}
+			if(regs.contains("DI")) {
+				operacoes += "#DI >= 0\n";
+			}
+			if(regs.contains("DE")) {
+				operacoes += "#DE >= 0\n";
+			}
+			if(regs.contains("BE")) {
+				operacoes += "#BE >= 0\n";
+			}
+			if(regs.contains("BI")) {
+				operacoes += "#BI >= 0\n";
+			}
+			if(regs.contains("MP")) {
+				operacoes += "#MP >= 0\n";
+			}
+			if(regs.contains("MT")) {
+				operacoes += "#MT >= 0\n";
+			}
+			if(regs.contains("SD")) {
+				operacoes += "#SD >= 0\n";
+			}
 		}
 
 		Util util = new Util();
@@ -191,17 +224,6 @@ public class ArgumentController {
 			String config = "pred ConfigArgument(){ \n" 
 					+ " #Atom>0"+"\n" + "	#MT=0 <=> #MP!=0\n" 
 					+operacoes
-					// + ne+"\n"
-					// + ni+"\n"
-					// + ci+"\n"
-					// + ce+"\n"
-					// + di+"\n"
-					// + de+"\n"
-					// + be+"\n"
-					// + bi+"\n"
-					// + mp+"\n"
-					// + mt+"\n"
-					// + sd+"\n"
 				    + "	one ru,ru':Rule | ru.R in ru'.(P1+P2+p3)\n"
 					+ "	one arg:Argument | all ru:Rule | ru.(P1+P2+p3) in arg.premisse\n"
 					+ "	one arg:Argument | all ru:Rule | no fo:Formula | fo in ru.(P1+P2+p3) and fo in ru.R and fo in arg.conclusion\n"
