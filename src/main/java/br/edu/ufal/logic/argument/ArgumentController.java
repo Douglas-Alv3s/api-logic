@@ -169,39 +169,72 @@ public class ArgumentController {
 		}
 		
 		if(limitador.equals("5")){
-			operacoes = "";
+			operacoes = "\n\n#NE = 0 \n\n#NI = 0 \n\n#CI = 0 \n\n#CE = 0 \n\n#DI = 0 \n\n#DE = 0 \n\n#BE = 0 \n\n#BI = 0 \n\n#MP = 0 \n\n#MT = 0 \n\n#SD = 0\n\n";
+			// if(regs.contains("NE")) {
+			// 	operacoes += "#NE >= 0\n";
+			// }
+			// if(regs.contains("NI")) {
+			// 	operacoes += "#NI >= 0\n";
+			// }
+			// if(regs.contains("CI")) {
+			// 	operacoes += "#CI >= 0\n";
+			// }
+			// if(regs.contains("CE")) {
+			// 	operacoes += "#CE >= 0\n";
+			// }
+			// if(regs.contains("DI")) {
+			// 	operacoes += "#DI >= 0\n";
+			// }
+			// if(regs.contains("DE")) {
+			// 	operacoes += "#DE >= 0\n";
+			// }
+			// if(regs.contains("BE")) {
+			// 	operacoes += "#BE >= 0\n";
+			// }
+			// if(regs.contains("BI")) {
+			// 	operacoes += "#BI >= 0\n";
+			// }
+			// if(regs.contains("MP")) {
+			// 	operacoes += "#MP >= 0\n";
+			// }
+			// if(regs.contains("MT")) {
+			// 	operacoes += "#MT >= 0\n";
+			// }
+			// if(regs.contains("SD")) {
+			// 	operacoes += "#SD >= 0\n";
+			// }
 			if(regs.contains("NE")) {
-				operacoes += "#NE >= 0\n";
+				operacoes = operacoes.replace("#NE = 0", "#NE >= 0");
 			}
 			if(regs.contains("NI")) {
-				operacoes += "#NI >= 0\n";
+				operacoes = operacoes.replace("#NI = 0", "#NI >= 0");
 			}
 			if(regs.contains("CI")) {
-				operacoes += "#CI >= 0\n";
+				operacoes = operacoes.replace("#CI = 0", "#CI >= 0");
 			}
 			if(regs.contains("CE")) {
-				operacoes += "#CE >= 0\n";
+				operacoes = operacoes.replace("#CE = 0", "#CE >= 0");
 			}
 			if(regs.contains("DI")) {
-				operacoes += "#DI >= 0\n";
+				operacoes = operacoes.replace("#DI = 0", "#DI >= 0");
 			}
 			if(regs.contains("DE")) {
-				operacoes += "#DE >= 0\n";
+				operacoes = operacoes.replace("#DE = 0", "#DE >= 0");
 			}
 			if(regs.contains("BE")) {
-				operacoes += "#BE >= 0\n";
+				operacoes = operacoes.replace("#BE = 0", "#BE >= 0");
 			}
 			if(regs.contains("BI")) {
-				operacoes += "#BI >= 0\n";
+				operacoes = operacoes.replace("#BI = 0", "#BI >= 0");
 			}
 			if(regs.contains("MP")) {
-				operacoes += "#MP >= 0\n";
+				operacoes = operacoes.replace("#MP = 0", "#MP >= 0");
 			}
 			if(regs.contains("MT")) {
-				operacoes += "#MT >= 0\n";
+				operacoes = operacoes.replace("#MT = 0", "#MT >= 0");
 			}
 			if(regs.contains("SD")) {
-				operacoes += "#SD >= 0\n";
+				operacoes = operacoes.replace("#SD = 0", "#SD >= 0");
 			}
 		}
 
@@ -222,7 +255,8 @@ public class ArgumentController {
 
 			// Aqui é repassado as especificações que o alloy ira receber
 			String config = "pred ConfigArgument(){ \n" 
-					+ " #Atom>0"+"\n" + "	#MT=0 <=> #MP!=0\n" 
+					+ " #Atom>3"+"\n" 
+					//+ "	#MT!=0 => #MP=0	#MP!=0 => #MT=0\n" 
 					+operacoes
 				    + "	one ru,ru':Rule | ru.R in ru'.(P1+P2+p3)\n"
 					+ "	one arg:Argument | all ru:Rule | ru.(P1+P2+p3) in arg.premisse\n"
@@ -231,6 +265,10 @@ public class ArgumentController {
 					+ "";
 			System.out.println(config);
 			
+			//if(valueRun > (Integer.parseInt(quantidade) * Integer.parseInt(listas))){
+			//	break;
+			//}
+
 			String model = modelArgument + config;
 			
 			Timestamp timestamp = new Timestamp(System.currentTimeMillis());
