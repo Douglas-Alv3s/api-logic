@@ -9,6 +9,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -139,8 +140,9 @@ public class FBFController {
 		ArrayList<String> fbfsTeste = new ArrayList<>();
 
 		Util util = new Util();
-
-		while (cont < (Integer.parseInt(quantidadeFbfs) * Integer.parseInt(listasExercicios))) {
+		Integer totalFormulas = (Integer.parseInt(quantidadeFbfs) * Integer.parseInt(listasExercicios)*10);
+		
+		while (cont < (totalFormulas)) {
 			valueRun += 1;
 
 			config = "pred ConfigFormula(){ \n" + operacoes + "\n"
@@ -184,7 +186,7 @@ public class FBFController {
 						System.out.println(fbf);
 					}
 					sol = sol.next();
-					if (cont == (Integer.parseInt(quantidadeFbfs) * Integer.parseInt(listasExercicios))) {
+					if (cont == (totalFormulas)) {
 						break;
 					}
 				}
@@ -192,7 +194,21 @@ public class FBFController {
 			tmpAls.delete();
 		}
 
-		return fbfs;
+		ArrayList<FBFDTO> fbfsAleatorio = new ArrayList<>();
+		int conter = 0;
+		Random random = new Random();
+		while(conter < (Integer.parseInt(quantidadeFbfs) * Integer.parseInt(listasExercicios))) {
+			int indiceAleatorio = random.nextInt(totalFormulas);
+			System.out.println("------\nEssa Aqui é da lista\n"+fbfs.get(indiceAleatorio).toString());
+			
+			if(!fbfsAleatorio.contains(fbfs.get(indiceAleatorio))){
+				fbfsAleatorio.add(fbfs.get(indiceAleatorio));
+				conter++;
+			}
+		}
+		
+		// return fbfs;
+		return fbfsAleatorio;
 	}
 
 	private static void flushModelToFile(File tmpAls, String model) throws IOException {

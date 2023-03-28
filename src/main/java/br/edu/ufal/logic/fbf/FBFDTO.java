@@ -32,5 +32,10 @@ public class FBFDTO {
 		this.id = id;
 	}
 
+	@Override
+	public String toString() {
+		return "FBFDTO [id=" + id + ", fbf=" + fbf + "]";
+	}
+
 	
 }
