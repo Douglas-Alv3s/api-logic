@@ -9,6 +9,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -249,13 +250,14 @@ public class ArgumentController {
 		int cont = 0;
 		int valueRun = 4;
 		
-		while(cont < (Integer.parseInt(quantidade) * Integer.parseInt(listas))) {
+		Integer totalFormulas = (Integer.parseInt(quantidade) * Integer.parseInt(listas) * 10);
+		while(cont < totalFormulas) {
 			
 			valueRun += 1;
 
 			// Aqui é repassado as especificações que o alloy ira receber
 			String config = "pred ConfigArgument(){ \n" 
-					+ " #Atom>3"+"\n" 
+					+ " #Atom>1"+"\n" 
 					//+ "	#MT!=0 => #MP=0	#MP!=0 => #MT=0\n" 
 					+operacoes
 				    + "	one ru,ru':Rule | ru.R in ru'.(P1+P2+p3)\n"
@@ -324,7 +326,7 @@ public class ArgumentController {
 					}
 					sol = sol.next();
 					
-					if (cont == (Integer.parseInt(quantidade) * Integer.parseInt(listas))) {
+					if (cont == totalFormulas) {
 						break;
 					}
 
@@ -333,7 +335,23 @@ public class ArgumentController {
 			}
 			tmpAls.delete();
 		}
-		return argumentos;
+
+		ArrayList<ArgumentDTO> argumentosAleatorio = new ArrayList<>();
+		int conter = 0;
+		Random random = new Random();
+		while(conter < (Integer.parseInt(quantidade) * Integer.parseInt(listas))) {
+			int indiceAleatorio = random.nextInt(totalFormulas);
+			System.out.println("------\nEssa Aqui é da lista\n"+argumentos.get(indiceAleatorio).toString());
+			
+			if(!argumentosAleatorio.contains(argumentos.get(indiceAleatorio))){
+				argumentosAleatorio.add(argumentos.get(indiceAleatorio));
+				conter++;
+			}
+		}
+
+		return argumentosAleatorio;
+
+		// return argumentos;
 
 	}
 

@@ -41,6 +41,11 @@ public class ArgumentDTO {
 	public void setRegs(String regs) {
 		this.regs = regs;
 	}
+
+	@Override
+	public String toString() {
+		return "ArgumentDTO [id=" + id + ", argument=" + argument + ", regs=" + regs + "]";
+	}
 	
 
 
