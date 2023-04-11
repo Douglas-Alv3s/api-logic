@@ -50,7 +50,7 @@ public class FBFController {
 	private String modelFormulaTeste = lerTxt();
 
 	@GetMapping
-	private ArrayList<FBFDTO> findAll() throws IOException {	//Cria uma ArrayList vazia 
+	public ArrayList<FBFDTO> findAll() throws IOException {	//Cria uma ArrayList vazia 
 
 		ArrayList<FBFDTO> fbfs = new ArrayList<>();
 
