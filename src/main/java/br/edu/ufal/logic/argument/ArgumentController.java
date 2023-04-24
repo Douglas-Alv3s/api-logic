@@ -253,8 +253,24 @@ public class ArgumentController {
 		Integer totalFormulas = (Integer.parseInt(quantidade) * Integer.parseInt(listas) * 10);
 		while(cont < totalFormulas) {
 			
-			valueRun += 1;
 
+			System.out.println("Operações usadas: "+operacoes);
+			String[] regrasTotal = operacoes.split(" ");
+			ArrayList<String> regrasAleatorias = new ArrayList<>();
+				for(String s: regrasTotal) {
+					regrasAleatorias.add(s);
+			}
+
+			Random regRandom = new Random();
+			int quantidadeRegras = Integer.parseInt(limitador);
+			// while()
+			if(limitador.equals("1")){
+
+			}
+			
+
+			valueRun += 1;
+		
 			// Aqui é repassado as especificações que o alloy ira receber
 			String config = "pred ConfigArgument(){ \n" 
 					+ " #Atom>1"+"\n" 
