@@ -99,7 +99,7 @@ public class ArgumentController {
 			if(regs.contains("NE")) {
 				operacoes = operacoes.replace("#NE=0","#NE > 0");
 			}
-			if(regs.contains("NI")) {
+			if(regs.contains("NI")) { // ---------------------- Ta conseguindo executar apenas uma lista só a partir de 7 tentativas
 				operacoes = operacoes.replace("#NI=0","#NI > 0");
 			}
 			if(regs.contains("CI")) {
@@ -111,13 +111,13 @@ public class ArgumentController {
 			if(regs.contains("DI")) {
 				operacoes = operacoes.replace("#DI=0","#DI > 0");
 			}
-			if(regs.contains("DE")) {
+			if(regs.contains("DE")) { // ----------------------Ta com Loop
 				operacoes = operacoes.replace("#DE=0","#DE > 0");
 			}
-			if(regs.contains("BE")) {
+			if(regs.contains("BE")) { // ---------------------- Ta com Loop
 				operacoes = operacoes.replace("#BE=0", "#BE > 0");
 			}
-			if(regs.contains("BI")) {
+			if(regs.contains("BI")) { // ---------------------- Ta com Loop e dificuldade na geração
 				operacoes = operacoes.replace("#BI=0","#BI > 0");
 			}
 			if(regs.contains("MP")) {
@@ -131,7 +131,7 @@ public class ArgumentController {
 			}
 		}
 		
-		// A verificação das regras que serão passadas para o argumento, são definidas aqui em baixo.
+		// // A verificação das regras que serão passadas para o argumento, são definidas aqui em baixo.
 		if(limitador.equals("4")){
 			operacoes = "";
 			if(regs.contains("NE")) {
@@ -169,75 +169,75 @@ public class ArgumentController {
 			}
 		}
 		
-		if(limitador.equals("5")){
-			operacoes = "\n\n#NE = 0 \n\n#NI = 0 \n\n#CI = 0 \n\n#CE = 0 \n\n#DI = 0 \n\n#DE = 0 \n\n#BE = 0 \n\n#BI = 0 \n\n#MP = 0 \n\n#MT = 0 \n\n#SD = 0\n\n";
-			// if(regs.contains("NE")) {
-			// 	operacoes += "#NE >= 0\n";
-			// }
-			// if(regs.contains("NI")) {
-			// 	operacoes += "#NI >= 0\n";
-			// }
-			// if(regs.contains("CI")) {
-			// 	operacoes += "#CI >= 0\n";
-			// }
-			// if(regs.contains("CE")) {
-			// 	operacoes += "#CE >= 0\n";
-			// }
-			// if(regs.contains("DI")) {
-			// 	operacoes += "#DI >= 0\n";
-			// }
-			// if(regs.contains("DE")) {
-			// 	operacoes += "#DE >= 0\n";
-			// }
-			// if(regs.contains("BE")) {
-			// 	operacoes += "#BE >= 0\n";
-			// }
-			// if(regs.contains("BI")) {
-			// 	operacoes += "#BI >= 0\n";
-			// }
-			// if(regs.contains("MP")) {
-			// 	operacoes += "#MP >= 0\n";
-			// }
-			// if(regs.contains("MT")) {
-			// 	operacoes += "#MT >= 0\n";
-			// }
-			// if(regs.contains("SD")) {
-			// 	operacoes += "#SD >= 0\n";
-			// }
-			if(regs.contains("NE")) {
-				operacoes = operacoes.replace("#NE = 0", "#NE >= 0");
-			}
-			if(regs.contains("NI")) {
-				operacoes = operacoes.replace("#NI = 0", "#NI >= 0");
-			}
-			if(regs.contains("CI")) {
-				operacoes = operacoes.replace("#CI = 0", "#CI >= 0");
-			}
-			if(regs.contains("CE")) {
-				operacoes = operacoes.replace("#CE = 0", "#CE >= 0");
-			}
-			if(regs.contains("DI")) {
-				operacoes = operacoes.replace("#DI = 0", "#DI >= 0");
-			}
-			if(regs.contains("DE")) {
-				operacoes = operacoes.replace("#DE = 0", "#DE >= 0");
-			}
-			if(regs.contains("BE")) {
-				operacoes = operacoes.replace("#BE = 0", "#BE >= 0");
-			}
-			if(regs.contains("BI")) {
-				operacoes = operacoes.replace("#BI = 0", "#BI >= 0");
-			}
-			if(regs.contains("MP")) {
-				operacoes = operacoes.replace("#MP = 0", "#MP >= 0");
-			}
-			if(regs.contains("MT")) {
-				operacoes = operacoes.replace("#MT = 0", "#MT >= 0");
-			}
-			if(regs.contains("SD")) {
-				operacoes = operacoes.replace("#SD = 0", "#SD >= 0");
-			}
-		}
+		// if(limitador.equals("5")){
+		// 	operacoes = "\n\n#NE = 0 \n\n#NI = 0 \n\n#CI = 0 \n\n#CE = 0 \n\n#DI = 0 \n\n#DE = 0 \n\n#BE = 0 \n\n#BI = 0 \n\n#MP = 0 \n\n#MT = 0 \n\n#SD = 0\n\n";
+		// 	// if(regs.contains("NE")) {
+		// 	// 	operacoes += "#NE >= 0\n";
+		// 	// }
+		// 	// if(regs.contains("NI")) {
+		// 	// 	operacoes += "#NI >= 0\n";
+		// 	// }
+		// 	// if(regs.contains("CI")) {
+		// 	// 	operacoes += "#CI >= 0\n";
+		// 	// }
+		// 	// if(regs.contains("CE")) {
+		// 	// 	operacoes += "#CE >= 0\n";
+		// 	// }
+		// 	// if(regs.contains("DI")) {
+		// 	// 	operacoes += "#DI >= 0\n";
+		// 	// }
+		// 	// if(regs.contains("DE")) {
+		// 	// 	operacoes += "#DE >= 0\n";
+		// 	// }
+		// 	// if(regs.contains("BE")) {
+		// 	// 	operacoes += "#BE >= 0\n";
+		// 	// }
+		// 	// if(regs.contains("BI")) {
+		// 	// 	operacoes += "#BI >= 0\n";
+		// 	// }
+		// 	// if(regs.contains("MP")) {
+		// 	// 	operacoes += "#MP >= 0\n";
+		// 	// }
+		// 	// if(regs.contains("MT")) {
+		// 	// 	operacoes += "#MT >= 0\n";
+		// 	// }
+		// 	// if(regs.contains("SD")) {
+		// 	// 	operacoes += "#SD >= 0\n";
+		// 	// }
+		// 	if(regs.contains("NE")) {
+		// 		operacoes = operacoes.replace("#NE = 0", "#NE >= 0");
+		// 	}
+		// 	if(regs.contains("NI")) {
+		// 		operacoes = operacoes.replace("#NI = 0", "#NI >= 0");
+		// 	}
+		// 	if(regs.contains("CI")) {
+		// 		operacoes = operacoes.replace("#CI = 0", "#CI >= 0");
+		// 	}
+		// 	if(regs.contains("CE")) {
+		// 		operacoes = operacoes.replace("#CE = 0", "#CE >= 0");
+		// 	}
+		// 	if(regs.contains("DI")) {
+		// 		operacoes = operacoes.replace("#DI = 0", "#DI >= 0");
+		// 	}
+		// 	if(regs.contains("DE")) {
+		// 		operacoes = operacoes.replace("#DE = 0", "#DE >= 0");
+		// 	}
+		// 	if(regs.contains("BE")) {
+		// 		operacoes = operacoes.replace("#BE = 0", "#BE >= 0");
+		// 	}
+		// 	if(regs.contains("BI")) {
+		// 		operacoes = operacoes.replace("#BI = 0", "#BI >= 0");
+		// 	}
+		// 	if(regs.contains("MP")) {
+		// 		operacoes = operacoes.replace("#MP = 0", "#MP >= 0");
+		// 	}
+		// 	if(regs.contains("MT")) {
+		// 		operacoes = operacoes.replace("#MT = 0", "#MT >= 0");
+		// 	}
+		// 	if(regs.contains("SD")) {
+		// 		operacoes = operacoes.replace("#SD = 0", "#SD >= 0");
+		// 	}
+		// }
 
 		Util util = new Util();
 		ArrayList<ArgumentDTO> argumentos = new ArrayList<>();
@@ -250,24 +250,134 @@ public class ArgumentController {
 		int cont = 0;
 		int valueRun = 4;
 		
-		Integer totalFormulas = (Integer.parseInt(quantidade) * Integer.parseInt(listas) * 10);
+		Integer totalFormulas = (Integer.parseInt(quantidade) * Integer.parseInt(listas) *10);
 		while(cont < totalFormulas) {
 			
 
 			System.out.println("Operações usadas: "+operacoes);
-			String[] regrasTotal = operacoes.split(" ");
-			ArrayList<String> regrasAleatorias = new ArrayList<>();
-				for(String s: regrasTotal) {
-					regrasAleatorias.add(s);
-			}
-
-			Random regRandom = new Random();
-			int quantidadeRegras = Integer.parseInt(limitador);
-			// while()
-			if(limitador.equals("1")){
-
-			}
 			
+
+			// Random regRandom = new Random();
+			// int quantidadeRegras = Integer.parseInt(limitador);
+			
+			// if(limitador.equals("1") || limitador.equals("2") || limitador.equals("3")){
+			// 	operacoes = "\n#NE=0 \n#NI=0 \n#CI=0 \n#CE=0 \n#DI=0 \n#DE=0 \n#BE=0 \n#BI=0 \n#MP=0 \n#MT=0 \n#SD=0\n"; 
+
+			// 	// Operaçoes nessas opção todas as regras ja são definidas.
+			// 	if(limitador.equals("1")){
+					
+			// 		int regraAleatorio = regRandom.nextInt(regs.size());
+			// 		System.out.println("\n\nREGRA CAINDO NESSA MIZERAAAAAAAAAAAAAAAAAAAAAAAA---"+regs.get(regraAleatorio)+" ----AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n");
+			// 		if(regs.get(regraAleatorio).equals("NE")) {
+			// 			operacoes = operacoes.replace("#NE=0","#NE > 0");
+			// 		}
+			// 		if(regs.get(regraAleatorio).equals("NI")) {
+			// 			operacoes = operacoes.replace("#NI=0","#NI > 0");
+			// 		}
+			// 		if(regs.get(regraAleatorio).equals("CI")) {
+			// 			operacoes = operacoes.replace("#CI=0","#CI > 0");
+			// 		}
+			// 		if(regs.get(regraAleatorio).equals("CE")) {
+			// 			operacoes = operacoes.replace("#CE=0","#CE > 0");
+			// 		}
+			// 		if(regs.get(regraAleatorio).equals("DI")) {
+			// 			operacoes = operacoes.replace("#DI=0","#DI > 0");
+			// 		}
+			// 		if(regs.get(regraAleatorio).equals("DE")) {
+			// 			operacoes = operacoes.replace("#DE=0","#DE > 0");
+			// 		}
+			// 		if(regs.get(regraAleatorio).equals("BE")) {
+			// 			operacoes = operacoes.replace("#BE=0", "#BE > 0");
+			// 		}
+			// 		if(regs.get(regraAleatorio).equals("BI")) {
+			// 			operacoes = operacoes.replace("#BI=0","#BI > 0");
+			// 		}
+			// 		if(regs.get(regraAleatorio).equals("MP")) {
+			// 			operacoes = operacoes.replace("#MP=0","#MP > 0");
+			// 		}
+			// 		if(regs.get(regraAleatorio).equals("MT")) {
+			// 			operacoes = operacoes.replace("#MT=0","#MT > 0");
+			// 		}
+			// 		if(regs.get(regraAleatorio).equals("SD")) {
+			// 			operacoes = operacoes.replace("#SD=0", "#SD > 0");
+			// 		}
+			// 	}else if(limitador.equals("2")){
+			// 		for(int i = 0; i <= quantidadeRegras; i++){
+			// 			int regraAleatorio = regRandom.nextInt(regs.size());
+			// 			if(regs.get(regraAleatorio).equals("NE")) {
+			// 				operacoes = operacoes.replace("#NE=0","#NE > 0");
+			// 			}
+			// 			if(regs.get(regraAleatorio).equals("NI")) {
+			// 				operacoes = operacoes.replace("#NI=0","#NI > 0");
+			// 			}
+			// 			if(regs.get(regraAleatorio).equals("CI")) {
+			// 				operacoes = operacoes.replace("#CI=0","#CI > 0");
+			// 			}
+			// 			if(regs.get(regraAleatorio).equals("CE")) {
+			// 				operacoes = operacoes.replace("#CE=0","#CE > 0");
+			// 			}
+			// 			if(regs.get(regraAleatorio).equals("DI")) {
+			// 				operacoes = operacoes.replace("#DI=0","#DI > 0");
+			// 			}
+			// 			if(regs.get(regraAleatorio).equals("DE")) {
+			// 				operacoes = operacoes.replace("#DE=0","#DE > 0");
+			// 			}
+			// 			if(regs.get(regraAleatorio).equals("BE")) {
+			// 				operacoes = operacoes.replace("#BE=0", "#BE > 0");
+			// 			}
+			// 			if(regs.get(regraAleatorio).equals("BI")) {
+			// 				operacoes = operacoes.replace("#BI=0","#BI > 0");
+			// 			}
+			// 			if(regs.get(regraAleatorio).equals("MP")) {
+			// 				operacoes = operacoes.replace("#MP=0","#MP > 0");
+			// 			}
+			// 			if(regs.get(regraAleatorio).equals("MT")) {
+			// 				operacoes = operacoes.replace("#MT=0","#MT > 0");
+			// 			}
+			// 			if(regs.get(regraAleatorio).equals("SD")) {
+			// 				operacoes = operacoes.replace("#SD=0", "#SD > 0");
+			// 			}
+			// 		}
+			// 	}else if(limitador.equals("3")){
+			// 		for(int i = 0; i < quantidadeRegras; i++){
+			// 			int regraAleatorio = regRandom.nextInt(regs.size());
+			// 			if(regs.get(regraAleatorio).equals("NE")) {
+			// 				operacoes = operacoes.replace("#NE=0","#NE > 0");
+			// 			}
+			// 			if(regs.get(regraAleatorio).equals("NI")) {
+			// 				operacoes = operacoes.replace("#NI=0","#NI > 0");
+			// 			}
+			// 			if(regs.get(regraAleatorio).equals("CI")) {
+			// 				operacoes = operacoes.replace("#CI=0","#CI > 0");
+			// 			}
+			// 			if(regs.get(regraAleatorio).equals("CE")) {
+			// 				operacoes = operacoes.replace("#CE=0","#CE > 0");
+			// 			}
+			// 			if(regs.get(regraAleatorio).equals("DI")) {
+			// 				operacoes = operacoes.replace("#DI=0","#DI > 0");
+			// 			}
+			// 			if(regs.get(regraAleatorio).equals("DE")) {
+			// 				operacoes = operacoes.replace("#DE=0","#DE > 0");
+			// 			}
+			// 			if(regs.get(regraAleatorio).equals("BE")) {
+			// 				operacoes = operacoes.replace("#BE=0", "#BE > 0");
+			// 			}
+			// 			if(regs.get(regraAleatorio).equals("BI")) {
+			// 				operacoes = operacoes.replace("#BI=0","#BI > 0");
+			// 			}
+			// 			if(regs.get(regraAleatorio).equals("MP")) {
+			// 				operacoes = operacoes.replace("#MP=0","#MP > 0");
+			// 			}
+			// 			if(regs.get(regraAleatorio).equals("MT")) {
+			// 				operacoes = operacoes.replace("#MT=0","#MT > 0");
+			// 			}
+			// 			if(regs.get(regraAleatorio).equals("SD")) {
+			// 				operacoes = operacoes.replace("#SD=0", "#SD > 0");
+			// 			}
+			// 		}
+			// 	}
+				
+			// }
 
 			valueRun += 1;
 		
@@ -333,6 +443,7 @@ public class ArgumentController {
 					
 					if(!argumentTeste.contains(arg.toString())){
 						argumentos.add(service.argumentToArgumentDTO(cont, arg, regrinha));
+						System.out.println("FORMULA ENTRANDO "+argumentos.get(cont));
 						System.out.println(argumentos.size());
 						argumentTeste.add(arg.toString());
 						System.out.println(argumentos.size());
