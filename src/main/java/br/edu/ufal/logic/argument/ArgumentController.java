@@ -250,7 +250,7 @@ public class ArgumentController {
 		int cont = 0;
 		int valueRun = 4;
 		
-		Integer totalFormulas = (Integer.parseInt(quantidade) * Integer.parseInt(listas) *10);
+		Integer totalFormulas = (Integer.parseInt(quantidade) * Integer.parseInt(listas) *5);
 		while(cont < totalFormulas) {
 			
 
