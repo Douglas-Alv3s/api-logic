@@ -16,25 +16,17 @@
 	<description>Demo project for Spring Boot</description>
 
 	<properties>
-		<java.version>16</java.version>
+		<java.version>1.8</java.version>
 		<maven.test.skip>true</maven.test.skip>
 	</properties>
 
 	<dependencies>
 
 		<dependency>
-		    <groupId>edu.mit</groupId>
-			<artifactId>alloy</artifactId>
-			<version>4.2</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/lib/alloy.jar</systemPath>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 
-		<dependency>
-			<groupId>de.hhu.stups</groupId>
-			<artifactId>alloy-core</artifactId>
-			<version>5.1.0</version>
-		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -62,7 +54,19 @@
 			<scope>runtime</scope>
 			<optional>true</optional>
 		</dependency>
+		<dependency>
+		    <groupId>edu.mit</groupId>
+			<artifactId>alloy</artifactId>
+			<version>4.2</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/lib/alloy.jar</systemPath>
+		</dependency>
 
+		<dependency>
+			<groupId>de.hhu.stups</groupId>
+			<artifactId>alloy-core</artifactId>
+			<version>5.1.0</version>
+		</dependency>
 		
 		<!-- <dependency>
 			<groupId>de.hhu.stups</groupId>
@@ -71,7 +75,11 @@
 		</dependency> -->
 
 		<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-compiler-plugin -->
-		
+		<dependency>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-compiler-plugin</artifactId>
+			<version>3.10.1</version>
+		</dependency>
 
 	</dependencies>
 
