@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.edu.ufal.logic.DAO.dataSource.CriacaoBD;
 import br.edu.ufal.logic.util.InstanciaRetorno;
 import br.edu.ufal.logic.util.Util;
 import edu.mit.csail.sdg.alloy4.A4Reporter;
@@ -133,6 +134,9 @@ public class FBFController {
 		// operacoes = operacoes + "\n" + aoMenosUmaOperacao;
 		// operacoes = operacoes + "\n" + aoMenosUmaOperacao;
 		
+		// Dando inicio ao Banco de dados
+		CriacaoBD.getInstance();
+
 		int cont = 0;
 		int valueRun = 4;
 
@@ -140,7 +144,7 @@ public class FBFController {
 		ArrayList<String> fbfsTeste = new ArrayList<>();
 
 		Util util = new Util();
-		Integer totalFormulas = (Integer.parseInt(quantidadeFbfs) * Integer.parseInt(listasExercicios)*10);
+		Integer totalFormulas = (Integer.parseInt(quantidadeFbfs) * Integer.parseInt(listasExercicios));
 		
 		while (cont < (totalFormulas)) {
 			valueRun += 1;

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.edu.ufal.logic.DAO.dataSource.CriacaoBD;
 import br.edu.ufal.logic.fbf.FBF;
 import br.edu.ufal.logic.util.InstanciaRetorno;
 import br.edu.ufal.logic.util.Relacao;
@@ -238,6 +239,9 @@ public class ArgumentController {
 		// 		operacoes = operacoes.replace("#SD = 0", "#SD >= 0");
 		// 	}
 		// }
+
+		// Dando inicio ao Banco de dados
+		CriacaoBD.getInstance();
 
 		Util util = new Util();
 		ArrayList<ArgumentDTO> argumentos = new ArrayList<>();
