@@ -8,7 +8,7 @@ import java.sql.Statement;
 public class MySQLDataSource{
 	private String user = "root";
 	private String senha = "";
-	private String url = "jdbc:mysql://localhost:3306/sistema_logistico";
+	private String url = "jdbc:mysql://localhost:3306/api_logic";
 	private String driverUrl = "com.mysql.cj.jdbc.Driver";
 	private Connection sgbdConn = null;
 	private Statement sqlInterpreter = null;

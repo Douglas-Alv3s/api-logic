@@ -17,8 +17,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.edu.ufal.logic.DAO.DAOForm_Argumento;
 import br.edu.ufal.logic.DAO.dataSource.CriacaoBD;
+import br.edu.ufal.logic.DAO.dataSource.MySQLDataSource;
 import br.edu.ufal.logic.fbf.FBF;
+import br.edu.ufal.logic.model.Form_Argumento;
 import br.edu.ufal.logic.util.InstanciaRetorno;
 import br.edu.ufal.logic.util.Relacao;
 import br.edu.ufal.logic.util.Util;
@@ -74,20 +77,21 @@ public class ArgumentController {
 	@GetMapping("/{quantidade}/{listas}/{regras}/{limitador}")  // Endereço para acessar na url e parametros a receber
 	public ArrayList<ArgumentDTO> findArguments(@PathVariable String regras,
 			@PathVariable String quantidade, @PathVariable String listas, @PathVariable String limitador) throws IOException, Err {
-		
+				
+		String URL_argumento = "/"+quantidade+"/"+listas+"/"+regras+"/"+limitador;
+		System.out.println(URL_argumento);
+
 		System.out.println(regras);
 		// System.out.println(atomos);
 		System.out.println(quantidade);
 		System.out.println(listas);
 		
 
-
 		String[] regrasSplit = regras.split(",");
 		ArrayList<String> regs = new ArrayList<>();
 		for(String s: regrasSplit) {
 			regs.add(s);
 		}
-
 
 		// Define o valor das operações
 		String operacoes = "";
@@ -254,7 +258,7 @@ public class ArgumentController {
 		int cont = 0;
 		int valueRun = 4;
 		
-		Integer totalFormulas = (Integer.parseInt(quantidade) * Integer.parseInt(listas) *5);
+		Integer totalFormulas = (Integer.parseInt(quantidade) * Integer.parseInt(listas));
 		while(cont < totalFormulas) {
 			
 
@@ -448,6 +452,17 @@ public class ArgumentController {
 					if(!argumentTeste.contains(arg.toString())){
 						argumentos.add(service.argumentToArgumentDTO(cont, arg, regrinha));
 						System.out.println("FORMULA ENTRANDO "+argumentos.get(cont));
+						String argumentoString = arg.toString();
+
+						Form_Argumento form_argumento = new Form_Argumento(cont, argumentoString, regrinha, URL_argumento);
+						System.out.println("Objeto para o banco de dados "+form_argumento.toString());
+						try{
+							DAOForm_Argumento daoForm_Argumento = new DAOForm_Argumento(MySQLDataSource.getInstance());
+							daoForm_Argumento.adicionar(form_argumento);
+						}catch(Exception e){
+							System.out.println("Não esta sendo adicionado");
+						}
+
 						System.out.println(argumentos.size());
 						argumentTeste.add(arg.toString());
 						System.out.println(argumentos.size());
