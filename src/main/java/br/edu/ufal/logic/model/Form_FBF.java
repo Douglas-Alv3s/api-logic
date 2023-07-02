@@ -40,4 +40,10 @@ public class Form_FBF {
     public void setUrl_FBF(String url_FBF) {
         this.url_FBF = url_FBF;
     }
+
+    @Override
+    public String toString() {
+        return "Form_FBF [id_FBF=" + id_FBF + ", formula_FBF="
+                + formula_FBF + ", url_FBF=" + url_FBF + "]";
+    }
 }

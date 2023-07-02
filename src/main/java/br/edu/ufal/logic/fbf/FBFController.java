@@ -17,7 +17,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.edu.ufal.logic.DAO.DAOForm_Argumento;
+import br.edu.ufal.logic.DAO.DAOForm_FBF;
 import br.edu.ufal.logic.DAO.dataSource.CriacaoBD;
+import br.edu.ufal.logic.DAO.dataSource.MySQLDataSource;
+import br.edu.ufal.logic.model.Form_FBF;
 import br.edu.ufal.logic.util.InstanciaRetorno;
 import br.edu.ufal.logic.util.Util;
 import edu.mit.csail.sdg.alloy4.A4Reporter;
@@ -66,9 +70,11 @@ public class FBFController {
 			@PathVariable String operadoresLista, @PathVariable String listasExercicios) 
 			throws IOException, Err {
 		
+		String URL_FBF = "/"+atomosMin+"/"+atomosMax+"/"+quantidadeFbfs+"/"+listasExercicios+"/"+operadoresLista+"/"+todosOuAoMenosUm;
+		System.out.println(URL_FBF);
+
 		String quantAtomos = "";
 
-		
 		int atoMin = Integer.parseInt(atomosMin); // Transformação de String para int
 		int atoMax = Integer.parseInt(atomosMax); // Transformação de String para int
 
@@ -186,6 +192,16 @@ public class FBFController {
 						fbfs.add(service.FBFToFBFDTO(fbf, cont));
 						fbfsTeste.add(fbf.toString());
 						cont += 1;
+
+						String stringFBF = fbf.toString();
+						Form_FBF form_FBF = new Form_FBF(cont, stringFBF, URL_FBF);
+						System.out.println("Objeto para o banco de dados "+form_FBF.toString());
+						try{
+							DAOForm_FBF daoForm_FBF = new DAOForm_FBF(MySQLDataSource.getInstance());
+							daoForm_FBF.adicionar(form_FBF);
+						}catch(Exception e){
+							System.out.println("Não esta sendo adicionado");
+						}
 					} else {
 						System.out.println(fbf);
 					}

@@ -452,6 +452,12 @@ public class ArgumentController {
 					if(!argumentTeste.contains(arg.toString())){
 						argumentos.add(service.argumentToArgumentDTO(cont, arg, regrinha));
 						System.out.println("FORMULA ENTRANDO "+argumentos.get(cont));
+						
+						System.out.println(argumentos.size());
+						argumentTeste.add(arg.toString());
+						System.out.println(argumentos.size());
+						cont += 1;
+
 						String argumentoString = arg.toString();
 
 						Form_Argumento form_argumento = new Form_Argumento(cont, argumentoString, regrinha, URL_argumento);
@@ -463,10 +469,6 @@ public class ArgumentController {
 							System.out.println("Não esta sendo adicionado");
 						}
 
-						System.out.println(argumentos.size());
-						argumentTeste.add(arg.toString());
-						System.out.println(argumentos.size());
-						cont += 1;
 					}else {
 						System.out.println("quant: "+arg);
 					}
