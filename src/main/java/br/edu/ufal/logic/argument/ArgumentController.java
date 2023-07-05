@@ -18,9 +18,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.edu.ufal.logic.DAO.DAOForm_Argumento;
+import br.edu.ufal.logic.DAO.DAOForm_FBF;
 import br.edu.ufal.logic.DAO.dataSource.CriacaoBD;
 import br.edu.ufal.logic.DAO.dataSource.MySQLDataSource;
 import br.edu.ufal.logic.fbf.FBF;
+import br.edu.ufal.logic.fbf.FBFDTO;
 import br.edu.ufal.logic.model.Form_Argumento;
 import br.edu.ufal.logic.util.InstanciaRetorno;
 import br.edu.ufal.logic.util.Relacao;
@@ -258,134 +260,21 @@ public class ArgumentController {
 		int cont = 0;
 		int valueRun = 4;
 		
-		Integer totalFormulas = (Integer.parseInt(quantidade) * Integer.parseInt(listas));
+		int ultimoID = 0;
+		try {
+			DAOForm_Argumento daoForm_Argumento = new DAOForm_Argumento(MySQLDataSource.getInstance());
+			ultimoID = daoForm_Argumento.resgatarUltimoID();
+		} catch (Exception e) {
+			System.out.println("");
+		}
+		System.out.println("--------> Id obtido pela função: "+ ultimoID);
+
+		Integer argumentosRequeridos = (Integer.parseInt(quantidade) * Integer.parseInt(listas));
+		Integer totalFormulas = argumentosRequeridos + ultimoID;
 		while(cont < totalFormulas) {
 			
 
 			System.out.println("Operações usadas: "+operacoes);
-			
-
-			// Random regRandom = new Random();
-			// int quantidadeRegras = Integer.parseInt(limitador);
-			
-			// if(limitador.equals("1") || limitador.equals("2") || limitador.equals("3")){
-			// 	operacoes = "\n#NE=0 \n#NI=0 \n#CI=0 \n#CE=0 \n#DI=0 \n#DE=0 \n#BE=0 \n#BI=0 \n#MP=0 \n#MT=0 \n#SD=0\n"; 
-
-			// 	// Operaçoes nessas opção todas as regras ja são definidas.
-			// 	if(limitador.equals("1")){
-					
-			// 		int regraAleatorio = regRandom.nextInt(regs.size());
-			// 		System.out.println("\n\nREGRA CAINDO NESSA MIZERAAAAAAAAAAAAAAAAAAAAAAAA---"+regs.get(regraAleatorio)+" ----AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n");
-			// 		if(regs.get(regraAleatorio).equals("NE")) {
-			// 			operacoes = operacoes.replace("#NE=0","#NE > 0");
-			// 		}
-			// 		if(regs.get(regraAleatorio).equals("NI")) {
-			// 			operacoes = operacoes.replace("#NI=0","#NI > 0");
-			// 		}
-			// 		if(regs.get(regraAleatorio).equals("CI")) {
-			// 			operacoes = operacoes.replace("#CI=0","#CI > 0");
-			// 		}
-			// 		if(regs.get(regraAleatorio).equals("CE")) {
-			// 			operacoes = operacoes.replace("#CE=0","#CE > 0");
-			// 		}
-			// 		if(regs.get(regraAleatorio).equals("DI")) {
-			// 			operacoes = operacoes.replace("#DI=0","#DI > 0");
-			// 		}
-			// 		if(regs.get(regraAleatorio).equals("DE")) {
-			// 			operacoes = operacoes.replace("#DE=0","#DE > 0");
-			// 		}
-			// 		if(regs.get(regraAleatorio).equals("BE")) {
-			// 			operacoes = operacoes.replace("#BE=0", "#BE > 0");
-			// 		}
-			// 		if(regs.get(regraAleatorio).equals("BI")) {
-			// 			operacoes = operacoes.replace("#BI=0","#BI > 0");
-			// 		}
-			// 		if(regs.get(regraAleatorio).equals("MP")) {
-			// 			operacoes = operacoes.replace("#MP=0","#MP > 0");
-			// 		}
-			// 		if(regs.get(regraAleatorio).equals("MT")) {
-			// 			operacoes = operacoes.replace("#MT=0","#MT > 0");
-			// 		}
-			// 		if(regs.get(regraAleatorio).equals("SD")) {
-			// 			operacoes = operacoes.replace("#SD=0", "#SD > 0");
-			// 		}
-			// 	}else if(limitador.equals("2")){
-			// 		for(int i = 0; i <= quantidadeRegras; i++){
-			// 			int regraAleatorio = regRandom.nextInt(regs.size());
-			// 			if(regs.get(regraAleatorio).equals("NE")) {
-			// 				operacoes = operacoes.replace("#NE=0","#NE > 0");
-			// 			}
-			// 			if(regs.get(regraAleatorio).equals("NI")) {
-			// 				operacoes = operacoes.replace("#NI=0","#NI > 0");
-			// 			}
-			// 			if(regs.get(regraAleatorio).equals("CI")) {
-			// 				operacoes = operacoes.replace("#CI=0","#CI > 0");
-			// 			}
-			// 			if(regs.get(regraAleatorio).equals("CE")) {
-			// 				operacoes = operacoes.replace("#CE=0","#CE > 0");
-			// 			}
-			// 			if(regs.get(regraAleatorio).equals("DI")) {
-			// 				operacoes = operacoes.replace("#DI=0","#DI > 0");
-			// 			}
-			// 			if(regs.get(regraAleatorio).equals("DE")) {
-			// 				operacoes = operacoes.replace("#DE=0","#DE > 0");
-			// 			}
-			// 			if(regs.get(regraAleatorio).equals("BE")) {
-			// 				operacoes = operacoes.replace("#BE=0", "#BE > 0");
-			// 			}
-			// 			if(regs.get(regraAleatorio).equals("BI")) {
-			// 				operacoes = operacoes.replace("#BI=0","#BI > 0");
-			// 			}
-			// 			if(regs.get(regraAleatorio).equals("MP")) {
-			// 				operacoes = operacoes.replace("#MP=0","#MP > 0");
-			// 			}
-			// 			if(regs.get(regraAleatorio).equals("MT")) {
-			// 				operacoes = operacoes.replace("#MT=0","#MT > 0");
-			// 			}
-			// 			if(regs.get(regraAleatorio).equals("SD")) {
-			// 				operacoes = operacoes.replace("#SD=0", "#SD > 0");
-			// 			}
-			// 		}
-			// 	}else if(limitador.equals("3")){
-			// 		for(int i = 0; i < quantidadeRegras; i++){
-			// 			int regraAleatorio = regRandom.nextInt(regs.size());
-			// 			if(regs.get(regraAleatorio).equals("NE")) {
-			// 				operacoes = operacoes.replace("#NE=0","#NE > 0");
-			// 			}
-			// 			if(regs.get(regraAleatorio).equals("NI")) {
-			// 				operacoes = operacoes.replace("#NI=0","#NI > 0");
-			// 			}
-			// 			if(regs.get(regraAleatorio).equals("CI")) {
-			// 				operacoes = operacoes.replace("#CI=0","#CI > 0");
-			// 			}
-			// 			if(regs.get(regraAleatorio).equals("CE")) {
-			// 				operacoes = operacoes.replace("#CE=0","#CE > 0");
-			// 			}
-			// 			if(regs.get(regraAleatorio).equals("DI")) {
-			// 				operacoes = operacoes.replace("#DI=0","#DI > 0");
-			// 			}
-			// 			if(regs.get(regraAleatorio).equals("DE")) {
-			// 				operacoes = operacoes.replace("#DE=0","#DE > 0");
-			// 			}
-			// 			if(regs.get(regraAleatorio).equals("BE")) {
-			// 				operacoes = operacoes.replace("#BE=0", "#BE > 0");
-			// 			}
-			// 			if(regs.get(regraAleatorio).equals("BI")) {
-			// 				operacoes = operacoes.replace("#BI=0","#BI > 0");
-			// 			}
-			// 			if(regs.get(regraAleatorio).equals("MP")) {
-			// 				operacoes = operacoes.replace("#MP=0","#MP > 0");
-			// 			}
-			// 			if(regs.get(regraAleatorio).equals("MT")) {
-			// 				operacoes = operacoes.replace("#MT=0","#MT > 0");
-			// 			}
-			// 			if(regs.get(regraAleatorio).equals("SD")) {
-			// 				operacoes = operacoes.replace("#SD=0", "#SD > 0");
-			// 			}
-			// 		}
-			// 	}
-				
-			// }
 
 			valueRun += 1;
 		
@@ -461,7 +350,7 @@ public class ArgumentController {
 						String argumentoString = arg.toString();
 
 						Form_Argumento form_argumento = new Form_Argumento(cont, argumentoString, regrinha, URL_argumento);
-						System.out.println("Objeto para o banco de dados "+form_argumento.toString());
+						// System.out.println("Objeto para o banco de dados "+form_argumento.toString());
 						try{
 							DAOForm_Argumento daoForm_Argumento = new DAOForm_Argumento(MySQLDataSource.getInstance());
 							daoForm_Argumento.adicionar(form_argumento);
@@ -484,22 +373,29 @@ public class ArgumentController {
 			tmpAls.delete();
 		}
 
-		ArrayList<ArgumentDTO> argumentosAleatorio = new ArrayList<>();
-		int conter = 0;
-		Random random = new Random();
-		while(conter < (Integer.parseInt(quantidade) * Integer.parseInt(listas))) {
-			int indiceAleatorio = random.nextInt(totalFormulas);
-			System.out.println("------\nEssa Aqui é da lista\n"+argumentos.get(indiceAleatorio).toString());
-			
-			if(!argumentosAleatorio.contains(argumentos.get(indiceAleatorio))){
-				argumentosAleatorio.add(argumentos.get(indiceAleatorio));
-				conter++;
+		
+
+		if(limitador.equals("1")){ // Retornando sempre novas formulas
+			ArrayList<ArgumentDTO> ultimosArgumentos = new ArrayList<>(argumentos.subList(argumentos.size() - argumentosRequeridos, argumentos.size()));
+			return ultimosArgumentos;
+
+		}else if(limitador.equals("2")){ // Retorna aleatoriamente
+			ArrayList<ArgumentDTO> argumentosAleatorio = new ArrayList<>();
+			int conter = 0;
+			Random random = new Random();
+			while(conter < (Integer.parseInt(quantidade) * Integer.parseInt(listas))) {
+				int indiceAleatorio = random.nextInt(totalFormulas);
+				System.out.println("------\nEssa Aqui é da lista\n"+argumentos.get(indiceAleatorio).toString());
+				
+				if(!argumentosAleatorio.contains(argumentos.get(indiceAleatorio))){
+					argumentosAleatorio.add(argumentos.get(indiceAleatorio));
+					conter++;
+				}
 			}
+			return argumentosAleatorio;
+		}else{
+			return argumentos; // Retorna todas
 		}
-
-		return argumentosAleatorio;
-
-		// return argumentos;
 
 	}
 

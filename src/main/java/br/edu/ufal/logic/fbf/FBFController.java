@@ -9,6 +9,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,6 +65,7 @@ public class FBFController {
 
 
 	//http://127.0.0.1:8080/api-logic/fbfs/{atomosMin}/{atomosMax}/{quantidadeFbfs}/{listasExercicios}/{operadoresLista}/{todosOuAoMenosUm}
+	//localhost:8080/api-logic/fbfs/3/5/5/1/And,Or,Not,Imply/1
 	@GetMapping("/{atomosMin}/{atomosMax}/{quantidadeFbfs}/{listasExercicios}/{operadoresLista}/{todosOuAoMenosUm}") //Endereço de FBFS na Web
 	private ArrayList<FBFDTO> findFbfs(@PathVariable String atomosMin, @PathVariable String atomosMax,
 			@PathVariable String quantidadeFbfs,@PathVariable String todosOuAoMenosUm,
@@ -150,7 +152,18 @@ public class FBFController {
 		ArrayList<String> fbfsTeste = new ArrayList<>();
 
 		Util util = new Util();
-		Integer totalFormulas = (Integer.parseInt(quantidadeFbfs) * Integer.parseInt(listasExercicios));
+		
+		int ultimoID = 0;
+		try {
+			DAOForm_FBF daoForm_FBF = new DAOForm_FBF(MySQLDataSource.getInstance());
+			ultimoID = daoForm_FBF.resgatarUltimoID();
+		} catch (Exception e) {
+			System.out.println("");
+		}
+		System.out.println("--------> Id obtido pela função: "+ ultimoID);
+
+		Integer formulasRequeridas = (Integer.parseInt(quantidadeFbfs) * Integer.parseInt(listasExercicios));
+		Integer totalFormulas = formulasRequeridas + ultimoID;
 		
 		while (cont < (totalFormulas)) {
 			valueRun += 1;
@@ -195,7 +208,7 @@ public class FBFController {
 
 						String stringFBF = fbf.toString();
 						Form_FBF form_FBF = new Form_FBF(cont, stringFBF, URL_FBF);
-						System.out.println("Objeto para o banco de dados "+form_FBF.toString());
+						// System.out.println("Objeto para o banco de dados "+form_FBF.toString());
 						try{
 							DAOForm_FBF daoForm_FBF = new DAOForm_FBF(MySQLDataSource.getInstance());
 							daoForm_FBF.adicionar(form_FBF);
@@ -214,21 +227,27 @@ public class FBFController {
 			tmpAls.delete();
 		}
 
-		ArrayList<FBFDTO> fbfsAleatorio = new ArrayList<>();
-		int conter = 0;
-		Random random = new Random();
-		while(conter < (Integer.parseInt(quantidadeFbfs) * Integer.parseInt(listasExercicios))) {
-			int indiceAleatorio = random.nextInt(totalFormulas);
-			System.out.println("------\nEssa Aqui é da lista\n"+fbfs.get(indiceAleatorio).toString());
+		// -> Geração de formulas aleatorias ----------------------------
+		// ArrayList<FBFDTO> fbfsAleatorio = new ArrayList<>();
+		// int conter = 0;
+		// Random random = new Random();
+		// while(conter < (Integer.parseInt(quantidadeFbfs) * Integer.parseInt(listasExercicios))) {
+		// 	int indiceAleatorio = random.nextInt(totalFormulas);
+		// 	System.out.println("------\nEssa Aqui é da lista\n"+fbfs.get(indiceAleatorio).toString());
 			
-			if(!fbfsAleatorio.contains(fbfs.get(indiceAleatorio))){
-				fbfsAleatorio.add(fbfs.get(indiceAleatorio));
-				conter++;
-			}
-		}
-		
+		// 	if(!fbfsAleatorio.contains(fbfs.get(indiceAleatorio))){
+		// 		fbfsAleatorio.add(fbfs.get(indiceAleatorio));
+		// 		conter++;
+		// 	}
+		// }
+		// return fbfsAleatorio;
+		//---------------------------------------------
+
 		// return fbfs;
-		return fbfsAleatorio;
+
+		// Trazendo novas formulas
+		ArrayList<FBFDTO> ultimasFBFs = new ArrayList<>(fbfs.subList(fbfs.size() - formulasRequeridas, fbfs.size()));
+		return ultimasFBFs;
 	}
 
 	private static void flushModelToFile(File tmpAls, String model) throws IOException {

@@ -3,11 +3,12 @@ package br.edu.ufal.logic.DAO;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
+import br.edu.ufal.logic.DAO.InterfaceDAO.IDAOFormulas;
 import br.edu.ufal.logic.DAO.InterfaceDAO.IDAOGenerico;
 import br.edu.ufal.logic.DAO.dataSource.MySQLDataSource;
 import br.edu.ufal.logic.model.Form_Argumento;
 
-public class DAOForm_Argumento implements IDAOGenerico<Form_Argumento>{
+public class DAOForm_Argumento implements IDAOGenerico<Form_Argumento>, IDAOFormulas<Form_Argumento>{
     
     private MySQLDataSource dataSource;
     
@@ -116,6 +117,25 @@ public class DAOForm_Argumento implements IDAOGenerico<Form_Argumento>{
             System.out.println("Erro ao obter todos os clientes do banco de dados");
         }
         return form_argumentos;
+    }
+
+    @Override
+    public int resgatarUltimoID() {
+        int ultimoId = 0;
+
+        try{
+            // Cria a consulta SQL para obter o último id adicionado
+            String sql = "SELECT * FROM form_argumento ORDER BY id_argumento DESC LIMIT 1";
+            // Executa a consulta
+            ResultSet resultSet  = dataSource.executarSelect(sql);
+
+            if(resultSet.next()){
+                ultimoId = resultSet.getInt("id_argumento");
+            }
+        }catch(Exception e){
+
+        }
+        return ultimoId;
     }
 
     

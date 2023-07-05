@@ -3,14 +3,13 @@ package br.edu.ufal.logic.DAO;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
+import br.edu.ufal.logic.DAO.InterfaceDAO.IDAOFormulas;
 import br.edu.ufal.logic.DAO.InterfaceDAO.IDAOGenerico;
 import br.edu.ufal.logic.DAO.dataSource.MySQLDataSource;
 import br.edu.ufal.logic.model.Form_FBF;
-import br.edu.ufal.logic.model.Form_FBF;
-import br.edu.ufal.logic.model.Form_FBF;
-import br.edu.ufal.logic.model.Form_FBF;
 
-public class DAOForm_FBF implements IDAOGenerico<Form_FBF>{
+
+public class DAOForm_FBF implements IDAOGenerico<Form_FBF>, IDAOFormulas<Form_FBF>{
 
     private MySQLDataSource dataSource;
 
@@ -59,7 +58,7 @@ public class DAOForm_FBF implements IDAOGenerico<Form_FBF>{
 
             dataSource.executarQueryGeral(sql);
             
-            System.out.println("Form_FBF adicionado com sucesso: " + sql);
+            // System.out.println("Form_FBF adicionado com sucesso: " + sql);
         } catch (Exception e) {
             System.out.println("Erro ao adicionar Form_FBF no banco de dados: " + e.getMessage());
         }
@@ -111,9 +110,29 @@ public class DAOForm_FBF implements IDAOGenerico<Form_FBF>{
             }
             resultado.close();
         } catch (Exception e) {
-            System.out.println("Erro ao obter todos os clientes do banco de dados");
+            System.out.println("Erro ao obter todos do banco de dados");
         }
         return form_FBFs;
+    }
+
+    
+    @Override
+    public int resgatarUltimoID() {
+        int ultimoId = 0;
+
+        try{
+            // Cria a consulta SQL para obter o último id adicionado
+            String sql = "SELECT * FROM form_fbf ORDER BY id_FBF DESC LIMIT 1";
+            // Executa a consulta
+            ResultSet resultSet  = dataSource.executarSelect(sql);
+
+            if(resultSet.next()){
+                ultimoId = resultSet.getInt("id_FBF");
+            }
+        }catch(Exception e){
+
+        }
+        return ultimoId;
     }
 }
     

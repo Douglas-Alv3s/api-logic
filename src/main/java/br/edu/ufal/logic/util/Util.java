@@ -242,7 +242,7 @@ public class Util {
 
 	public String resgatarRegras(String instancia){
 		// USANDO REGEX PARA TRABALHAR COM AS REGRAS
-		System.out.println("\n\t----------REGEX-------------");
+		// System.out.println("\n\t----------REGEX-------------");
 
 		// TRATANDO A INFORMAÇÃO PEGADA DO ALLOY
 		String argRegras = "";
@@ -251,7 +251,7 @@ public class Util {
 		for (String string : retorno) {
 			if (string.startsWith("this/Rule=")){
 				argRegras = string;
-				System.out.println("----> A do this/Rule: "+argRegras);
+				// System.out.println("----> A do this/Rule: "+argRegras);
 			}
 			argRegras = argRegras.replace("$", "");
 
@@ -268,16 +268,16 @@ public class Util {
 
 		while (matcher.find()){
 			
-            System.out.print(matcher.start() + " ");	// OBTEM O INDICE DO PADRÃO
-            System.out.println(argRegras.substring((matcher.start()-2), matcher.start()));
+            // System.out.print(matcher.start() + " ");	// OBTEM O INDICE DO PADRÃO
+            // System.out.println(argRegras.substring((matcher.start()-2), matcher.start()));
             regra = argRegras.substring((matcher.start()-2), matcher.start());
             regsLista.add(regra);
         }
 		
 		String saidaJson = String.join(", ", regsLista);
  
-		System.out.println("As do json: "+ saidaJson);
-		System.out.println("\t----------Fim Regex---------\n");
+		// System.out.println("As do json: "+ saidaJson);
+		// System.out.println("\t----------Fim Regex---------\n");
 		return saidaJson;
 	}
 }
