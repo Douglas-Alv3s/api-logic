@@ -105,7 +105,6 @@ public class DAOForm_FBF implements IDAOGenerico<Form_FBF>, IDAOFormulas<Form_FB
                 String URL_FBF = resultado.getString("URL_FBF");
 
                 Form_FBF form_FBF = new Form_FBF(id_FBF, formula_FBF, URL_FBF);
-                form_FBF.setUrl_FBF(URL_FBF);
                 form_FBFs.add(form_FBF);
             }
             resultado.close();

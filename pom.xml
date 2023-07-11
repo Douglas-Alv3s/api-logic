@@ -23,6 +23,13 @@
 	<dependencies>
 
 		<dependency>
+			<groupId>de.hhu.stups</groupId>
+			<artifactId>alloy-core</artifactId>
+			<version>5.1.0</version>
+		</dependency>
+
+
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
@@ -53,13 +60,13 @@
 			<scope>runtime</scope>
 			<optional>true</optional>
 		</dependency>
-		<dependency>
+		<!-- <dependency>
 		    <groupId>edu.mit</groupId>
 			<artifactId>alloy</artifactId>
 			<version>4.2</version>
 			<scope>system</scope>
 			<systemPath>${project.basedir}/lib/alloy.jar</systemPath>
-		</dependency>
+		</dependency> -->
 
 		<dependency>
 			<groupId>mysql</groupId>
