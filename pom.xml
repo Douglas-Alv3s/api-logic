@@ -60,13 +60,13 @@
 			<scope>runtime</scope>
 			<optional>true</optional>
 		</dependency>
-		<!-- <dependency>
+		<dependency>
 		    <groupId>edu.mit</groupId>
 			<artifactId>alloy</artifactId>
 			<version>4.2</version>
 			<scope>system</scope>
 			<systemPath>${project.basedir}/lib/alloy.jar</systemPath>
-		</dependency> -->
+		</dependency>
 
 		<dependency>
 			<groupId>mysql</groupId>
