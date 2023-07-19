@@ -71,10 +71,10 @@ public class FBFController {
 
 	//http://127.0.0.1:8080/api-logic/fbfs/{atomosMin}/{atomosMax}/{quantidadeFbfs}/{listasExercicios}/{operadoresLista}/{todosOuAoMenosUm}
 	//localhost:8080/api-logic/fbfs/3/5/5/1/And,Or,Not,Imply/1
-	@GetMapping("/{atomosMin}/{atomosMax}/{quantidadeFbfs}/{listasExercicios}/{operadoresLista}/{todosOuAoMenosUm}") //Endereço de FBFS na Web
+	@GetMapping("/{atomosMin}/{atomosMax}/{quantidadeFbfs}/{listasExercicios}/{operadoresLista}/{todosOuAoMenosUm}/{metodo}") //Endereço de FBFS na Web
 	private ArrayList<FBFDTO> findFbfs(@PathVariable String atomosMin, @PathVariable String atomosMax,
 			@PathVariable String quantidadeFbfs,@PathVariable String todosOuAoMenosUm,
-			@PathVariable String operadoresLista, @PathVariable String listasExercicios) 
+			@PathVariable String operadoresLista, @PathVariable String listasExercicios, @PathVariable String metodo) 
 			throws IOException, Err {
 		
 		String URL_FBF = "/"+atomosMin+"/"+atomosMax+"/"+quantidadeFbfs+"/"+listasExercicios+"/"+operadoresLista+"/"+todosOuAoMenosUm;
@@ -159,17 +159,27 @@ public class FBFController {
 
 		Util util = new Util();
 		
-		int ultimoID = 0;
-		try {
-			DAOForm_FBF daoForm_FBF = new DAOForm_FBF(MySQLDataSource.getInstance());
-			ultimoID = daoForm_FBF.resgatarUltimoID();
-		} catch (Exception e) {
-			System.out.println("");
-		}
-		System.out.println("--------> Id obtido pela função: "+ ultimoID);
-
+		// Quantidade de formulas requeridas por cada método
 		Integer formulasRequeridas = (Integer.parseInt(quantidadeFbfs) * Integer.parseInt(listasExercicios));
-		Integer totalFormulas = formulasRequeridas + ultimoID;
+		Integer totalFormulas;
+		if(metodo.equals("1")){ //Com o uso de banco de dados
+			int ultimoID = 0;
+			try {
+				DAOForm_FBF daoForm_FBF = new DAOForm_FBF(MySQLDataSource.getInstance());
+				ultimoID = daoForm_FBF.resgatarUltimoID();
+			} catch (Exception e) {
+				System.out.println("");
+			}
+			System.out.println("--------> Id obtido pela função: "+ ultimoID);
+
+			
+			totalFormulas = formulasRequeridas + ultimoID;
+		}else if(metodo.equals("2")){ // Geração de mais formulas para a garantir a aleatoriedade
+			totalFormulas = formulasRequeridas*10;
+		}else { // Trás as formulas total requeridas pelo usuario
+			totalFormulas = formulasRequeridas;
+		}
+		
 		
 		while (cont < (totalFormulas)) {
 			valueRun += 1;
@@ -233,27 +243,31 @@ public class FBFController {
 			tmpAls.delete();
 		}
 
-		// -> Geração de formulas aleatorias ----------------------------
-		// ArrayList<FBFDTO> fbfsAleatorio = new ArrayList<>();
-		// int conter = 0;
-		// Random random = new Random();
-		// while(conter < (Integer.parseInt(quantidadeFbfs) * Integer.parseInt(listasExercicios))) {
-		// 	int indiceAleatorio = random.nextInt(totalFormulas);
-		// 	System.out.println("------\nEssa Aqui é da lista\n"+fbfs.get(indiceAleatorio).toString());
-			
-		// 	if(!fbfsAleatorio.contains(fbfs.get(indiceAleatorio))){
-		// 		fbfsAleatorio.add(fbfs.get(indiceAleatorio));
-		// 		conter++;
-		// 	}
-		// }
-		// return fbfsAleatorio;
-		//---------------------------------------------
+		if(metodo.equals("1")){	// Trazendo novas formulas/ Usando método com banco de dados
+			ArrayList<FBFDTO> ultimasFBFs = new ArrayList<>(fbfs.subList(fbfs.size() - formulasRequeridas, fbfs.size()));
+			return ultimasFBFs;
+		}else if(metodo.equals("2")){ //Geração de formulas aleatorias/ Sem usar banco de dados
+			ArrayList<FBFDTO> fbfsAleatorio = new ArrayList<>();
+			int conter = 0;
+			Random random = new Random();
+			while(conter < (Integer.parseInt(quantidadeFbfs) * Integer.parseInt(listasExercicios))) {
+				int indiceAleatorio = random.nextInt(totalFormulas);
+				System.out.println("------\nEssa Aqui é da lista\n"+fbfs.get(indiceAleatorio).toString());
+				
+				if(!fbfsAleatorio.contains(fbfs.get(indiceAleatorio))){
+					fbfsAleatorio.add(fbfs.get(indiceAleatorio));
+					conter++;
+				}
+			}
+			return fbfsAleatorio;
+		}else{ // Retorna todas as formulas geradas/ Sem usar banco de dados
+			return fbfs;
+		}
+		
 
-		// return fbfs;
 
-		// Trazendo novas formulas
-		ArrayList<FBFDTO> ultimasFBFs = new ArrayList<>(fbfs.subList(fbfs.size() - formulasRequeridas, fbfs.size()));
-		return ultimasFBFs;
+
+		
 	}
 
 	private static void flushModelToFile(File tmpAls, String model) throws IOException {

@@ -84,9 +84,9 @@ public class ArgumentController {
 	// @GetMapping("/{regras}/{Limitador}/{quantidade}/{listas}")
 	// Limitador tera apenas 3 opções [1 ou 2 ou 3 ou 4 ou 5]
 
-	@GetMapping("/{quantidade}/{listas}/{regras}/{limitador}/{estrategia}")  // Endereço para acessar na url e parametros a receber
+	@GetMapping("/{quantidade}/{listas}/{regras}/{limitador}/{metodo}")  // Endereço para acessar na url e parametros a receber
 	public ArrayList<ArgumentDTO> findArguments(@PathVariable String regras,
-			@PathVariable String quantidade, @PathVariable String listas, @PathVariable String limitador, @PathVariable String estrategia) throws IOException, Err {
+			@PathVariable String quantidade, @PathVariable String listas, @PathVariable String limitador, @PathVariable String metodo) throws IOException, Err {
 				
 		// String URL_argumento = "/"+quantidade+"/"+listas+"/"+regras+"/"+limitador;
 		String URL_argumento = "/"+regras+"/"+limitador;
@@ -269,20 +269,26 @@ public class ArgumentController {
 		int cont = 0;
 		int valueRun = 4;
 		
-		int ultimoID = 0;
-		try {
-			DAOForm_Argumento daoForm_Argumento = new DAOForm_Argumento(MySQLDataSource.getInstance());
-			ultimoID = daoForm_Argumento.resgatarUltimoID();
-		} catch (Exception e) {
-			System.out.println("");
-		}
-		System.out.println("--------> Id obtido pela função: "+ ultimoID);
-
+		Integer totalFormulas;
 		Integer argumentosRequeridos = (Integer.parseInt(quantidade) * Integer.parseInt(listas));
-		Integer totalFormulas = argumentosRequeridos + ultimoID;
-		while(cont < totalFormulas) {
-			
 
+		if(metodo.equals("1")){ //Utilização da estrátegia com banco de dados
+			int ultimoID = 0;
+			try {
+				DAOForm_Argumento daoForm_Argumento = new DAOForm_Argumento(MySQLDataSource.getInstance());
+				ultimoID = daoForm_Argumento.resgatarUltimoID();
+			} catch (Exception e) {
+				System.out.println("");
+			}
+			System.out.println("--------> Id obtido pela função: "+ ultimoID);
+			totalFormulas = argumentosRequeridos + ultimoID;
+		}else if(metodo.equals("2")){ // Estratégia para garantir a aleatoriedade
+			totalFormulas = argumentosRequeridos * 10;
+		}else{ // Tras todas as formulas.
+			totalFormulas = argumentosRequeridos;
+		}
+
+		while(cont < totalFormulas) {
 			System.out.println("Operações usadas: "+operacoes);
 
 			valueRun += 1;
