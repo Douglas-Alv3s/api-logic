@@ -109,7 +109,6 @@ public class DAOForm_Argumento implements IDAOGenerico<Form_Argumento>, IDAOForm
                 String URL_argumento = resultado.getString("URL_argumento");
 
                 Form_Argumento form_argumento = new Form_Argumento(id_argumento, formula_argumento, regras, URL_argumento);
-                form_argumento.setUrl_argumento(URL_argumento);
                 form_argumentos.add(form_argumento);
             }
             resultado.close();

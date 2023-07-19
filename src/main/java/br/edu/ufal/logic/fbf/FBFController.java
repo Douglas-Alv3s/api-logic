@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.edu.ufal.logic.DAO.DAOForm_Argumento;
 import br.edu.ufal.logic.DAO.DAOForm_FBF;
 import br.edu.ufal.logic.DAO.dataSource.CriacaoBD;
 import br.edu.ufal.logic.DAO.dataSource.MySQLDataSource;
@@ -27,12 +26,18 @@ import br.edu.ufal.logic.util.InstanciaRetorno;
 import br.edu.ufal.logic.util.Util;
 import edu.mit.csail.sdg.alloy4.A4Reporter;
 import edu.mit.csail.sdg.alloy4.Err;
-import edu.mit.csail.sdg.alloy4compiler.ast.Command;
-import edu.mit.csail.sdg.alloy4compiler.parser.CompModule;
-import edu.mit.csail.sdg.alloy4compiler.parser.CompUtil;
-import edu.mit.csail.sdg.alloy4compiler.translator.A4Options;
-import edu.mit.csail.sdg.alloy4compiler.translator.A4Solution;
-import edu.mit.csail.sdg.alloy4compiler.translator.TranslateAlloyToKodkod;
+// import edu.mit.csail.sdg.alloy4compiler.ast.Command;
+// import edu.mit.csail.sdg.alloy4compiler.parser.CompModule;
+// import edu.mit.csail.sdg.alloy4compiler.parser.CompUtil;
+// import edu.mit.csail.sdg.alloy4compiler.translator.A4Options;
+// import edu.mit.csail.sdg.alloy4compiler.translator.A4Solution;
+// import edu.mit.csail.sdg.alloy4compiler.translator.TranslateAlloyToKodkod;
+import edu.mit.csail.sdg.ast.Command;
+import edu.mit.csail.sdg.parser.CompModule;
+import edu.mit.csail.sdg.parser.CompUtil;
+import edu.mit.csail.sdg.translator.A4Options;
+import edu.mit.csail.sdg.translator.A4Solution;
+import edu.mit.csail.sdg.translator.TranslateAlloyToKodkod;
 
 @RestController
 @RequestMapping("/fbfs")
