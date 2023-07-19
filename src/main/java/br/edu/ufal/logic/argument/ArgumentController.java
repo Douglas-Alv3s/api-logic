@@ -18,11 +18,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.edu.ufal.logic.DAO.DAOForm_Argumento;
-import br.edu.ufal.logic.DAO.DAOForm_FBF;
 import br.edu.ufal.logic.DAO.dataSource.CriacaoBD;
 import br.edu.ufal.logic.DAO.dataSource.MySQLDataSource;
 import br.edu.ufal.logic.fbf.FBF;
-import br.edu.ufal.logic.fbf.FBFDTO;
 import br.edu.ufal.logic.model.Form_Argumento;
 import br.edu.ufal.logic.util.InstanciaRetorno;
 import br.edu.ufal.logic.util.Relacao;
@@ -76,11 +74,12 @@ public class ArgumentController {
 	// @GetMapping("/{regras}/{Limitador}/{quantidade}/{listas}")
 	// Limitador tera apenas 3 opções [1 ou 2 ou 3 ou 4 ou 5]
 
-	@GetMapping("/{quantidade}/{listas}/{regras}/{limitador}")  // Endereço para acessar na url e parametros a receber
+	@GetMapping("/{quantidade}/{listas}/{regras}/{limitador}/{estrategia}")  // Endereço para acessar na url e parametros a receber
 	public ArrayList<ArgumentDTO> findArguments(@PathVariable String regras,
-			@PathVariable String quantidade, @PathVariable String listas, @PathVariable String limitador) throws IOException, Err {
+			@PathVariable String quantidade, @PathVariable String listas, @PathVariable String limitador, @PathVariable String estrategia) throws IOException, Err {
 				
-		String URL_argumento = "/"+quantidade+"/"+listas+"/"+regras+"/"+limitador;
+		// String URL_argumento = "/"+quantidade+"/"+listas+"/"+regras+"/"+limitador;
+		String URL_argumento = "/"+regras+"/"+limitador;
 		System.out.println(URL_argumento);
 
 		System.out.println(regras);

@@ -73,6 +73,7 @@ public class FBFController {
 			throws IOException, Err {
 		
 		String URL_FBF = "/"+atomosMin+"/"+atomosMax+"/"+quantidadeFbfs+"/"+listasExercicios+"/"+operadoresLista+"/"+todosOuAoMenosUm;
+		// String URL_FBF = "/"+atomosMin+"/"+atomosMax+"/"+operadoresLista+"/"+todosOuAoMenosUm;
 		System.out.println(URL_FBF);
 
 		String quantAtomos = "";
