@@ -21,7 +21,7 @@ public class CriacaoBD{
         DAOCreateDB();
 
         // Cria a tabela usuario
-        DAOCreateTB("CREATE TABLE usuario (id_usuario int PRIMARY KEY AUTO_INCREMENT, nome varchar(30), email varchar(40), senha varchar(30))", "usuario");
+        DAOCreateTB("CREATE TABLE usuario (id_usuario varchar(36) PRIMARY KEY , nome varchar(30), email varchar(40), senha varchar(30))", "usuario");
 
         // Cria a tabela argumentos
         DAOCreateTB("CREATE TABLE form_argumento (id_argumento int PRIMARY KEY, formula_argumento varchar(70), regras varchar(30), URL_argumento varchar(70))", "form_argumento");

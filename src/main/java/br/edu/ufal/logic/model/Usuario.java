@@ -1,29 +1,32 @@
 package br.edu.ufal.logic.model;
 
+import java.util.UUID;
+
 public class Usuario {
     
-    private int id_usuario;
+    private UUID id_usuario;
     private String email;
     private String nome;
     private String senha;
     
     public Usuario(String email, String nome, String senha) {
+        this.id_usuario = UUID.randomUUID();
         this.email = email;
         this.nome = nome;
         this.senha = senha;
     }
 
-    public Usuario(int id_usuario, String email, String nome, String senha) {
+    public Usuario(UUID id_usuario, String email, String nome, String senha) {
         this.id_usuario = id_usuario;
         this.email = email;
         this.nome = nome;
         this.senha = senha;
     }
     
-    public int getId_usuario() {
+    public UUID getId_usuario() {
         return id_usuario;
     }
-    public void setId_usuario(int id_usuario) {
+    public void setId_usuario(UUID id_usuario) {
         this.id_usuario = id_usuario;
     }
     public String getEmail() {

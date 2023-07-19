@@ -2,6 +2,7 @@ package br.edu.ufal.logic.DAO;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.UUID;
 
 import br.edu.ufal.logic.DAO.InterfaceDAO.IDAOGenerico;
 import br.edu.ufal.logic.DAO.InterfaceDAO.IDAOUsuario;
@@ -24,7 +25,7 @@ public class DAOUsuario implements IDAOGenerico<Usuario>, IDAOUsuario<Usuario>{
     
             if (resultado.next()) {
                 // Extrair os dados do ResultSet e criar um objeto Usuario
-                int id_usuario = resultado.getInt("id_usuario");
+                UUID id_usuario = UUID.fromString(resultado.getString("id_usuario"));
                 String nome = resultado.getString("nome");
                 String email = resultado.getString("email");
                 String senha = resultado.getString("senha");
@@ -85,7 +86,7 @@ public class DAOUsuario implements IDAOGenerico<Usuario>, IDAOUsuario<Usuario>{
     @Override
     public void alterar(Usuario dadosAntigo, Usuario dadosNovos) {
        try {
-            String sql = "UPDATE usuario SET id_usuario = '" + dadosNovos.getId_usuario() + "', nome = '"+ dadosNovos.getNome()+"', email = " + dadosNovos.getEmail() + "', senha = "+ dadosNovos.getSenha() + "' WHERE id_usuario = '" + dadosAntigo.getId_usuario() + "'";
+            String sql = "UPDATE usuario SET nome = '"+ dadosNovos.getNome()+"', email = " + dadosNovos.getEmail() + "', senha = "+ dadosNovos.getSenha() + "' WHERE id_usuario = '" + dadosAntigo.getId_usuario() + "'";
             // System.out.println("Comando SQL: "+sql);
             dataSource.executarQueryGeral(sql);
         } catch (Exception e) {
@@ -100,7 +101,7 @@ public class DAOUsuario implements IDAOGenerico<Usuario>, IDAOUsuario<Usuario>{
             String sql = "SELECT * FROM usuario";
             ResultSet resultado = dataSource.executarSelect(sql);
             while (resultado.next()) {
-                int id_usuario = resultado.getInt("id_usuario");
+                UUID id_usuario = UUID.fromString(resultado.getString("id_usuario"));
                 String nome = resultado.getString("nome");
                 String email = resultado.getString("email");
                 String senha = resultado.getString("senha");
