@@ -18,7 +18,33 @@ public class DAOUsuario implements IDAOGenerico<Usuario>, IDAOUsuario<Usuario>{
     }
     
     @Override
-    public Usuario consultar(String emailVerificar) {
+    public Usuario consultarID(String usuarioID) {
+         try {
+            String sql = "SELECT * FROM usuario WHERE id_usuario = '" + usuarioID + "'";
+            ResultSet resultado = dataSource.executarSelect(sql);
+    
+            if (resultado.next()) {
+                // Extrair os dados do ResultSet e criar um objeto Usuario
+                UUID id_usuario = UUID.fromString(resultado.getString("id_usuario"));
+                String nome = resultado.getString("nome");
+                String email = resultado.getString("email");
+                String senha = resultado.getString("senha");
+    
+                Usuario usuario = new Usuario(id_usuario, nome, email, senha);
+                return usuario;
+            } else {
+                // Usuario não encontrado
+                return null;
+            }
+        } catch (Exception e) {
+            // Tratar a exceção e retornar um valor padrão (pode ser null) em caso de erro
+            System.err.println("Erro ao consultar Usuario no banco de dados: " + e.getMessage());
+            return null;
+        }
+    }
+
+    @Override
+    public Usuario consultarEmail(String emailVerificar) {
          try {
             String sql = "SELECT * FROM usuario WHERE email = '" + emailVerificar + "'";
             ResultSet resultado = dataSource.executarSelect(sql);
@@ -49,7 +75,7 @@ public class DAOUsuario implements IDAOGenerico<Usuario>, IDAOUsuario<Usuario>{
             String email_usuario = usuario.getEmail();
             
             // Verificar se o Usuario já existe
-            Usuario UsuarioExistente = consultar(email_usuario);          
+            Usuario UsuarioExistente = consultarEmail(email_usuario);          
             if (UsuarioExistente != null) {
                 System.out.println("O Usuario com email '" + email_usuario + "' já existe no banco de dados.");
                 return ; // Encerra o método, não adicionando um novo Usuario
@@ -69,7 +95,7 @@ public class DAOUsuario implements IDAOGenerico<Usuario>, IDAOUsuario<Usuario>{
     public void remover(String emailUsuario) {
         try {
             // Verificar se o Usuario já existe
-            Usuario usuarioExistente = consultar(emailUsuario);
+            Usuario usuarioExistente = consultarEmail(emailUsuario);
                        
             if (usuarioExistente == null) {
                 System.out.println("O Usuario com id '" + emailUsuario + "' não existe no banco de dados. Impossivel remover.");

@@ -34,21 +34,21 @@ public class UsuarioController {
     }
 
     @GetMapping("/login/{email}/{senha}")
-    public ResponseEntity<String> loginUsuario(@PathVariable String email, @PathVariable String senha){
+    public Usuario loginUsuario(@PathVariable String email, @PathVariable String senha){
             // Verificar se o usuário existe no banco de dados
         Usuario usuario = usuarioService.verificarEmailExistente(email);
         if (usuario == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuário não encontrado.");
+            return usuario;
         }
 
         // Verificar se a senha está correta
-        if (!usuario.getSenha().equals(senha)) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Senha incorreta.");
-        }
+        // if (!usuario.getSenha().equals(senha)) {
+        //     return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Senha incorreta.");
+        // }
 
         // Realizar a autenticação do usuário (por exemplo, gerar um token de autenticação)
 
         // Retornar a resposta de sucesso com o token de autenticação
-        return ResponseEntity.ok("Login bem-sucedido:" + usuario.toString());
+        return usuario;
     }
 }

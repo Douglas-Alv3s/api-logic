@@ -2,7 +2,7 @@ package br.edu.ufal.logic.model;
 
 public class Form_Argumento {
     
-    private int id_argumento;
+    private Integer id_argumento;
     private String formula_argumento;
     private String regras;
     private String url_argumento;
@@ -14,19 +14,19 @@ public class Form_Argumento {
         this.url_argumento = url_argumento;
     }
 
-    public Form_Argumento(int id_argumento, String formula_argumento, String regras, String url_argumento) {
+    public Form_Argumento(Integer id_argumento, String formula_argumento, String regras, String url_argumento) {
         this.id_argumento = id_argumento;
         this.formula_argumento = formula_argumento;
         this.regras = regras;
         this.url_argumento = url_argumento;
     }
 
-    public int getId_argumento() {
+    public Integer getId_argumento() {
         return id_argumento;
     }
 
 
-    public void setId_argumento(int id_argumento) {
+    public void setId_argumento(Integer id_argumento) {
         this.id_argumento = id_argumento;
     }
 

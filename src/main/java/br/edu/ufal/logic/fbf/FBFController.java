@@ -221,15 +221,16 @@ public class FBFController {
 						fbfs.add(service.FBFToFBFDTO(fbf, cont));
 						fbfsTeste.add(fbf.toString());
 						cont += 1;
-
-						String stringFBF = fbf.toString();
-						Form_FBF form_FBF = new Form_FBF(cont, stringFBF, URL_FBF);
-						// System.out.println("Objeto para o banco de dados "+form_FBF.toString());
-						try{
-							DAOForm_FBF daoForm_FBF = new DAOForm_FBF(MySQLDataSource.getInstance());
-							daoForm_FBF.adicionar(form_FBF);
-						}catch(Exception e){
-							System.out.println("Não esta sendo adicionado");
+						if(metodo.equals("1")){
+							String stringFBF = fbf.toString();
+							Form_FBF form_FBF = new Form_FBF(cont, stringFBF, URL_FBF);
+							// System.out.println("Objeto para o banco de dados "+form_FBF.toString());
+							try{
+								DAOForm_FBF daoForm_FBF = new DAOForm_FBF(MySQLDataSource.getInstance());
+								daoForm_FBF.adicionar(form_FBF);
+							}catch(Exception e){
+								System.out.println("Não esta sendo adicionado");
+							}
 						}
 					} else {
 						System.out.println(fbf);

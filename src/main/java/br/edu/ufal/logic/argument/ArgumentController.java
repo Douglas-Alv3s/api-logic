@@ -18,10 +18,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.edu.ufal.logic.DAO.DAOForm_Argumento;
+import br.edu.ufal.logic.DAO.DAOGuarda;
+import br.edu.ufal.logic.DAO.DAOUsuario;
 import br.edu.ufal.logic.DAO.dataSource.CriacaoBD;
 import br.edu.ufal.logic.DAO.dataSource.MySQLDataSource;
 import br.edu.ufal.logic.fbf.FBF;
 import br.edu.ufal.logic.model.Form_Argumento;
+import br.edu.ufal.logic.model.Guarda;
+import br.edu.ufal.logic.model.Usuario;
 import br.edu.ufal.logic.util.InstanciaRetorno;
 import br.edu.ufal.logic.util.Relacao;
 import br.edu.ufal.logic.util.Util;
@@ -84,9 +88,9 @@ public class ArgumentController {
 	// @GetMapping("/{regras}/{Limitador}/{quantidade}/{listas}")
 	// Limitador tera apenas 3 opções [1 ou 2 ou 3 ou 4 ou 5]
 
-	@GetMapping("/{quantidade}/{listas}/{regras}/{limitador}/{metodo}")  // Endereço para acessar na url e parametros a receber
+	@GetMapping("/{quantidade}/{listas}/{regras}/{limitador}/{metodo}/{idClienteLogado}")  // Endereço para acessar na url e parametros a receber
 	public ArrayList<ArgumentDTO> findArguments(@PathVariable String regras,
-			@PathVariable String quantidade, @PathVariable String listas, @PathVariable String limitador, @PathVariable String metodo) throws IOException, Err {
+			@PathVariable String quantidade, @PathVariable String listas, @PathVariable String limitador, @PathVariable String metodo, @PathVariable String idClienteLogado) throws IOException, Err {
 				
 		// String URL_argumento = "/"+quantidade+"/"+listas+"/"+regras+"/"+limitador;
 		String URL_argumento = "/"+regras+"/"+limitador;
@@ -362,17 +366,25 @@ public class ArgumentController {
 						System.out.println(argumentos.size());
 						cont += 1;
 
-						String argumentoString = arg.toString();
+						if(metodo.equals("1")){
+							String argumentoString = arg.toString();
+							Form_Argumento form_argumento = new Form_Argumento(cont, argumentoString, regrinha, URL_argumento);
+							// System.out.println("Objeto para o banco de dados "+form_argumento.toString());
 
-						Form_Argumento form_argumento = new Form_Argumento(cont, argumentoString, regrinha, URL_argumento);
-						// System.out.println("Objeto para o banco de dados "+form_argumento.toString());
-						try{
-							DAOForm_Argumento daoForm_Argumento = new DAOForm_Argumento(MySQLDataSource.getInstance());
-							daoForm_Argumento.adicionar(form_argumento);
-						}catch(Exception e){
-							System.out.println("Não esta sendo adicionado");
+							try{
+								DAOUsuario daoUsuario = new DAOUsuario(MySQLDataSource.getInstance());
+								DAOForm_Argumento daoForm_Argumento = new DAOForm_Argumento(MySQLDataSource.getInstance());
+								DAOGuarda daoGuarda = new DAOGuarda(MySQLDataSource.getInstance());
+
+								Usuario usuario = daoUsuario.consultarID(idClienteLogado);
+								Guarda guarda = new Guarda(usuario, null, form_argumento);
+								daoForm_Argumento.adicionar(form_argumento);
+								daoGuarda.realizarRegistroArgumento(guarda);
+								
+							}catch(Exception e){
+								System.out.println("Não esta sendo adicionado");
+							}
 						}
-
 					}else {
 						System.out.println("quant: "+arg);
 					}
@@ -383,18 +395,18 @@ public class ArgumentController {
 					}
 
 				}
- 
+
 			}
 			tmpAls.delete();
 		}
 
 		
 
-		if(limitador.equals("1")){ // Retornando sempre novas formulas
+		if(metodo.equals("1")){ // Retornando sempre novas formulas
 			ArrayList<ArgumentDTO> ultimosArgumentos = new ArrayList<>(argumentos.subList(argumentos.size() - argumentosRequeridos, argumentos.size()));
 			return ultimosArgumentos;
 
-		}else if(limitador.equals("2")){ // Retorna aleatoriamente
+		}else if(metodo.equals("2")){ // Retorna aleatoriamente
 			ArrayList<ArgumentDTO> argumentosAleatorio = new ArrayList<>();
 			int conter = 0;
 			Random random = new Random();

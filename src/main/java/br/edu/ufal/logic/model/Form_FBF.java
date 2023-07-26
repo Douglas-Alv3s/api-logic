@@ -2,7 +2,7 @@ package br.edu.ufal.logic.model;
 
 public class Form_FBF {
     
-    private int id_FBF;
+    private Integer id_FBF;
     private String formula_FBF;
     private String url_FBF;
 
@@ -11,17 +11,17 @@ public class Form_FBF {
         this.url_FBF = url_FBF;
     }
 
-    public Form_FBF(int id_FBF, String formula_FBF, String url_FBF) {
+    public Form_FBF(Integer id_FBF, String formula_FBF, String url_FBF) {
         this.id_FBF = id_FBF;
         this.formula_FBF = formula_FBF;
         this.url_FBF = url_FBF;
     }
 
-    public int getId_FBF() {
+    public Integer getId_FBF() {
         return id_FBF;
     }
 
-    public void setId_FBF(int id_FBF) {
+    public void setId_FBF(Integer id_FBF) {
         this.id_FBF = id_FBF;
     }
 

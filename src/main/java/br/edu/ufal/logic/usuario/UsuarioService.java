@@ -22,9 +22,9 @@ public class UsuarioService {
 
     public Usuario verificarEmailExistente(String email){
         try{
-            return daoUsuario.consultar(email);
+            return daoUsuario.consultarEmail(email);
         } catch (Exception e) {
-            return daoUsuario.consultar(email);
+            return daoUsuario.consultarEmail(email);
         }
     }
     

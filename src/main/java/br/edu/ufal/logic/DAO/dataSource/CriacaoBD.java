@@ -30,7 +30,7 @@ public class CriacaoBD{
         DAOCreateTB("CREATE TABLE form_FBF (id_FBF int PRIMARY KEY, formula_FBF varchar(70), URL_FBF varchar(70))", "form_FBF");   
 
         // Cria a tabela do relacionamento muitos para muitos de cliente e produto.
-        DAOCreateTB("CREATE TABLE guarda (id_usuarioFK int, id_argumentoFK int, id_FBF_FK int, FOREIGN KEY (id_usuarioFK) REFERENCES usuario (id_usuario), FOREIGN KEY (id_argumentoFK) REFERENCES form_argumento (id_argumento), FOREIGN KEY (id_FBf_FK) REFERENCES form_FBF (id_FBF))", "guarda");
+        DAOCreateTB("CREATE TABLE guarda (id_usuarioFK varchar(36), id_argumentoFK int, id_FBF_FK int, FOREIGN KEY (id_usuarioFK) REFERENCES usuario (id_usuario), FOREIGN KEY (id_argumentoFK) REFERENCES form_argumento (id_argumento), FOREIGN KEY (id_FBf_FK) REFERENCES form_FBF (id_FBF))", "guarda");
         
     }
 
