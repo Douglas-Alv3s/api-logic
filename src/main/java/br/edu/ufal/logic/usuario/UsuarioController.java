@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.edu.ufal.logic.DAO.dataSource.CriacaoBD;
 import br.edu.ufal.logic.model.Usuario;
 
 @RestController
@@ -19,7 +20,7 @@ public class UsuarioController {
 
     @GetMapping("/cadastro/{email}/{nome}/{senha}")
     public ResponseEntity<String> cadastroUsuario(@PathVariable String email, @PathVariable String nome, @PathVariable String senha){
-        
+        CriacaoBD.getInstance();
         // Verifique se o email já está em uso antes de criar o usuário
         if (usuarioService.verificarEmailExistente(email) != null) {
             return ResponseEntity.badRequest().body("O email já está em uso.");

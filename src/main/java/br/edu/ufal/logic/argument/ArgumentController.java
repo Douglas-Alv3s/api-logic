@@ -279,13 +279,16 @@ public class ArgumentController {
 		if(metodo.equals("1")){ //Utilização da estrátegia com banco de dados
 			int ultimoID = 0;
 			try {
-				DAOForm_Argumento daoForm_Argumento = new DAOForm_Argumento(MySQLDataSource.getInstance());
-				ultimoID = daoForm_Argumento.resgatarUltimoID();
+				// DAOForm_Argumento daoForm_Argumento = new DAOForm_Argumento(MySQLDataSource.getInstance());
+				// ultimoID = daoForm_Argumento.resgatarUltimoID();
+				DAOGuarda daoGuarda = new DAOGuarda(MySQLDataSource.getInstance());
+				ultimoID = daoGuarda.consultarRegistro(idClienteLogado, URL_argumento, "argumento");
 			} catch (Exception e) {
 				System.out.println("");
 			}
-			System.out.println("--------> Id obtido pela função: "+ ultimoID);
+			
 			totalFormulas = argumentosRequeridos + ultimoID;
+			System.out.println("--------> Total pela função: "+ totalFormulas);
 		}else if(metodo.equals("2")){ // Estratégia para garantir a aleatoriedade
 			totalFormulas = argumentosRequeridos * 10;
 		}else{ // Tras todas as formulas.
@@ -368,7 +371,7 @@ public class ArgumentController {
 
 						if(metodo.equals("1")){
 							String argumentoString = arg.toString();
-							Form_Argumento form_argumento = new Form_Argumento(cont, argumentoString, regrinha, URL_argumento);
+							Form_Argumento form_argumento = new Form_Argumento(argumentoString, regrinha, URL_argumento);
 							// System.out.println("Objeto para o banco de dados "+form_argumento.toString());
 
 							try{
@@ -377,7 +380,8 @@ public class ArgumentController {
 								DAOGuarda daoGuarda = new DAOGuarda(MySQLDataSource.getInstance());
 
 								Usuario usuario = daoUsuario.consultarID(idClienteLogado);
-								Guarda guarda = new Guarda(usuario, null, form_argumento);
+								Guarda guarda = new Guarda(usuario, null, form_argumento, totalFormulas);
+
 								daoForm_Argumento.adicionar(form_argumento);
 								daoGuarda.realizarRegistroArgumento(guarda);
 								

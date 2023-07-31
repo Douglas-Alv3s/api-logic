@@ -5,11 +5,13 @@ public class Guarda {
     private Usuario usuario;
     private Form_FBF form_FBF;
     private Form_Argumento form_Argumento;
-    
-    public Guarda(Usuario usuario, Form_FBF form_FBF, Form_Argumento form_Argumento) {
+    private int contagem;
+
+    public Guarda(Usuario usuario, Form_FBF form_FBF, Form_Argumento form_Argumento, int contagem) {
         this.usuario = usuario;
         this.form_FBF = form_FBF;
         this.form_Argumento = form_Argumento;
+        this.contagem = contagem; 
     }
 
     public Usuario getUsuario() {
@@ -34,6 +36,14 @@ public class Guarda {
 
     public void setForm_Argumento(Form_Argumento form_Argumento) {
         this.form_Argumento = form_Argumento;
+    }
+
+    public int getContagem() {
+        return contagem;
+    }
+
+    public void setContagem(int contagem) {
+        this.contagem = contagem;
     }
     
 }

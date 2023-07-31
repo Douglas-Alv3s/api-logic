@@ -43,23 +43,49 @@ public class DAOForm_Argumento implements IDAOGenerico<Form_Argumento>, IDAOForm
         }
     }
 
+    
+    public Form_Argumento consultar(String formulaID)  {
+        try {
+            String sql = "SELECT * FROM form_argumento WHERE formula_argumento = '" + formulaID + "'";
+            ResultSet resultado = dataSource.executarSelect(sql);
+    
+            if (resultado.next()) {
+                // Extrair os dados do ResultSet e criar um objeto Form_Argumento
+                int id_argumento = resultado.getInt("id_argumento");
+                String formula_argumento = resultado.getString("formula_argumento");
+                String regras = resultado.getString("regras");
+                String URL_argumento = resultado.getString("URL_argumento");
+    
+                Form_Argumento form_Argumento = new Form_Argumento(id_argumento, formula_argumento, regras, URL_argumento);
+                return form_Argumento;
+            } else {
+                // Form_Argumento não encontrado
+                return null;
+            }
+        } catch (Exception e) {
+            // Tratar a exceção e retornar um valor padrão (pode ser null) em caso de erro
+            System.err.println("Erro ao consultar Form_Argumento no banco de dados: " + e.getMessage());
+            return null;
+        }
+    }
+
     @Override
     public void adicionar(Form_Argumento form_Argumento)  {
         try {
-            int id_argumento = form_Argumento.getId_argumento();
+            String formula_argumento = form_Argumento.getFormula_argumento();
             
             // Verificar se o Form_Argumento já existe
-            Form_Argumento form_ArgumentoExistente = consultar(id_argumento);          
+            Form_Argumento form_ArgumentoExistente = consultar(formula_argumento);          
             if (form_ArgumentoExistente != null) {
-                System.out.println("O Form_Argumento com id '" + id_argumento + "' já existe no banco de dados.");
+                System.out.println("O Form_Argumento com formula_argumento '" + formula_argumento + "' já existe no banco de dados.");
                 return; // Encerra o método, não adicionando um novo Form_Argumento
             }
             
-            String sql = "INSERT INTO form_argumento (id_argumento ,formula_argumento, regras, URL_argumento) VALUES ('"+form_Argumento.getId_argumento() +"', '" + form_Argumento.getFormula_argumento() + "', '" + form_Argumento.getRegras() + "', '" + form_Argumento.getUrl_argumento() + "')";
+            String sql = "INSERT INTO form_argumento (formula_argumento, regras, URL_argumento) VALUES ('" + form_Argumento.getFormula_argumento() + "', '" + form_Argumento.getRegras() + "', '" + form_Argumento.getUrl_argumento() + "')";
 
             dataSource.executarQueryGeral(sql);
             
-            System.out.println("Form_Argumento adicionado com sucesso: " + sql);
+            // System.out.println("Form_Argumento adicionado com sucesso: " + sql);
         } catch (Exception e) {
             System.out.println("Erro ao adicionar Form_Argumento no banco de dados: " + e.getMessage());
         }

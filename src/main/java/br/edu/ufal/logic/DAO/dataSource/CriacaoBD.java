@@ -24,13 +24,14 @@ public class CriacaoBD{
         DAOCreateTB("CREATE TABLE usuario (id_usuario varchar(36) PRIMARY KEY , nome varchar(30), email varchar(40), senha varchar(30))", "usuario");
 
         // Cria a tabela argumentos
-        DAOCreateTB("CREATE TABLE form_argumento (id_argumento int PRIMARY KEY, formula_argumento varchar(70), regras varchar(30), URL_argumento varchar(70))", "form_argumento");
+        DAOCreateTB("CREATE TABLE form_argumento (id_argumento int PRIMARY KEY AUTO_INCREMENT, formula_argumento varchar(70), regras varchar(30), URL_argumento varchar(40))", "form_argumento");
         
         // Cria a tabela form_FBF
-        DAOCreateTB("CREATE TABLE form_FBF (id_FBF int PRIMARY KEY, formula_FBF varchar(70), URL_FBF varchar(70))", "form_FBF");   
+        DAOCreateTB("CREATE TABLE form_FBF (id_FBF int PRIMARY KEY AUTO_INCREMENT, formula_FBF varchar(70), URL_FBF varchar(40))", "form_FBF");   
 
-        // Cria a tabela do relacionamento muitos para muitos de cliente e produto.
-        DAOCreateTB("CREATE TABLE guarda (id_usuarioFK varchar(36), id_argumentoFK int, id_FBF_FK int, FOREIGN KEY (id_usuarioFK) REFERENCES usuario (id_usuario), FOREIGN KEY (id_argumentoFK) REFERENCES form_argumento (id_argumento), FOREIGN KEY (id_FBf_FK) REFERENCES form_FBF (id_FBF))", "guarda");
+        // Cria a tabela do relacionamento ternario de usuario, form_argumento e form_FBF.
+        DAOCreateTB("CREATE TABLE guarda (id_usuarioFK varchar(36), url_argumentoFK varchar(40), url_FBF_FK varchar(40), contagem INT,\n" + //
+                " FOREIGN KEY (id_usuarioFK) REFERENCES usuario (id_usuario), FOREIGN KEY (url_argumentoFK) REFERENCES form_argumento (URL_argumento),  FOREIGN KEY (url_FBf_FK) REFERENCES form_FBF (URL_FBF))", "guarda");
         
     }
 

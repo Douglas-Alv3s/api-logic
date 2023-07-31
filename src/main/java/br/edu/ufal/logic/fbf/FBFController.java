@@ -223,7 +223,7 @@ public class FBFController {
 						cont += 1;
 						if(metodo.equals("1")){
 							String stringFBF = fbf.toString();
-							Form_FBF form_FBF = new Form_FBF(cont, stringFBF, URL_FBF);
+							Form_FBF form_FBF = new Form_FBF(stringFBF, URL_FBF);
 							// System.out.println("Objeto para o banco de dados "+form_FBF.toString());
 							try{
 								DAOForm_FBF daoForm_FBF = new DAOForm_FBF(MySQLDataSource.getInstance());
