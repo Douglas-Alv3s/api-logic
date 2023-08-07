@@ -17,33 +17,33 @@ public class DAOForm_Argumento implements IDAOGenerico<Form_Argumento>, IDAOForm
         this.dataSource = dataSource;
     }
 
-    @Override
-    public Form_Argumento consultar(int id)  {
-        try {
-            String sql = "SELECT * FROM form_argumento WHERE id_argumento = '" + id + "'";
-            ResultSet resultado = dataSource.executarSelect(sql);
+    // @Override
+    // public Form_Argumento consultar(int id)  {
+    //     try {
+    //         String sql = "SELECT * FROM form_argumento WHERE id_argumento = '" + id + "'";
+    //         ResultSet resultado = dataSource.executarSelect(sql);
     
-            if (resultado.next()) {
-                // Extrair os dados do ResultSet e criar um objeto Form_Argumento
-                int id_argumento = resultado.getInt("id_argumento");
-                String formula_argumento = resultado.getString("formula_argumento");
-                String regras = resultado.getString("regras");
-                String URL_argumento = resultado.getString("URL_argumento");
+    //         if (resultado.next()) {
+    //             // Extrair os dados do ResultSet e criar um objeto Form_Argumento
+    //             int id_argumento = resultado.getInt("id_argumento");
+    //             String formula_argumento = resultado.getString("formula_argumento");
+    //             String regras = resultado.getString("regras");
+    //             String URL_argumento = resultado.getString("URL_argumento");
     
-                Form_Argumento form_Argumento = new Form_Argumento(id_argumento, formula_argumento, regras, URL_argumento);
-                return form_Argumento;
-            } else {
-                // Form_Argumento não encontrado
-                return null;
-            }
-        } catch (Exception e) {
-            // Tratar a exceção e retornar um valor padrão (pode ser null) em caso de erro
-            System.err.println("Erro ao consultar Form_Argumento no banco de dados: " + e.getMessage());
-            return null;
-        }
-    }
+    //             Form_Argumento form_Argumento = new Form_Argumento(id_argumento, formula_argumento, regras, URL_argumento);
+    //             return form_Argumento;
+    //         } else {
+    //             // Form_Argumento não encontrado
+    //             return null;
+    //         }
+    //     } catch (Exception e) {
+    //         // Tratar a exceção e retornar um valor padrão (pode ser null) em caso de erro
+    //         System.err.println("Erro ao consultar Form_Argumento no banco de dados: " + e.getMessage());
+    //         return null;
+    //     }
+    // }
 
-    
+    @Override
     public Form_Argumento consultar(String formulaID)  {
         try {
             String sql = "SELECT * FROM form_argumento WHERE formula_argumento = '" + formulaID + "'";
@@ -91,24 +91,6 @@ public class DAOForm_Argumento implements IDAOGenerico<Form_Argumento>, IDAOForm
         }
     }
 
-    
-    @Override
-    public void remover(int id_argumento)  {
-        try {
-            // Verificar se o Form_Argumento já existe
-            Form_Argumento form_ArgumentoExistente = consultar(id_argumento);
-                       
-            if (form_ArgumentoExistente == null) {
-                System.out.println("O Form_Argumento com nome '" + id_argumento + "' não existe no banco de dados. Impossivel remover.");
-                return; // Encerra o método, não adicionando um novo Form_Argumento
-            }
-            String sql = "DELETE FROM form_argumento WHERE id_argumento = '" + id_argumento + "'";
-            System.out.println("Form_Argumento com nome: '" + id_argumento+"' removido." );
-            dataSource.executarQueryGeral(sql);
-        } catch (Exception e) {
-            System.out.println("Erro ao remover Form_Argumento do banco de dados");
-        }
-    }
 
     @Override
     public void alterar(Form_Argumento dadosAntigo, Form_Argumento dadosNovos){
@@ -162,6 +144,25 @@ public class DAOForm_Argumento implements IDAOGenerico<Form_Argumento>, IDAOForm
         }
         return ultimoId;
     }
+
+    public int contarArgumento(String url){
+        int contagemURL = 0;
+
+        try {
+            String sql = "SELECT COUNT(*) as total FROM form_argumento WHERE url_argumento = '" + url + "'";
+            ResultSet resultSet = dataSource.executarSelect(sql);
+            if(resultSet.next()) {
+                contagemURL = resultSet.getInt("total");
+                System.out.println(sql);
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error é: "+ e.getMessage());
+        }
+        return contagemURL;
+    }
+
+
 
     
 }

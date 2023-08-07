@@ -71,13 +71,14 @@ public class FBFController {
 
 	//http://127.0.0.1:8080/api-logic/fbfs/{atomosMin}/{atomosMax}/{quantidadeFbfs}/{listasExercicios}/{operadoresLista}/{todosOuAoMenosUm}
 	//localhost:8080/api-logic/fbfs/3/5/5/1/And,Or,Not,Imply/1
-	@GetMapping("/{atomosMin}/{atomosMax}/{quantidadeFbfs}/{listasExercicios}/{operadoresLista}/{todosOuAoMenosUm}/{metodo}") //Endereço de FBFS na Web
+	@GetMapping("/{atomosMin}/{atomosMax}/{quantidadeFbfs}/{listasExercicios}/{operadoresLista}/{todosOuAoMenosUm}/{metodo}/{idUsuarioLogado}") //Endereço de FBFS na Web
 	private ArrayList<FBFDTO> findFbfs(@PathVariable String atomosMin, @PathVariable String atomosMax,
 			@PathVariable String quantidadeFbfs,@PathVariable String todosOuAoMenosUm,
-			@PathVariable String operadoresLista, @PathVariable String listasExercicios, @PathVariable String metodo) 
+			@PathVariable String operadoresLista, @PathVariable String listasExercicios,
+			@PathVariable String metodo, @PathVariable String idUsuarioLogado) 
 			throws IOException, Err {
 		
-		String URL_FBF = "/"+atomosMin+"/"+atomosMax+"/"+quantidadeFbfs+"/"+listasExercicios+"/"+operadoresLista+"/"+todosOuAoMenosUm;
+		String URL_FBF = "/"+atomosMin+"/"+atomosMax+"/"+operadoresLista+"/"+todosOuAoMenosUm;
 		// String URL_FBF = "/"+atomosMin+"/"+atomosMax+"/"+operadoresLista+"/"+todosOuAoMenosUm;
 		System.out.println(URL_FBF);
 
@@ -166,7 +167,8 @@ public class FBFController {
 			int ultimoID = 0;
 			try {
 				DAOForm_FBF daoForm_FBF = new DAOForm_FBF(MySQLDataSource.getInstance());
-				ultimoID = daoForm_FBF.resgatarUltimoID();
+				// ultimoID = daoForm_FBF.resgatarUltimoID();
+				ultimoID = daoForm_FBF.contarFBF(URL_FBF);
 			} catch (Exception e) {
 				System.out.println("");
 			}

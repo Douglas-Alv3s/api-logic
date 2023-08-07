@@ -279,17 +279,29 @@ public class ArgumentController {
 		if(metodo.equals("1")){ //Utilização da estrátegia com banco de dados
 			int ultimoID = 0;
 			try {
-				// DAOForm_Argumento daoForm_Argumento = new DAOForm_Argumento(MySQLDataSource.getInstance());
-				// ultimoID = daoForm_Argumento.resgatarUltimoID();
-				DAOGuarda daoGuarda = new DAOGuarda(MySQLDataSource.getInstance());
-				ultimoID = daoGuarda.consultarRegistro(idClienteLogado, URL_argumento, "argumento");
+				DAOGuarda daoGuarda = new DAOGuarda(MySQLDataSource.getInstance(), "argumento");
+				ultimoID = daoGuarda.consultarRegistro(idClienteLogado, URL_argumento);
+				System.out.println("COntagem -> "+ ultimoID);
 			} catch (Exception e) {
 				System.out.println("");
 			}
 			
 			totalFormulas = argumentosRequeridos + ultimoID;
 			System.out.println("--------> Total pela função: "+ totalFormulas);
-		}else if(metodo.equals("2")){ // Estratégia para garantir a aleatoriedade
+		}else if(metodo.equals("2")){
+			int ultimoID = 0;
+			try {		
+				DAOForm_Argumento daoForm_Argumento = new DAOForm_Argumento(MySQLDataSource.getInstance());
+				ultimoID = daoForm_Argumento.resgatarUltimoID();
+				System.out.println("COntagem -> "+ ultimoID);
+
+			} catch (Exception e) {
+				System.out.println("");
+			}
+			
+			totalFormulas = argumentosRequeridos + ultimoID;
+			System.out.println("--------> Total pela função: "+ totalFormulas);
+		}else if(metodo.equals("3")){ // Estratégia para garantir a aleatoriedade
 			totalFormulas = argumentosRequeridos * 10;
 		}else{ // Tras todas as formulas.
 			totalFormulas = argumentosRequeridos;
@@ -377,16 +389,25 @@ public class ArgumentController {
 							try{
 								DAOUsuario daoUsuario = new DAOUsuario(MySQLDataSource.getInstance());
 								DAOForm_Argumento daoForm_Argumento = new DAOForm_Argumento(MySQLDataSource.getInstance());
-								DAOGuarda daoGuarda = new DAOGuarda(MySQLDataSource.getInstance());
+								DAOGuarda daoGuarda = new DAOGuarda(MySQLDataSource.getInstance(), "argumento");
 
 								Usuario usuario = daoUsuario.consultarID(idClienteLogado);
 								Guarda guarda = new Guarda(usuario, null, form_argumento, totalFormulas);
 
 								daoForm_Argumento.adicionar(form_argumento);
-								daoGuarda.realizarRegistroArgumento(guarda);
+								daoGuarda.realizarRegistro(guarda);
 								
 							}catch(Exception e){
 								System.out.println("Não esta sendo adicionado");
+							}
+						}else if(metodo.equals("2")){
+							try {
+								String argumentoString = arg.toString();
+								Form_Argumento form_argumento = new Form_Argumento(argumentoString, regrinha, URL_argumento);
+								DAOForm_Argumento daoForm_Argumento = new DAOForm_Argumento(MySQLDataSource.getInstance());
+								daoForm_Argumento.adicionar(form_argumento);
+							} catch (Exception e) {
+								System.out.println("Não esta sendo adicionado erro: " + e.getMessage());
 							}
 						}
 					}else {
@@ -406,11 +427,12 @@ public class ArgumentController {
 
 		
 
-		if(metodo.equals("1")){ // Retornando sempre novas formulas
+		if(metodo.equals("1") || metodo.equals("2")){ // Retornando sempre novas formulas
 			ArrayList<ArgumentDTO> ultimosArgumentos = new ArrayList<>(argumentos.subList(argumentos.size() - argumentosRequeridos, argumentos.size()));
+			System.out.println("Argumento Requeridos "+ argumentosRequeridos);
 			return ultimosArgumentos;
 
-		}else if(metodo.equals("2")){ // Retorna aleatoriamente
+		}else if(metodo.equals("3")){ // Retorna aleatoriamente
 			ArrayList<ArgumentDTO> argumentosAleatorio = new ArrayList<>();
 			int conter = 0;
 			Random random = new Random();

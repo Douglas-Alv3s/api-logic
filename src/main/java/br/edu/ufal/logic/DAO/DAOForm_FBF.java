@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import br.edu.ufal.logic.DAO.InterfaceDAO.IDAOFormulas;
 import br.edu.ufal.logic.DAO.InterfaceDAO.IDAOGenerico;
 import br.edu.ufal.logic.DAO.dataSource.MySQLDataSource;
+import br.edu.ufal.logic.model.Form_Argumento;
 import br.edu.ufal.logic.model.Form_FBF;
 
 
@@ -17,22 +18,46 @@ public class DAOForm_FBF implements IDAOGenerico<Form_FBF>, IDAOFormulas<Form_FB
         this.dataSource = dataSource;
     }
 
+    // @Override
+    // public Form_FBF consultar(int id) {
+    //      try {
+    //         String sql = "SELECT * FROM form_fbf WHERE id_FBF = '" + id + "'";
+    //         ResultSet resultado = dataSource.executarSelect(sql);
+    
+    //         if (resultado.next()) {
+    //             // Extrair os dados do ResultSet e criar um objeto Form_FBF
+    //             int id_fbf = resultado.getInt("id_FBF");
+    //             String formula_fbf = resultado.getString("formula_FBF");
+    //             String URL_fbf = resultado.getString("URL_FBF");
+    
+    //             Form_FBF form_fbf = new Form_FBF(id_fbf, formula_fbf, URL_fbf);
+    //             return form_fbf;
+    //         } else {
+    //             // Form_FBF não encontrado
+    //             return null;
+    //         }
+    //     } catch (Exception e) {
+    //         // Tratar a exceção e retornar um valor padrão (pode ser null) em caso de erro
+    //         System.err.println("Erro ao consultar Form_FBF no banco de dados: " + e.getMessage());
+    //         return null;
+    //     }
+    // }
     @Override
-    public Form_FBF consultar(int id) {
-         try {
-            String sql = "SELECT * FROM form_fbf WHERE id_FBF = '" + id + "'";
+    public Form_FBF consultar(String formulaID)  {
+        try {
+            String sql = "SELECT * FROM form_FBF WHERE formula_FBF = '" + formulaID + "'";
             ResultSet resultado = dataSource.executarSelect(sql);
     
             if (resultado.next()) {
                 // Extrair os dados do ResultSet e criar um objeto Form_FBF
-                int id_fbf = resultado.getInt("id_FBF");
-                String formula_fbf = resultado.getString("formula_FBF");
-                String URL_fbf = resultado.getString("URL_FBF");
+                int id_FBF = resultado.getInt("id_FBF");
+                String formula_FBF = resultado.getString("formula_FBF");
+                String URL_FBF = resultado.getString("URL_FBF");
     
-                Form_FBF form_fbf = new Form_FBF(id_fbf, formula_fbf, URL_fbf);
-                return form_fbf;
+                Form_FBF form_FBF = new Form_FBF(id_FBF, formula_FBF, URL_FBF);
+                return form_FBF;
             } else {
-                // Form_FBF não encontrado
+                // Form_Argumento não encontrado
                 return null;
             }
         } catch (Exception e) {
@@ -45,12 +70,12 @@ public class DAOForm_FBF implements IDAOGenerico<Form_FBF>, IDAOFormulas<Form_FB
     @Override
     public void adicionar(Form_FBF form_FBF) {
         try {
-            int id_FBF = form_FBF.getId_FBF();
+            String formula_FBF = form_FBF.getFormula_FBF();
             
             // Verificar se o Form_FBF já existe
-            Form_FBF form_FBFExistente = consultar(id_FBF);          
+            Form_FBF form_FBFExistente = consultar(formula_FBF);          
             if (form_FBFExistente != null) {
-                System.out.println("O Form_FBF com id '" + id_FBF + "' já existe no banco de dados.");
+                System.out.println("O Form_FBF com formula '" + formula_FBF + "' já existe no banco de dados.");
                 return; // Encerra o método, não adicionando um novo Form_FBF
             }
             
@@ -58,29 +83,12 @@ public class DAOForm_FBF implements IDAOGenerico<Form_FBF>, IDAOFormulas<Form_FB
 
             dataSource.executarQueryGeral(sql);
             
-            // System.out.println("Form_FBF adicionado com sucesso: " + sql);
+            System.out.println("Form_FBF adicionado com sucesso: " + sql);
         } catch (Exception e) {
             System.out.println("Erro ao adicionar Form_FBF no banco de dados: " + e.getMessage());
         }
     }
 
-    @Override
-    public void remover(int id_FBF) {
-        try {
-            // Verificar se o Form_FBF já existe
-            Form_FBF form_FBFExistente = consultar(id_FBF);
-                       
-            if (form_FBFExistente == null) {
-                System.out.println("O Form_FBF com id '" + id_FBF + "' não existe no banco de dados. Impossivel remover.");
-                return; // Encerra o método, não adicionando um novo Form_FBF
-            }
-            String sql = "DELETE FROM form_fbf WHERE id_FBF = '" + id_FBF + "'";
-            System.out.println("Form_FBF com id: '" + id_FBF+"' removido." );
-            dataSource.executarQueryGeral(sql);
-        } catch (Exception e) {
-            System.out.println("Erro ao remover Form_FBF do banco de dados");
-        }
-    }
 
     @Override
     public void alterar(Form_FBF dadosAntigo, Form_FBF dadosNovos) {
@@ -132,6 +140,22 @@ public class DAOForm_FBF implements IDAOGenerico<Form_FBF>, IDAOFormulas<Form_FB
 
         }
         return ultimoId;
+    }
+
+    public int contarFBF(String url){
+        int contagemURL = 0;
+
+        try {
+            String sql = "SELECT COUNT(*) as total FROM form_fbf WHERE url_fbf = '" + url + "'";
+            ResultSet resultSet = dataSource.executarSelect(sql);
+            if(resultSet.next()) {
+                contagemURL = resultSet.getInt("total");
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error é: "+ e.getMessage());
+        }
+        return contagemURL;
     }
 }
     

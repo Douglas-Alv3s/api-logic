@@ -1,7 +1,6 @@
 package br.edu.ufal.logic.DAO;
 
 import java.sql.ResultSet;
-import java.util.ArrayList;
 import java.util.UUID;
 
 import br.edu.ufal.logic.DAO.InterfaceDAO.IDAOGuarda;
@@ -14,25 +13,22 @@ import br.edu.ufal.logic.model.Usuario;
 public class DAOGuarda implements IDAOGuarda{
 
     private MySQLDataSource dataSource;
+    private String tipo;
 
-    public DAOGuarda( MySQLDataSource dataSource){
+    public DAOGuarda( MySQLDataSource dataSource, String tipo){
         this.dataSource = dataSource;
+        this.tipo = tipo;
     }
 
-    @Override
-    public ArrayList<Guarda> mostrarFormulasGuardadas() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'mostrarFormulasGuardadas'");
-    }
-
-    public Guarda consultar(String id_usuario, String url_argumento)  {
+    public Guarda consultar(String id_usuario, String url)  {
+        String sql = "";
         try {
-
-            String sql = "SELECT * FROM guarda WHERE id_usuarioFK = '"+ id_usuario +"' AND url_argumentoFK = '" + url_argumento + "'";
+            if(this.tipo.equals("argumento")){
+                sql = "SELECT * FROM guarda WHERE id_usuarioFK = '"+ id_usuario +"' AND url_argumentoFK = '" + url + "'";
+            }else if(this.tipo.equals("FBF")){
+                sql = "SELECT * FROM guarda WHERE id_usuarioFK = '"+ id_usuario +"' AND url_FBF_FK = '" + url + "'";
+            }
             ResultSet resultado = dataSource.executarSelect(sql);
-    
-        //     String sql = "SELECT * FROM guarda WHERE formula_argumentoFK = '" + formulaID + "'";
-        // ResultSet resultado = dataSource.executarSelect(sql);
 
             if (resultado.next()) {
                 // Extrair os dados do ResultSet e criar um objeto Guarda
@@ -54,6 +50,7 @@ public class DAOGuarda implements IDAOGuarda{
                 // Form_Argumento não encontrado
                 return null;
             }
+
         } catch (Exception e) {
             // Tratar a exceção e retornar um valor padrão (pode ser null) em caso de erro
             System.err.println("Erro ao consultar Form_Argumento no banco de dados: " + e.getMessage());
@@ -62,30 +59,51 @@ public class DAOGuarda implements IDAOGuarda{
     }
 
     @Override
-    public void realizarRegistroArgumento(Guarda guardar) {
+    public void realizarRegistro(Guarda guardar) {
+        Guarda guardarExistente;
 
         try {
             // Boolean consultaResultado = consultar(guardar.getForm_Argumento().getFormula_argumento());
             UUID id_usuario = guardar.getUsuario().getId_usuario();
             String id_usuarioString = id_usuario.toString();
-            String url_argumento = guardar.getForm_Argumento().getUrl_argumento();
             int contagem = guardar.getContagem();
 
-            Guarda guardarExistente = consultar(id_usuarioString, url_argumento);
+            if(this.tipo.equals("argumento")){
+                String url_argumento = guardar.getForm_Argumento().getUrl_argumento();
+                guardarExistente = consultar(id_usuarioString, url_argumento);
 
-            if(guardarExistente!=null){
+                if(guardarExistente!=null){
                    String sql = "UPDATE guarda SET contagem = '"+contagem+"' WHERE id_usuarioFK = '"+id_usuarioString+"' AND url_argumentoFK ='"+url_argumento+"'";
                     // System.out.println("Contagem atualizada para ->"+contagem); 
 
-                dataSource.executarQueryGeral(sql);
-                return;   
+                    dataSource.executarQueryGeral(sql);
+                    return;   
+                }
+                String sql = "INSERT INTO guarda (id_usuarioFK, url_argumentoFK, contagem) VALUES ('" +
+                    guardar.getUsuario().getId_usuario() + "', '" +
+                    guardar.getForm_Argumento().getUrl_argumento() +"','"+
+                    guardar.getContagem()+"')";
+                    dataSource.executarQueryGeral(sql);
+                    System.out.println("Registro adicionado com sucesso.");
+
+            }else if(this.tipo.equals("FBF")){
+                String url_FBF = guardar.getForm_FBF().getUrl_FBF();
+                guardarExistente = consultar(id_usuarioString, url_FBF);
+
+                if(guardarExistente!=null) {
+                    String sql = "UPDATE guarda SET contagem '"+contagem+"' WHERE id_usuarioFK = '"+id_usuarioString+"' AND url_FBF_FK ='"+url_FBF+"'";;
+                    dataSource.executarQueryGeral(sql);
+                    return;  
+                }
+                String sql = "INSERT INTO guarda (id_usuarioFK, url_FBF_FK, contagem) VALUES ('" +
+                    guardar.getUsuario().getId_usuario() + "', '" +
+                    guardar.getForm_FBF().getUrl_FBF() +"','"+
+                    guardar.getContagem()+"')";
+                    dataSource.executarQueryGeral(sql);
+                    System.out.println("Registro adicionado com sucesso.");
             }
-            String sql = "INSERT INTO guarda (id_usuarioFK, url_argumentoFK, contagem) VALUES ('" +
-                guardar.getUsuario().getId_usuario() + "', '" +
-                guardar.getForm_Argumento().getUrl_argumento() +"','"+
-                guardar.getContagem()+"')";
-                dataSource.executarQueryGeral(sql);
-                System.out.println("Registro adicionado com sucesso.");
+
+            
             
         } catch (Exception e) {
             System.out.println("Erro ao adicionar a guardar: " + e.getMessage());
@@ -93,37 +111,15 @@ public class DAOGuarda implements IDAOGuarda{
     }
 
     @Override
-    public void realizarRegistroFBF(Guarda guardar) {
-
-        try {
-            String sql = "INSERT INTO guarda (id_usuarioFK, url_FBF_FK, formula_FBF_FK) VALUES ('" +
-                guardar.getUsuario().getId_usuario() + "', '" +
-                guardar.getForm_FBF().getUrl_FBF()+"','"+
-                guardar.getForm_FBF().getFormula_FBF()+"')";
-            dataSource.executarQueryGeral(sql);
-            System.out.println("Registro adicionado com sucesso.");
-        } catch (Exception e) {
-            System.out.println("Erro ao adicionar a guardar: " + e.getMessage());
-        }
-    }
-
-
-    @Override
-    public void obterNomeClienteEFormulas() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'obterNomeClienteEFormulas'");
-    }
-
-    @Override
-    public Integer consultarRegistro(String id_usuario, String URL_requisitado, String tipoGeracao) {
+    public Integer consultarRegistro(String id_usuario, String URL_requisitado) {
         Integer contadorDeRegistros = 0;
  
         try{
             String sql = null;
             // Cria a consulta SQL para obter todos as requisições do usuario, para aquele tipo de geração
-            if(tipoGeracao.equals("argumento")){
+            if(this.tipo.equals("argumento")){
                 sql = "SELECT contagem  FROM guarda WHERE id_usuarioFK = '"+ id_usuario +"' AND url_argumentoFK = '"+ URL_requisitado + "'";
-            }else if(tipoGeracao.equals("FBF")){
+            }else if(this.tipo.equals("FBF")){
                 sql = "SELECT contagem FROM guarda WHERE id_usuarioFK = '"+ id_usuario +"'AND url_FBF_FK = '"+ URL_requisitado +"'";
             }
 
@@ -139,22 +135,5 @@ public class DAOGuarda implements IDAOGuarda{
     }
 
     
-    public int resgatarUltimoID() {
-        int ultimoId = 0;
-
-        try{
-            // Cria a consulta SQL para obter o último id adicionado
-            String sql = "SELECT * FROM form_argumento ORDER BY id_argumento DESC LIMIT 1";
-            // Executa a consulta
-            ResultSet resultSet  = dataSource.executarSelect(sql);
-
-            if(resultSet.next()){
-                ultimoId = resultSet.getInt("id_argumento");
-            }
-        }catch(Exception e){
-
-        }
-        return ultimoId;
-    }
     
 }
