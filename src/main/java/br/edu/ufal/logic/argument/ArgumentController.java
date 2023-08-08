@@ -88,9 +88,9 @@ public class ArgumentController {
 	// @GetMapping("/{regras}/{Limitador}/{quantidade}/{listas}")
 	// Limitador tera apenas 3 opções [1 ou 2 ou 3 ou 4 ou 5]
 
-	@GetMapping("/{quantidade}/{listas}/{regras}/{limitador}/{metodo}/{idClienteLogado}")  // Endereço para acessar na url e parametros a receber
+	@GetMapping("/{quantidade}/{listas}/{regras}/{limitador}/{metodo}/{idUsuarioLogado}")  // Endereço para acessar na url e parametros a receber
 	public ArrayList<ArgumentDTO> findArguments(@PathVariable String regras,
-			@PathVariable String quantidade, @PathVariable String listas, @PathVariable String limitador, @PathVariable String metodo, @PathVariable String idClienteLogado) throws IOException, Err {
+			@PathVariable String quantidade, @PathVariable String listas, @PathVariable String limitador, @PathVariable String metodo, @PathVariable String idUsuarioLogado) throws IOException, Err {
 				
 		// String URL_argumento = "/"+quantidade+"/"+listas+"/"+regras+"/"+limitador;
 		String URL_argumento = "/"+regras+"/"+limitador;
@@ -189,76 +189,6 @@ public class ArgumentController {
 			}
 		}
 		
-		// if(limitador.equals("5")){
-		// 	operacoes = "\n\n#NE = 0 \n\n#NI = 0 \n\n#CI = 0 \n\n#CE = 0 \n\n#DI = 0 \n\n#DE = 0 \n\n#BE = 0 \n\n#BI = 0 \n\n#MP = 0 \n\n#MT = 0 \n\n#SD = 0\n\n";
-		// 	// if(regs.contains("NE")) {
-		// 	// 	operacoes += "#NE >= 0\n";
-		// 	// }
-		// 	// if(regs.contains("NI")) {
-		// 	// 	operacoes += "#NI >= 0\n";
-		// 	// }
-		// 	// if(regs.contains("CI")) {
-		// 	// 	operacoes += "#CI >= 0\n";
-		// 	// }
-		// 	// if(regs.contains("CE")) {
-		// 	// 	operacoes += "#CE >= 0\n";
-		// 	// }
-		// 	// if(regs.contains("DI")) {
-		// 	// 	operacoes += "#DI >= 0\n";
-		// 	// }
-		// 	// if(regs.contains("DE")) {
-		// 	// 	operacoes += "#DE >= 0\n";
-		// 	// }
-		// 	// if(regs.contains("BE")) {
-		// 	// 	operacoes += "#BE >= 0\n";
-		// 	// }
-		// 	// if(regs.contains("BI")) {
-		// 	// 	operacoes += "#BI >= 0\n";
-		// 	// }
-		// 	// if(regs.contains("MP")) {
-		// 	// 	operacoes += "#MP >= 0\n";
-		// 	// }
-		// 	// if(regs.contains("MT")) {
-		// 	// 	operacoes += "#MT >= 0\n";
-		// 	// }
-		// 	// if(regs.contains("SD")) {
-		// 	// 	operacoes += "#SD >= 0\n";
-		// 	// }
-		// 	if(regs.contains("NE")) {
-		// 		operacoes = operacoes.replace("#NE = 0", "#NE >= 0");
-		// 	}
-		// 	if(regs.contains("NI")) {
-		// 		operacoes = operacoes.replace("#NI = 0", "#NI >= 0");
-		// 	}
-		// 	if(regs.contains("CI")) {
-		// 		operacoes = operacoes.replace("#CI = 0", "#CI >= 0");
-		// 	}
-		// 	if(regs.contains("CE")) {
-		// 		operacoes = operacoes.replace("#CE = 0", "#CE >= 0");
-		// 	}
-		// 	if(regs.contains("DI")) {
-		// 		operacoes = operacoes.replace("#DI = 0", "#DI >= 0");
-		// 	}
-		// 	if(regs.contains("DE")) {
-		// 		operacoes = operacoes.replace("#DE = 0", "#DE >= 0");
-		// 	}
-		// 	if(regs.contains("BE")) {
-		// 		operacoes = operacoes.replace("#BE = 0", "#BE >= 0");
-		// 	}
-		// 	if(regs.contains("BI")) {
-		// 		operacoes = operacoes.replace("#BI = 0", "#BI >= 0");
-		// 	}
-		// 	if(regs.contains("MP")) {
-		// 		operacoes = operacoes.replace("#MP = 0", "#MP >= 0");
-		// 	}
-		// 	if(regs.contains("MT")) {
-		// 		operacoes = operacoes.replace("#MT = 0", "#MT >= 0");
-		// 	}
-		// 	if(regs.contains("SD")) {
-		// 		operacoes = operacoes.replace("#SD = 0", "#SD >= 0");
-		// 	}
-		// }
-
 		// Dando inicio ao Banco de dados
 		CriacaoBD.getInstance();
 
@@ -280,7 +210,7 @@ public class ArgumentController {
 			int ultimoID = 0;
 			try {
 				DAOGuarda daoGuarda = new DAOGuarda(MySQLDataSource.getInstance(), "argumento");
-				ultimoID = daoGuarda.consultarRegistro(idClienteLogado, URL_argumento);
+				ultimoID = daoGuarda.consultarRegistro(idUsuarioLogado, URL_argumento);
 				System.out.println("COntagem -> "+ ultimoID);
 			} catch (Exception e) {
 				System.out.println("");
@@ -391,9 +321,9 @@ public class ArgumentController {
 								DAOForm_Argumento daoForm_Argumento = new DAOForm_Argumento(MySQLDataSource.getInstance());
 								DAOGuarda daoGuarda = new DAOGuarda(MySQLDataSource.getInstance(), "argumento");
 
-								Usuario usuario = daoUsuario.consultarID(idClienteLogado);
+								Usuario usuario = daoUsuario.consultarID(idUsuarioLogado);
 								Guarda guarda = new Guarda(usuario, null, form_argumento, totalFormulas);
-
+								
 								daoForm_Argumento.adicionar(form_argumento);
 								daoGuarda.realizarRegistro(guarda);
 								

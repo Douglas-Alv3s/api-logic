@@ -91,7 +91,7 @@ public class DAOGuarda implements IDAOGuarda{
                 guardarExistente = consultar(id_usuarioString, url_FBF);
 
                 if(guardarExistente!=null) {
-                    String sql = "UPDATE guarda SET contagem '"+contagem+"' WHERE id_usuarioFK = '"+id_usuarioString+"' AND url_FBF_FK ='"+url_FBF+"'";;
+                    String sql = "UPDATE guarda SET contagem = '"+contagem+"' WHERE id_usuarioFK = '"+id_usuarioString+"' AND url_FBF_FK ='"+url_FBF+"'";;
                     dataSource.executarQueryGeral(sql);
                     return;  
                 }

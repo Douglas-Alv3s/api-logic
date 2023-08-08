@@ -79,7 +79,7 @@ public class DAOForm_FBF implements IDAOGenerico<Form_FBF>, IDAOFormulas<Form_FB
                 return; // Encerra o método, não adicionando um novo Form_FBF
             }
             
-            String sql = "INSERT INTO form_fbf (id_FBF ,formula_FBF, URL_FBF) VALUES ('"+form_FBF.getId_FBF() +"', '" + form_FBF.getFormula_FBF() + "', '" + form_FBF.getUrl_FBF() + "')";
+            String sql = "INSERT INTO form_fbf (formula_FBF, URL_FBF) VALUES ( '" + form_FBF.getFormula_FBF() + "', '" + form_FBF.getUrl_FBF() + "')";
 
             dataSource.executarQueryGeral(sql);
             

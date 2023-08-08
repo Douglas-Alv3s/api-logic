@@ -18,10 +18,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.edu.ufal.logic.DAO.DAOForm_Argumento;
 import br.edu.ufal.logic.DAO.DAOForm_FBF;
+import br.edu.ufal.logic.DAO.DAOGuarda;
+import br.edu.ufal.logic.DAO.DAOUsuario;
 import br.edu.ufal.logic.DAO.dataSource.CriacaoBD;
 import br.edu.ufal.logic.DAO.dataSource.MySQLDataSource;
+import br.edu.ufal.logic.model.Form_Argumento;
 import br.edu.ufal.logic.model.Form_FBF;
+import br.edu.ufal.logic.model.Guarda;
+import br.edu.ufal.logic.model.Usuario;
 import br.edu.ufal.logic.util.InstanciaRetorno;
 import br.edu.ufal.logic.util.Util;
 import edu.mit.csail.sdg.alloy4.A4Reporter;
@@ -107,7 +113,7 @@ public class FBFController {
 		System.out.println("Todos ou pelo menos " + todosOuAoMenosUm);
 
 		String operacoes = "\n#And=0 \n#Or=0 \n#BiImply=0 \n#Imply=0 \n#Not=0";
-		String aoMenosUmaOperacao = ""; //#And+#Or+BiImply+#Imply+#Not
+
 		if(todosOuAoMenosUm.equals("1")) {	// Cria a formula contendo as operações selecionadas
 			if (oprs.contains("And")) {
 				operacoes = operacoes.replace("#And=0", "#And>0");
@@ -125,7 +131,6 @@ public class FBFController {
 				operacoes = operacoes.replace("#Not=0", "#Not>0");
 			}
 		}else if(todosOuAoMenosUm.equals("2")) {  // Cria a formula contendo a menos uma das operações selecionadas
-			aoMenosUmaOperacao = operadoresLista;
 			if (oprs.contains("And")) {
 				operacoes = operacoes.replace("#And=0", "#And>=0");
 			}
@@ -141,13 +146,9 @@ public class FBFController {
 			if (oprs.contains("Not")) {
 				operacoes = operacoes.replace("#Not=0", "#Not>=0");
 			}
-			// Trata a String de operações selecionadas
-			// aoMenosUmaOperacao = "#" + aoMenosUmaOperacao;
-			// aoMenosUmaOperacao = aoMenosUmaOperacao.replaceAll(",", "+#");
-			// aoMenosUmaOperacao = aoMenosUmaOperacao + ">0";
+
 		}
-		// operacoes = operacoes + "\n" + aoMenosUmaOperacao;
-		// operacoes = operacoes + "\n" + aoMenosUmaOperacao;
+
 		
 		// Dando inicio ao Banco de dados
 		CriacaoBD.getInstance();
@@ -163,7 +164,19 @@ public class FBFController {
 		// Quantidade de formulas requeridas por cada método
 		Integer formulasRequeridas = (Integer.parseInt(quantidadeFbfs) * Integer.parseInt(listasExercicios));
 		Integer totalFormulas;
-		if(metodo.equals("1")){ //Com o uso de banco de dados
+		if(metodo.equals("1")){ // Estrategia com base no usuario
+			int ultimoID = 0;
+			try {
+				DAOGuarda daoGuarda = new DAOGuarda(MySQLDataSource.getInstance(), "FBF");
+				ultimoID = daoGuarda.consultarRegistro(idUsuarioLogado, URL_FBF);
+				System.out.println("COntagem -> "+ ultimoID);
+			} catch (Exception e) {
+				System.out.println("");
+			}
+			
+			totalFormulas = formulasRequeridas + ultimoID;
+			System.out.println("--------> Total pela função: "+ totalFormulas);
+		}else if(metodo.equals("2")){ // Estrategia modo global
 			int ultimoID = 0;
 			try {
 				DAOForm_FBF daoForm_FBF = new DAOForm_FBF(MySQLDataSource.getInstance());
@@ -174,9 +187,8 @@ public class FBFController {
 			}
 			System.out.println("--------> Id obtido pela função: "+ ultimoID);
 
-			
 			totalFormulas = formulasRequeridas + ultimoID;
-		}else if(metodo.equals("2")){ // Geração de mais formulas para a garantir a aleatoriedade
+		}else if(metodo.equals("3")){ // Geração de mais formulas para a garantir a aleatoriedade
 			totalFormulas = formulasRequeridas*10;
 		}else { // Trás as formulas total requeridas pelo usuario
 			totalFormulas = formulasRequeridas;
@@ -223,7 +235,29 @@ public class FBFController {
 						fbfs.add(service.FBFToFBFDTO(fbf, cont));
 						fbfsTeste.add(fbf.toString());
 						cont += 1;
+
+
 						if(metodo.equals("1")){
+							String fbfString = fbf.toString(); // Pegando a formula gerada
+							Form_FBF form_FBF = new Form_FBF(fbfString,  URL_FBF);
+							// System.out.println("Objeto para o banco de dados "+form_FBF.toString());
+
+							try{
+								DAOUsuario daoUsuario = new DAOUsuario(MySQLDataSource.getInstance());
+								DAOForm_FBF daoForm_FBF = new DAOForm_FBF(MySQLDataSource.getInstance());
+								DAOGuarda daoGuarda = new DAOGuarda(MySQLDataSource.getInstance(), "FBF");
+
+								Usuario usuario = daoUsuario.consultarID(idUsuarioLogado);
+								Guarda guarda = new Guarda(usuario, form_FBF, null, totalFormulas);
+								System.out.println(guarda.toString());
+								
+								daoForm_FBF.adicionar(form_FBF);
+								daoGuarda.realizarRegistro(guarda);
+								
+							}catch(Exception e){
+								System.out.println("Não esta sendo adicionado");
+							}
+						}else if(metodo.equals("2")){
 							String stringFBF = fbf.toString();
 							Form_FBF form_FBF = new Form_FBF(stringFBF, URL_FBF);
 							// System.out.println("Objeto para o banco de dados "+form_FBF.toString());
@@ -234,6 +268,7 @@ public class FBFController {
 								System.out.println("Não esta sendo adicionado");
 							}
 						}
+					
 					} else {
 						System.out.println(fbf);
 					}
@@ -246,10 +281,10 @@ public class FBFController {
 			tmpAls.delete();
 		}
 
-		if(metodo.equals("1")){	// Trazendo novas formulas/ Usando método com banco de dados
+		if(metodo.equals("1") || metodo.equals("2")){	// Trazendo novas formulas/ Usando método com banco de dados
 			ArrayList<FBFDTO> ultimasFBFs = new ArrayList<>(fbfs.subList(fbfs.size() - formulasRequeridas, fbfs.size()));
 			return ultimasFBFs;
-		}else if(metodo.equals("2")){ //Geração de formulas aleatorias/ Sem usar banco de dados
+		}else if(metodo.equals("3")){ //Geração de formulas aleatorias/ Sem usar banco de dados
 			ArrayList<FBFDTO> fbfsAleatorio = new ArrayList<>();
 			int conter = 0;
 			Random random = new Random();

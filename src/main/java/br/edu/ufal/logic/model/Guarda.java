@@ -45,5 +45,11 @@ public class Guarda {
     public void setContagem(int contagem) {
         this.contagem = contagem;
     }
+
+    @Override
+    public String toString() {
+        return "Guarda [usuario=" + usuario + ", form_FBF=" + form_FBF + ", form_Argumento=" + form_Argumento
+                + ", contagem=" + contagem + "]";
+    }
     
 }
