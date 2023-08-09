@@ -131,7 +131,7 @@ public class ArgumentController {
 			if(regs.contains("DI")) {
 				operacoes = operacoes.replace("#DI=0","#DI > 0");
 			}
-			if(regs.contains("DE")) { // ----------------------Ta com Loop
+			if(regs.contains("DE")) { // ----------------------Ta com Loop e demorando nas tentativas de geração
 				operacoes = operacoes.replace("#DE=0","#DE > 0");
 			}
 			if(regs.contains("BE")) { // ---------------------- Ta com Loop
@@ -244,7 +244,7 @@ public class ArgumentController {
 		
 			// Aqui é repassado as especificações que o alloy ira receber
 			String config = "pred ConfigArgument(){ \n" 
-					+ " #Atom>1"+"\n" 
+					+ " #Atom>2 "+"\n" 
 					//+ "	#MT!=0 => #MP=0	#MP!=0 => #MT=0\n" 
 					+operacoes
 				    + "	one ru,ru':Rule | ru.R in ru'.(P1+P2+p3)\n"
